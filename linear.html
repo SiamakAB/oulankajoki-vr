@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oulankajoki Supersite VR — Linear Process</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D2744;
+    --blue: #1770B8;
+    --blue-light: #4CA9FF;
+    --blue-pale: #EAF3FF;
+    --nude: #EAE3D9;
+    --nude2: #EDE5DC;
+    --nude3: #E3DDD6;
+    --cream: #FFFDF9;
+    --gray: #2C2828;
+    --gray-mid: #7A736E;
+    --amber: #D4820A;
+    --amber-pale: #FFF0D6;
+    --coral: #C0392B;
+    --coral-pale: #FDEDEC;
+    --purple: #6C4BAB;
+    --purple-pale: #F3EFFC;
+    --teal: #1770B8;
+    --white: #FFFDF9;
+    --border: #E3DDD6;
+    --muted: #7A736E;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Poppins, sans-serif;
+    background: #EAE3D9;
+    color: var(--gray);
+    min-height: 100vh;
+    padding-bottom: 4rem;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0D2744 0%, #1770B8 100%);
+    padding: 1.4rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+    position: relative; overflow: hidden;
+    border-bottom: none;
+  }
+
+  .header::before {
+    content: ""; position: absolute; top: -60px; right: -60px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: #4CA9FF; opacity: 0.15; pointer-events: none;
+  }
+
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .header-titles { display: flex; flex-direction: column; }
+  .header-title { font-size: 20px; font-weight: 700; color: white; letter-spacing: 1px; line-height: 1.2; }
+  .header-sub { font-size: 12px; color: rgba(255,255,255,0.5); font-weight: 300; margin-top: 3px; }
+  .header-nav { display: flex; gap: 10px; flex-wrap: wrap; }
+  .nav-link {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.10); border: 0.5px solid rgba(255,255,255,0.20);
+    border-radius: 20px; padding: 5px 14px; font-size: 11px;
+    color: white; text-decoration: none; font-family: Poppins, sans-serif;
+  }
+  .nav-link.active { background: #1770B8; border-color: #4CA9FF; font-weight: 500; }
+
+  /* MAIN */
+  .main { max-width: 920px; margin: 0 auto; padding: 2.5rem 2rem 3rem; }
+
+  /* PHASE LABEL */
+  .phase-label {
+    display: flex; align-items: center; gap: 12px;
+    margin: 2.5rem 0 1rem;
+  }
+
+  .phase-dot {
+    width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  .phase-name {
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 600; color: var(--gray-mid);
+  }
+
+  .phase-line { flex: 1; height: 0.5px; background: var(--border); }
+
+  /* STEP */
+  .step {
+    display: grid;
+    grid-template-columns: 48px 1px 1fr;
+    gap: 0 20px;
+    margin-bottom: 0;
+  }
+
+  .step-left { display: flex; flex-direction: column; align-items: center; }
+
+  .step-circle {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; flex-shrink: 0;
+    border: 1.5px solid; position: relative; z-index: 1;
+    font-family: Poppins, sans-serif;
+  }
+
+  .step-vline { width: 1px; flex: 1; min-height: 20px; margin: 4px 0; }
+  .step-connector { width: 1px; align-self: stretch; }
+
+  .step-content { padding: 0 0 2rem 0; }
+
+  .step-header {
+    display: flex; align-items: baseline; gap: 12px;
+    margin-bottom: 0.5rem; padding-top: 6px;
+  }
+
+  .step-num-label {
+    font-size: 9px; letter-spacing: 2px; color: var(--gray-mid);
+    text-transform: uppercase; flex-shrink: 0; font-weight: 500;
+  }
+
+  .step-title { font-size: 13px; font-weight: 600; color: var(--gray); line-height: 1.3; }
+
+  .step-body {
+    font-size: 12px; color: var(--gray-mid); line-height: 1.7;
+    margin-bottom: 0.6rem; font-weight: 300;
+  }
+
+  .step-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.5rem; }
+
+  .step-tag {
+    font-size: 9px; letter-spacing: 0.5px; border-radius: 4px;
+    padding: 2px 9px; border: 0.5px solid; font-weight: 500;
+  }
+
+  .step-note {
+    font-size: 10px; font-style: italic; color: var(--gray-mid);
+    margin-top: 0.5rem; padding-left: 10px;
+    border-left: 2px solid var(--border);
+  }
+
+  /* Phase color themes */
+  .c-blue .step-circle { background: var(--blue-pale); border-color: var(--blue); color: var(--navy); }
+  .c-blue .step-vline { background: linear-gradient(to bottom, var(--blue), transparent); }
+  .c-blue .step-tag { background: var(--blue-pale); border-color: rgba(23,112,184,0.3); color: var(--navy); }
+  .c-blue .phase-dot { background: var(--blue); }
+  .c-blue .phase-name { color: var(--blue); opacity: 1; }
+
+  .c-green .step-circle { background: #E8F8F3; border-color: #1D9E75; color: #04342C; }
+  .c-green .step-vline { background: linear-gradient(to bottom, #1D9E75, transparent); }
+  .c-green .step-tag { background: #E8F8F3; border-color: rgba(29,158,117,0.3); color: #04342C; }
+  .c-green .phase-dot { background: #1D9E75; }
+  .c-green .phase-name { color: #1D9E75; opacity: 1; }
+
+  .c-amber .step-circle { background: var(--amber-pale); border-color: var(--amber); color: #7A4A05; }
+  .c-amber .step-vline { background: linear-gradient(to bottom, var(--amber), transparent); }
+  .c-amber .step-tag { background: var(--amber-pale); border-color: rgba(212,130,10,0.3); color: #7A4A05; }
+  .c-amber .phase-dot { background: var(--amber); }
+  .c-amber .phase-name { color: var(--amber); opacity: 1; }
+
+  .c-purple .step-circle { background: var(--purple-pale); border-color: var(--purple); color: #3D2070; }
+  .c-purple .step-vline { background: linear-gradient(to bottom, var(--purple), transparent); }
+  .c-purple .step-tag { background: var(--purple-pale); border-color: rgba(108,75,171,0.3); color: #3D2070; }
+  .c-purple .phase-dot { background: var(--purple); }
+  .c-purple .phase-name { color: var(--purple); opacity: 1; }
+
+  .c-coral .step-circle { background: var(--coral-pale); border-color: var(--coral); color: #791F1F; }
+  .c-coral .step-vline { background: linear-gradient(to bottom, var(--coral), transparent); }
+  .c-coral .step-tag { background: var(--coral-pale); border-color: rgba(192,57,43,0.3); color: #791F1F; }
+  .c-coral .phase-dot { background: var(--coral); }
+  .c-coral .phase-name { color: var(--coral); opacity: 1; }
+
+  .c-teal .step-circle { background: var(--blue-pale); border-color: var(--blue-light); color: var(--navy); }
+  .c-teal .step-vline { background: linear-gradient(to bottom, var(--blue-light), transparent); }
+  .c-teal .step-tag { background: var(--blue-pale); border-color: rgba(76,169,255,0.3); color: var(--navy); }
+  .c-teal .phase-dot { background: var(--blue-light); }
+  .c-teal .phase-name { color: var(--blue-light); opacity: 1; }
+
+  /* FINAL BLOCK */
+  .final {
+    margin-top: 1rem;
+    border: 1px solid rgba(23,112,184,0.25);
+    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    background: linear-gradient(135deg, var(--blue-pale) 0%, var(--cream) 100%);
+    position: relative; overflow: hidden;
+  }
+
+  .final::before {
+    content: ""; position: absolute; top: -60px; right: -60px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: var(--blue); opacity: 0.05;
+  }
+
+  .final-label {
+    font-size: 9px; letter-spacing: 3px; color: var(--blue);
+    text-transform: uppercase; margin-bottom: 1rem; font-weight: 600;
+  }
+
+  .final h2 {
+    font-family: Poppins, sans-serif; font-size: 1.1rem; font-weight: 700;
+    color: var(--navy); margin-bottom: 0.8rem;
+  }
+
+  .final p {
+    font-size: 12px; color: var(--gray-mid); line-height: 1.8;
+    margin-bottom: 1.2rem; font-weight: 300;
+  }
+
+  .final-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px; margin-top: 1rem;
+  }
+
+  .final-item {
+    background: var(--cream); border: 0.5px solid var(--border);
+    border-radius: 8px; padding: 10px 14px;
+  }
+
+  .final-item-val {
+    font-size: 13px; font-weight: 700; color: var(--blue);
+    display: block; margin-bottom: 2px;
+  }
+
+  .final-item-label { font-size: 9px; color: var(--gray-mid); letter-spacing: 0.5px; }
+
+  /* FOOTER */
+  .site-footer {
+    background: var(--cream); border-top: 1px solid var(--border);
+    padding: 12px 3rem;
+  }
+  .footer-inner {
+    max-width: 920px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.6rem;
+  }
+  .footer-brand { font-size: 10px; font-weight: 600; color: var(--gray); margin-bottom: 2px; }
+  .footer-copy { font-size: 9px; color: var(--gray-mid); margin-bottom: 2px; }
+  .footer-legal { font-size: 8px; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 640px; }
+  .footer-right { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+  .footer-right span { font-size: 9px; color: #aaa; }
+  .footer-right a { font-size: 9px; color: var(--blue); text-decoration: none; font-weight: 500; }
+  .footer-right a:hover { text-decoration: underline; }
+
+  @media (max-width: 680px) {
+    .header { padding: 1rem 1.2rem; }
+    .main { padding: 1.5rem 1rem; }
+    .site-footer { padding: 12px 1.2rem; }
+    .step { grid-template-columns: 36px 1px 1fr; gap: 0 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <img src="data:image/png;base64,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" alt="University of Oulu" style="height:64px;width:auto;display:block;mix-blend-mode:screen;">
+    <div style="width:1px;height:40px;background:rgba(255,255,255,0.2);margin:0 4px;"></div>
+    <div class="header-titles">
+      <div class="header-title">OULANKAJOKI SUPERSITE VR</div>
+      <div class="header-sub">Digital Waters Flagship &nbsp;·&nbsp; University of Oulu &nbsp;·&nbsp; Finland</div>
+    </div>
+  </div>
+  <div class="header-nav">
+    <a href="index.html" class="nav-link">📄 Tutorial</a>
+    <a href="dashboard.html" class="nav-link">🎮 Live Dashboard</a>
+    <a href="linear.html" class="nav-link active">📋 Linear Process</a>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PHASE 1 — SOFTWARE -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="c-blue">
+    <div class="phase-label">
+      <div class="phase-dot"></div>
+      <div class="phase-name">Phase 1 — Software Installation</div>
+      <div class="phase-line"></div>
+    </div>
+
+    <div class="step c-blue">
+      <div class="step-left">
+        <div class="step-circle">01</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">1.1</span>
+          <span class="step-title">Download and install Unity Hub</span>
+        </div>
+        <div class="step-body">Navigate to unity.com/download and download Unity Hub. Run the installer on Windows PC. Unity Hub manages all Unity Editor versions from a single interface.</div>
+        <div class="step-tags"><span class="step-tag">unity.com/download</span><span class="step-tag">Windows PC</span><span class="step-tag">Free</span></div>
+      </div>
+    </div>
+
+    <div class="step c-blue">
+      <div class="step-left">
+        <div class="step-circle">02</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">1.2</span>
+          <span class="step-title">Install Unity Editor 2022.3 LTS with Android modules</span>
+        </div>
+        <div class="step-body">In Unity Hub go to Installs → Install Editor → select Unity 2022.3 LTS. During installation check Android Build Support, Android SDK and NDK Tools, and OpenJDK. These modules are required for Quest 3 deployment. Total download approximately 8-10 GB.</div>
+        <div class="step-tags"><span class="step-tag">Unity 2022.3 LTS</span><span class="step-tag">Android Build Support</span><span class="step-tag">Android SDK & NDK</span><span class="step-tag">OpenJDK</span></div>
+        <div class="step-note">Version 2022.3 LTS is mandatory for full compatibility with Cesium for Unity and Meta XR SDK.</div>
+      </div>
+    </div>
+
+    <div class="step c-blue">
+      <div class="step-left">
+        <div class="step-circle">03</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">1.3</span>
+          <span class="step-title">Install Visual Studio Code and C# extension</span>
+        </div>
+        <div class="step-body">Download from code.visualstudio.com. Open VS Code and install the C# extension published by Microsoft from the Extensions panel. This provides syntax highlighting and IntelliSense for all Unity scripting work.</div>
+        <div class="step-tags"><span class="step-tag">code.visualstudio.com</span><span class="step-tag">C# Extension</span><span class="step-tag">Free</span></div>
+      </div>
+    </div>
+
+    <div class="step c-blue">
+      <div class="step-left">
+        <div class="step-circle">04</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">1.4</span>
+          <span class="step-title">Install Git for Windows</span>
+        </div>
+        <div class="step-body">Download from git-scm.com. Git is required for the Cesium for Unity plugin installation via GitHub releases. Without Git installed, Unity cannot process package URLs.</div>
+        <div class="step-tags"><span class="step-tag">git-scm.com</span><span class="step-tag">Required for Cesium</span></div>
+      </div>
+    </div>
+
+    <div class="step c-blue">
+      <div class="step-left">
+        <div class="step-circle">05</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">1.5</span>
+          <span class="step-title">Install Meta Quest Developer Hub</span>
+        </div>
+        <div class="step-body">Download from developers.meta.com/horizon/downloads. Install Meta Quest Developer Hub for Windows. This tool establishes the USB connection between PC and Quest 3 for app deployment. Enable Developer Mode on the headset via the Meta Horizon smartphone app before connecting.</div>
+        <div class="step-tags"><span class="step-tag">MQDH</span><span class="step-tag">Developer Mode</span><span class="step-tag">Meta Horizon App</span><span class="step-tag">USB-C Cable</span></div>
+        <div class="step-note">Developer Mode is activated via Meta Horizon mobile app → Devices → Quest 3 → Developer Mode → ON. Quest 3 software must be up to date.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PHASE 2 — CESIUM -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="c-green">
+    <div class="phase-label">
+      <div class="phase-dot"></div>
+      <div class="phase-name">Phase 2 — Cesium ion Cloud Setup</div>
+      <div class="phase-line"></div>
+    </div>
+
+    <div class="step c-green">
+      <div class="step-left">
+        <div class="step-circle">06</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">2.1</span>
+          <span class="step-title">Create a free Cesium ion account</span>
+        </div>
+        <div class="step-body">Navigate to ion.cesium.com and sign up. Verify email address. Select the developer option during setup. The free tier provides 5 GB asset storage, Cesium World Terrain, and Bing Maps Aerial — everything needed for this project at no cost.</div>
+        <div class="step-tags"><span class="step-tag">ion.cesium.com</span><span class="step-tag">Free Tier</span><span class="step-tag">Developer Account</span></div>
+      </div>
+    </div>
+
+    <div class="step c-green">
+      <div class="step-left">
+        <div class="step-circle">07</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">2.2</span>
+          <span class="step-title">Upload the Oulankajoki LAZ point cloud</span>
+        </div>
+        <div class="step-body">Dashboard → Add data → Upload files → select the LAZ file (Oulankajoki_Jakalamutka_TM35FIN_N2000_allpoints_DSM25cm_color.laz, 27.7 MB). Enable Draco compression only. Do not enable Gaussian Splats. Cesium ion automatically converts LAZ to 3D Tiles format. Processing takes 2-5 minutes.</div>
+        <div class="step-tags"><span class="step-tag">LAZ Format</span><span class="step-tag">3D Tiles</span><span class="step-tag">Draco Compression</span><span class="step-tag">Asset ID: 4649290</span></div>
+        <div class="step-note">The filename contains TM35FIN coordinate system data. Cesium ion reads these coordinates and reprojects automatically to WGS84.</div>
+      </div>
+    </div>
+
+    <div class="step c-green">
+      <div class="step-left">
+        <div class="step-circle">08</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">2.3</span>
+          <span class="step-title">Verify and adjust point cloud location on map</span>
+        </div>
+        <div class="step-body">After processing completes, click on the asset and use the Preview map to confirm the point cloud appears at the correct location in Oulankajoki National Park, Finland. Manually adjust position if needed using the map interface. Site coordinates: 66°17'24.4"N 29°37'42.9"E.</div>
+        <div class="step-tags"><span class="step-tag">66.290111°N</span><span class="step-tag">29.628583°E</span><span class="step-tag">Oulankajoki Finland</span></div>
+      </div>
+    </div>
+
+    <div class="step c-green">
+      <div class="step-left">
+        <div class="step-circle">09</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">2.4</span>
+          <span class="step-title">Save the ion Access Token securely</span>
+        </div>
+        <div class="step-body">Navigate to Access Tokens in the Cesium ion dashboard. Copy the default token string. Store it in a private text file on the local PC only. This token authorizes Unity to stream assets from Cesium ion. It must never be shared publicly or posted online.</div>
+        <div class="step-tags"><span class="step-tag">Access Token</span><span class="step-tag">Keep Private</span><span class="step-tag">Required for Unity</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PHASE 3 — UNITY SETUP -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="c-amber">
+    <div class="phase-label">
+      <div class="phase-dot"></div>
+      <div class="phase-name">Phase 3 — Unity Project Setup and Plugin Installation</div>
+      <div class="phase-line"></div>
+    </div>
+
+    <div class="step c-amber">
+      <div class="step-left">
+        <div class="step-circle">10</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">3.1</span>
+          <span class="step-title">Create a new 3D URP Unity project</span>
+        </div>
+        <div class="step-body">Open Unity Hub → New Project → select the 3D (URP) template → assign a project name → Create Project. The Universal Render Pipeline template is required for optimal rendering performance on the Meta Quest 3 headset.</div>
+        <div class="step-tags"><span class="step-tag">3D URP Template</span><span class="step-tag">Universal Render Pipeline</span></div>
+      </div>
+    </div>
+
+    <div class="step c-amber">
+      <div class="step-left">
+        <div class="step-circle">11</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">3.2</span>
+          <span class="step-title">Install Cesium for Unity plugin via tarball</span>
+        </div>
+        <div class="step-body">Navigate to github.com/CesiumGS/cesium-unity/releases in a browser. Download the latest .tgz release file. In Unity go to Window → Package Manager → click + → Add package from tarball → select the downloaded file. The Cesium menu appears in the Unity top menu bar when installation is complete.</div>
+        <div class="step-tags"><span class="step-tag">GitHub Releases</span><span class="step-tag">.tgz Tarball</span><span class="step-tag">Package Manager</span><span class="step-tag">3-5 min</span></div>
+      </div>
+    </div>
+
+    <div class="step c-amber">
+      <div class="step-left">
+        <div class="step-circle">12</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">3.3</span>
+          <span class="step-title">Install Meta XR All-in-One SDK</span>
+        </div>
+        <div class="step-body">Navigate to the Unity Asset Store and search for Meta XR All-in-One SDK. Click Add to My Assets. In Unity Package Manager switch to the My Assets tab, find the SDK, then click Download and Import. This single package contains all Quest 3 components including OVR Camera Rig, OVR Manager, controller input, and hand tracking.</div>
+        <div class="step-tags"><span class="step-tag">Unity Asset Store</span><span class="step-tag">OVR Camera Rig</span><span class="step-tag">OVR Manager</span><span class="step-tag">Controller Input</span></div>
+        <div class="step-note">Do not install Core SDK or Interaction SDK separately — the All-in-One SDK includes everything needed.</div>
+      </div>
+    </div>
+
+    <div class="step c-amber">
+      <div class="step-left">
+        <div class="step-circle">13</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">3.4</span>
+          <span class="step-title">Switch platform to Android and configure XR</span>
+        </div>
+        <div class="step-body">Go to File → Build Settings → select Android → Switch Platform. Then Edit → Project Settings → XR Plug-in Management → Android tab → check Oculus (uncheck OpenXR). Run Meta → Tools → Project Setup Tool → Android tab → Fix All → Apply All to automatically resolve common configuration issues.</div>
+        <div class="step-tags"><span class="step-tag">Android Platform</span><span class="step-tag">Oculus XR Plugin</span><span class="step-tag">Project Setup Tool</span></div>
+      </div>
+    </div>
+
+    <div class="step c-amber">
+      <div class="step-left">
+        <div class="step-circle">14</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">3.5</span>
+          <span class="step-title">Import site images into Unity project</span>
+        </div>
+        <div class="step-body">In the Project panel right-click Assets → Create Folder → name it Images. Drag all PNG image files into the folder. The set comprises 7 data table panel images (table_01 through table_07) and 5 site photography images (photo_01 through photo_05).</div>
+        <div class="step-tags"><span class="step-tag">7 Data Tables</span><span class="step-tag">5 Site Photos</span><span class="step-tag">PNG Format</span><span class="step-tag">Images Folder</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PHASE 4 — SCENE BUILD -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="c-purple">
+    <div class="phase-label">
+      <div class="phase-dot"></div>
+      <div class="phase-name">Phase 4 — VR Scene Construction</div>
+      <div class="phase-line"></div>
+    </div>
+
+    <div class="step c-purple">
+      <div class="step-left">
+        <div class="step-circle">15</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">4.1</span>
+          <span class="step-title">Add Cesium globe and point cloud tileset</span>
+        </div>
+        <div class="step-body">Click Cesium in the top menu → Cesium World Terrain + Bing Maps Aerial. Paste the ion Access Token when prompted. This adds CesiumGeoreference, Cesium World Terrain (global 3D elevation), and Bing Maps Aerial (satellite photography) to the Hierarchy. Then right-click in Hierarchy → Cesium → Cesium 3D Tileset. In the Inspector set Ion Asset ID to 4649290 to stream the Oulankajoki point cloud.</div>
+        <div class="step-tags"><span class="step-tag">CesiumGeoreference</span><span class="step-tag">World Terrain</span><span class="step-tag">Bing Maps Aerial</span><span class="step-tag">Asset ID: 4649290</span></div>
+        <div class="step-note">All scene objects with CesiumGlobeAnchor must be placed as children of CesiumGeoreference in the Hierarchy.</div>
+      </div>
+    </div>
+
+    <div class="step c-purple">
+      <div class="step-left">
+        <div class="step-circle">16</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">4.2</span>
+          <span class="step-title">Set up OVR Camera Rig as VR player</span>
+        </div>
+        <div class="step-body">Create an OVRCameraRig object under CesiumGeoreference. Add components: OVR Camera Rig, OVR Manager (set Target Device to Quest 3, Tracking Origin to Floor Level, Controller Driven Hand Poses to Controllers), Character Controller, Cesium Globe Anchor, and SetPlayerLocation script. Set player start coordinates to Latitude 66.290111, Longitude 29.628583, Height 200. Expand TrackingSpace and add OVR Controller Visual to LeftControllerAnchor and RightControllerAnchor.</div>
+        <div class="step-tags"><span class="step-tag">OVRCameraRig</span><span class="step-tag">OVR Manager</span><span class="step-tag">Floor Level</span><span class="step-tag">Quest 3</span></div>
+      </div>
+    </div>
+
+    <div class="step c-purple">
+      <div class="step-left">
+        <div class="step-circle">17</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">4.3</span>
+          <span class="step-title">Write all required C# scripts in VS Code</span>
+        </div>
+        <div class="step-body">Create a Scripts folder in Assets. Write and save eight scripts: SpotMarker (toggles billboard visibility on click), Slideshow (cycles through data table images with Next/Previous/Close), BillboardButton (handles button clicks), LookAtPlayer (billboard always faces the player camera), SetPlayerLocation (sets georeferenced coordinates via CesiumGlobeAnchor), VRMovement (thumbstick movement and A/B button flight), ControllerRay (draws ray lines and detects raycasted hits), TeleportSpot (gaze-based teleportation with 2-second hold).</div>
+        <div class="step-tags"><span class="step-tag">SpotMarker</span><span class="step-tag">Slideshow</span><span class="step-tag">BillboardButton</span><span class="step-tag">LookAtPlayer</span><span class="step-tag">VRMovement</span><span class="step-tag">ControllerRay</span><span class="step-tag">TeleportSpot</span><span class="step-tag">SetPlayerLocation</span></div>
+      </div>
+    </div>
+
+    <div class="step c-purple">
+      <div class="step-left">
+        <div class="step-circle">18</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">4.4</span>
+          <span class="step-title">Create DataMarker with slideshow billboard</span>
+        </div>
+        <div class="step-body">Create a Sphere (Scale 0.5) named DataMarker under CesiumGeoreference. Attach Cesium Globe Anchor, SetPlayerLocation (coordinates 66.290111, 29.628583, Height 170), SpotMarker, Pointable Unity Event Wrapper, Ray Interactable, and OVR Raycaster. Create a child Quad named DataBillboard (Scale X9, Y6, Z1). Attach Slideshow script (assign all 7 table images), LookAtPlayer, and a black border frame Quad behind it. Create three child Cube buttons (NextButton green, PrevButton green, CloseButton red) each with BillboardButton script, OVR Raycaster, and TextMeshPro labels.</div>
+        <div class="step-tags"><span class="step-tag">DataMarker Sphere</span><span class="step-tag">DataBillboard Quad</span><span class="step-tag">7 Table Slideshow</span><span class="step-tag">Next/Prev/Close</span><span class="step-tag">Black Frame</span></div>
+      </div>
+    </div>
+
+    <div class="step c-purple">
+      <div class="step-left">
+        <div class="step-circle">19</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">4.5</span>
+          <span class="step-title">Create 5 photo markers with image billboards</span>
+        </div>
+        <div class="step-body">For each of the 5 site photos create a Sphere (Scale 0.5) named PhotoMarker01 through PhotoMarker05 under CesiumGeoreference. Assign unique georeferenced coordinates to each using SetPlayerLocation. Each marker has a child Quad billboard (Scale X18, Y12, Z1) with a photo material (PNG assigned to Albedo), LookAtPlayer script, and a black frame border. All billboards are set inactive by default and toggled visible when the ray trigger hits the parent sphere marker.</div>
+        <div class="step-tags"><span class="step-tag">5 Photo Markers</span><span class="step-tag">Photo Billboards</span><span class="step-tag">Albedo Texture</span><span class="step-tag">Black Frame</span><span class="step-tag">LookAtPlayer</span></div>
+        <div class="step-note">Billboard Scale X18, Y12 is 3x larger than original to ensure readability in VR at typical viewing distances.</div>
+      </div>
+    </div>
+
+    <div class="step c-purple">
+      <div class="step-left">
+        <div class="step-circle">20</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">4.6</span>
+          <span class="step-title">Add VR locomotion — movement and flight</span>
+        </div>
+        <div class="step-body">Attach VRMovement script to OVRCameraRig. Left thumbstick controls forward/backward/left/right movement. Right thumbstick controls rotation. A button on right controller flies player upward for bird's eye view. B button descends back to ground level. Move Speed set to 50, Rotate Speed set to 90 for comfortable VR navigation across the geospatial terrain.</div>
+        <div class="step-tags"><span class="step-tag">Left Stick — Move</span><span class="step-tag">Right Stick — Rotate</span><span class="step-tag">A — Fly Up</span><span class="step-tag">B — Fly Down</span><span class="step-tag">Speed: 50</span></div>
+      </div>
+    </div>
+
+    <div class="step c-purple">
+      <div class="step-left">
+        <div class="step-circle">21</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">4.7</span>
+          <span class="step-title">Add controller ray interactors</span>
+        </div>
+        <div class="step-body">Attach ControllerRay script to OVRCameraRig. Two white LineRenderer rays are drawn from both left and right controllers using OVRInput position and rotation data. Right index trigger fires a Physics.Raycast that detects SpotMarker, BillboardButton, and TeleportSpot components on hit objects. Left index trigger also fires a raycast for marker interaction. Far clipping plane set to 500000 for full globe visibility.</div>
+        <div class="step-tags"><span class="step-tag">LineRenderer</span><span class="step-tag">Physics.Raycast</span><span class="step-tag">Both Controllers</span><span class="step-tag">White Ray</span><span class="step-tag">Index Trigger</span></div>
+      </div>
+    </div>
+
+    <div class="step c-purple">
+      <div class="step-left">
+        <div class="step-circle">22</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">4.8</span>
+          <span class="step-title">Create 3 teleport hotspots</span>
+        </div>
+        <div class="step-body">Create three yellow Cylinder objects (Scale X4, Y0.05, Z4) named TeleportSpot01, TeleportSpot02, TeleportSpot03 under CesiumGeoreference. Each has a SetPlayerLocation script at Height 160 with coordinates spread across the site. TeleportSpot script uses gaze-based detection — when the controller ray points at a cylinder for 2 seconds the cylinder color transitions from yellow to green and the player is automatically teleported to that location.</div>
+        <div class="step-tags"><span class="step-tag">3 Hotspots</span><span class="step-tag">Yellow Cylinders</span><span class="step-tag">2-Second Gaze</span><span class="step-tag">Height: 160</span><span class="step-tag">Auto Teleport</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PHASE 5 — BUILD -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="c-coral">
+    <div class="phase-label">
+      <div class="phase-dot"></div>
+      <div class="phase-name">Phase 5 — Build and Deploy to Meta Quest 3</div>
+      <div class="phase-line"></div>
+    </div>
+
+    <div class="step c-coral">
+      <div class="step-left">
+        <div class="step-circle">23</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">5.1</span>
+          <span class="step-title">Connect and verify Quest 3 via USB-C</span>
+        </div>
+        <div class="step-body">Connect the Meta Air Link USB-C cable from Quest 3 to the PC. Put on the headset and click Allow USB Debugging when prompted. Check Always allow from this computer. Verify the headset appears as Connected and Active in Meta Quest Developer Hub on the PC before proceeding to build.</div>
+        <div class="step-tags"><span class="step-tag">USB-C Cable</span><span class="step-tag">Allow USB Debugging</span><span class="step-tag">MQDH Connected</span></div>
+      </div>
+    </div>
+
+    <div class="step c-coral">
+      <div class="step-left">
+        <div class="step-circle">24</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">5.2</span>
+          <span class="step-title">Configure Player Settings for Android</span>
+        </div>
+        <div class="step-body">File → Build Settings → Player Settings → Other Settings. Set Package Name to com.student.oulankajokivr. Set Minimum API Level to Android 10 (API 29). Set Target API Level to Android 12 (API 31). Set Scripting Backend to IL2CPP. Set Target Architecture to ARM64. Set Graphics API to Vulkan only. Set Color Space to Linear.</div>
+        <div class="step-tags"><span class="step-tag">com.student.oulankajokivr</span><span class="step-tag">API 29-31</span><span class="step-tag">IL2CPP</span><span class="step-tag">ARM64</span><span class="step-tag">Vulkan</span></div>
+      </div>
+    </div>
+
+    <div class="step c-coral">
+      <div class="step-left">
+        <div class="step-circle">25</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">5.3</span>
+          <span class="step-title">Build and Run APK to Quest 3</span>
+        </div>
+        <div class="step-body">File → Build Settings → click Add Open Scenes → select Quest 3 from the Run Device dropdown (click Refresh if not visible) → click Build and Run → create a Builds folder → save as OulankajokiVR.apk. First build takes 15-30 minutes. Subsequent builds take 3-5 minutes. The compiled APK is approximately 123 MB. App launches automatically on the headset when build is complete.</div>
+        <div class="step-tags"><span class="step-tag">Build and Run</span><span class="step-tag">OulankajokiVR.apk</span><span class="step-tag">~123 MB</span><span class="step-tag">First build: 15-30 min</span></div>
+        <div class="step-note">If the app does not launch automatically it is found in Quest 3 App Library → filter by Unknown Sources → OulankajokiVR.</div>
+      </div>
+    </div>
+
+    <div class="step c-coral">
+      <div class="step-left">
+        <div class="step-circle">26</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">5.4</span>
+          <span class="step-title">Test all interactions on the headset</span>
+        </div>
+        <div class="step-body">Put on Quest 3 and test: point cloud visible, satellite basemap loading, free movement with left thumbstick, rotation with right thumbstick, flying up with A button, flying down with B button, white rays visible from both controllers, right trigger clicks sphere markers to open billboards, Next/Previous/Close buttons navigate data table slideshow, gaze at yellow cylinder for 2 seconds to teleport, all photo billboards display correctly.</div>
+        <div class="step-tags"><span class="step-tag">Movement</span><span class="step-tag">Ray Interactors</span><span class="step-tag">Billboards</span><span class="step-tag">Slideshow</span><span class="step-tag">Teleport</span><span class="step-tag">Flight</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PHASE 6 — DISTRIBUTION -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="c-teal">
+    <div class="phase-label">
+      <div class="phase-dot"></div>
+      <div class="phase-name">Phase 6 — Distribution and Vienna Presentation</div>
+      <div class="phase-line"></div>
+    </div>
+
+    <div class="step c-teal">
+      <div class="step-left">
+        <div class="step-circle">27</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">6.1</span>
+          <span class="step-title">Save APK as backup on MacBook and cloud</span>
+        </div>
+        <div class="step-body">Copy OulankajokiVR.apk from the Builds folder to the MacBook Pro and also upload to Google Drive or OneDrive as a cloud backup. The APK file is the complete self-contained application. It can be reinstalled on any Quest 3 headset at any time by dragging it into Meta Quest Developer Hub on any computer, taking approximately 2 minutes.</div>
+        <div class="step-tags"><span class="step-tag">MacBook Backup</span><span class="step-tag">Google Drive</span><span class="step-tag">OulankajokiVR.apk</span><span class="step-tag">123 MB</span></div>
+      </div>
+    </div>
+
+    <div class="step c-teal">
+      <div class="step-left">
+        <div class="step-circle">28</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">6.2</span>
+          <span class="step-title">Publish tutorial on GitHub Pages</span>
+        </div>
+        <div class="step-body">Create a free GitHub account. Create a new public repository named oulankajoki-vr. Upload the tutorial HTML document renamed as index.html. Go to Settings → Pages → Deploy from main branch. The tutorial is publicly accessible at https://username.github.io/oulankajoki-vr. Generate a QR code from this URL at qr-code-generator.com for use in printed materials and presentations.</div>
+        <div class="step-tags"><span class="step-tag">GitHub Pages</span><span class="step-tag">index.html</span><span class="step-tag">Public URL</span><span class="step-tag">QR Code</span></div>
+      </div>
+    </div>
+
+    <div class="step c-teal">
+      <div class="step-left">
+        <div class="step-circle">29</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">6.3</span>
+          <span class="step-title">Rehearse the full demo before Vienna</span>
+        </div>
+        <div class="step-body">Conduct a complete run-through of all features before travelling. Confirm the app works correctly on both office WiFi and a mobile hotspot. Test all 6 marker interactions, all 3 teleport hotspots, the data table slideshow navigation, and photo billboard display. Ensure Cesium ion tiles load correctly at the Oulankajoki site location before the presentation date.</div>
+        <div class="step-tags"><span class="step-tag">Full Demo Run</span><span class="step-tag">WiFi Test</span><span class="step-tag">Hotspot Test</span><span class="step-tag">All Features</span></div>
+      </div>
+    </div>
+
+    <div class="step c-teal">
+      <div class="step-left">
+        <div class="step-circle">30</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-num-label">6.4</span>
+          <span class="step-title">Vienna presentation — Quest 3 standalone</span>
+        </div>
+        <div class="step-body">Travel to Vienna with only the Meta Quest 3 headset, USB-C cable, and MacBook Pro. No desktop PC is required. At the venue connect the headset to WiFi for Cesium ion streaming. Launch OulankajokiVR from the App Library. Visitors put on the headset and experience the full georeferenced VR tour of the Oulankajoki Supersite independently and without any additional hardware or software.</div>
+        <div class="step-tags"><span class="step-tag">Vienna</span><span class="step-tag">Quest 3 Only</span><span class="step-tag">No PC Needed</span><span class="step-tag">WiFi Required</span><span class="step-tag">Standalone</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL RESULT -->
+  <div class="final">
+    <div class="final-label">Final deliverable</div>
+    <h2>Oulankajoki Supersite Virtual Tour — Complete VR Application</h2>
+    <p>A fully standalone, georeferenced, interactive VR application running on Meta Quest 3. The point cloud and satellite basemap of the Oulankajoki Supersite stream live from Cesium ion cloud. The player navigates freely on foot and from the air, clicks sphere markers to open data panels and site photos, and teleports between key locations using gaze-based hotspots. The entire experience runs without any PC connection — requiring only the headset and a WiFi connection.</p>
+    <div class="final-grid">
+      <div class="final-item">
+        <span class="final-item-val">66.290111°N</span>
+        <span class="final-item-label">Site latitude</span>
+      </div>
+      <div class="final-item">
+        <span class="final-item-val">29.628583°E</span>
+        <span class="final-item-label">Site longitude</span>
+      </div>
+      <div class="final-item">
+        <span class="final-item-val">4649290</span>
+        <span class="final-item-label">Cesium Asset ID</span>
+      </div>
+      <div class="final-item">
+        <span class="final-item-val">123 MB</span>
+        <span class="final-item-label">APK file size</span>
+      </div>
+      <div class="final-item">
+        <span class="final-item-val">6 Markers</span>
+        <span class="final-item-label">Interactive spots</span>
+      </div>
+      <div class="final-item">
+        <span class="final-item-val">3 Hotspots</span>
+        <span class="final-item-label">Teleport points</span>
+      </div>
+      <div class="final-item">
+        <span class="final-item-val">7 Tables</span>
+        <span class="final-item-label">Data panels</span>
+      </div>
+      <div class="final-item">
+        <span class="final-item-val">5 Photos</span>
+        <span class="final-item-label">Site images</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Oulankajoki Supersite | Virtual Tour Demo</div>
+      <div class="footer-copy">&copy; 2026 DIWA Flagship Program &nbsp;|&nbsp; IDT Lab, University of Oulu &nbsp;|&nbsp; Siamak Ahmadzadeh Bazzaz. All rights reserved.</div>
+      <div class="footer-legal">This document and the associated application were developed within the framework of the Digital Waters (DIWA) Flagship Program at the University of Oulu, Finland. Reproduction, distribution, or modification of any part of this work without prior written permission from the authors is not permitted.</div>
+    </div>
+    <div class="footer-right">
+      <span>Designed by:</span>
+      <a href="https://metaparametric.com" target="_blank">MetaParametric.com</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
