@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Siamak Bazzaz — DIWA Research Work Plan 2025–2027</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1C1A18;
+    --ink-mid: #4A4540;
+    --ink-light: #8A837C;
+    --paper: #F5F0E8;
+    --paper2: #EDE7DC;
+    --paper3: #E2D9CC;
+    --accent: #1770B8;
+    --accent2: #4CA9FF;
+    --gold: #C4860A;
+    --gold-pale: #FDF3E0;
+    --rust: #B54A1A;
+    --rust-pale: #FBE9E0;
+    --sage: #3A6B4A;
+    --sage-pale: #E4F0E8;
+    --slate: #2D4A6B;
+    --slate-pale: #E4ECF6;
+    --violet: #5B3A8C;
+    --violet-pale: #EDE8F8;
+    --teal: #0E7C86;
+    --teal-pale: #E0F5F7;
+    --border: #D0C8BC;
+    --white: #FFFDF9;
+    --cover-bg: #1A2C44;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Poppins", sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: linear-gradient(135deg, var(--cover-bg) 0%, #1770B8 100%);
+    min-height: 320px;
+    padding: 3rem 4rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .cover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 85% 20%, rgba(76,169,255,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 85%, rgba(255,255,255,0.04) 0%, transparent 60%);
+  }
+
+  .cover-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: relative;
+  }
+
+  .cover-label {
+    font-family: "DM Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cover-label::before { content: ""; display: inline-block; width: 20px; height: 1px; background: rgba(255,255,255,0.4); }
+
+  .cover h1 {
+    font-family: "Poppins", sans-serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+    position: relative;
+    letter-spacing: -0.5px;
+  }
+
+  .cover h1 span { color: var(--accent2); }
+
+  .cover-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 560px;
+    position: relative;
+  }
+
+  .cover-meta {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    position: relative;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .meta-item {}
+  .meta-val {
+    font-family: "Poppins", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent2);
+    display: block;
+  }
+  .meta-label {
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-top: 2px;
+  }
+
+  .cover-logo { position: relative; }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar-wrap {
+    background: var(--paper2);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 4rem 2rem;
+  }
+  .progress-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .progress-bar-track {
+    height: 8px;
+    background: var(--paper3);
+    border-radius: 4px;
+    overflow: visible;
+    position: relative;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    width: 29%;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%);
+    border-radius: 4px;
+    position: relative;
+  }
+  .progress-bar-fill::after {
+    content: "TODAY — APR 2026";
+    position: absolute;
+    right: -1px;
+    top: 14px;
+    font-family: "DM Mono", monospace;
+    font-size: 8px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .progress-bar-fill::before {
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: 0px;
+    width: 2px;
+    height: 22px;
+    background: var(--accent);
+  }
+
+  /* ── MAIN ── */
+  .main { max-width: 1100px; margin: 0 auto; padding: 3rem 4rem 5rem; }
+
+  /* ── SECTION TITLE ── */
+  .sec-title {
+    font-family: "DM Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .sec-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+  .sec-desc {
+    font-size: 11px;
+    color: var(--ink-light);
+    font-weight: 300;
+    line-height: 1.6;
+    margin-bottom: 1.4rem;
+    font-style: italic;
+  }
+
+  /* ── WORK PACKAGES ── */
+  .wp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 0.8rem;
+  }
+
+  .wp-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(20,18,16,0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .wp-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(20,18,16,0.1); }
+
+  .wp-top {
+    padding: 1.2rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .wp-num {
+    font-family: "Poppins", sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1;
+    flex-shrink: 0;
+    opacity: 0.2;
+  }
+
+  .wp-title-group {}
+  .wp-label {
+    font-family: "DM Mono", monospace;
+    font-size: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .wp-title {
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+  .wp-period {
+    font-size: 9px;
+    color: var(--ink-light);
+    margin-top: 4px;
+    font-family: "DM Mono", monospace;
+  }
+
+  .wp-body { padding: 1rem 1.4rem; }
+  .wp-desc { font-size: 10.5px; color: var(--ink-mid); line-height: 1.6; font-weight: 300; margin-bottom: 0.6rem; }
+
+  .wp-items { list-style: none; }
+  .wp-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 9.5px;
+    color: var(--ink-mid);
+    padding: 3px 0;
+    border-bottom: 0.5px solid var(--border);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+  .wp-item:last-child { border-bottom: none; }
+  .wp-bullet { flex-shrink: 0; margin-top: 0; font-size: 9.5px; font-weight: 500; margin-right: 4px; }
+  .wp1 .wp-bullet { color: var(--slate); }
+  .wp2 .wp-bullet { color: var(--sage); }
+  .wp3 .wp-bullet { color: var(--gold); }
+  .wp4 .wp-bullet { color: var(--violet); }
+  .wp5 .wp-bullet { color: var(--rust); }
+  .wp6 .wp-bullet { color: var(--teal); }
+
+  .wp-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 0.8rem;
+  }
+  .s-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+  .wp1 .wp-top { background: var(--slate-pale); } .wp1 .wp-num { color: var(--slate); } .wp1 .wp-label { color: var(--slate); } .wp1 .wp-status { background: var(--slate-pale); border: 0.5px solid var(--slate); color: var(--slate); } .wp1 .s-dot { background: var(--accent2); animation: pulse 1.5s infinite; }
+  .wp2 .wp-top { background: var(--sage-pale); } .wp2 .wp-num { color: var(--sage); } .wp2 .wp-label { color: var(--sage); } .wp2 .wp-status { background: var(--sage-pale); border: 0.5px solid var(--sage); color: var(--sage); } .wp2 .s-dot { background: var(--sage); animation: pulse 1.5s infinite; }
+  .wp3 .wp-top { background: var(--gold-pale); } .wp3 .wp-num { color: var(--gold); } .wp3 .wp-label { color: var(--gold); } .wp3 .wp-status { background: var(--gold-pale); border: 0.5px solid var(--gold); color: var(--gold); } .wp3 .s-dot { background: var(--gold); }
+  .wp4 .wp-top { background: var(--violet-pale); } .wp4 .wp-num { color: var(--violet); } .wp4 .wp-label { color: var(--violet); } .wp4 .wp-status { background: var(--violet-pale); border: 0.5px solid var(--violet); color: var(--violet); } .wp4 .s-dot { background: var(--violet); }
+  .wp5 .wp-top { background: var(--rust-pale); } .wp5 .wp-num { color: var(--rust); } .wp5 .wp-label { color: var(--rust); } .wp5 .wp-status { background: var(--rust-pale); border: 0.5px solid var(--rust); color: var(--rust); } .wp5 .s-dot { background: var(--rust); }
+  .wp6 .wp-top { background: var(--teal-pale); } .wp6 .wp-num { color: var(--teal); } .wp6 .wp-label { color: var(--teal); } .wp6 .wp-status { background: var(--teal-pale); border: 0.5px solid var(--teal); color: var(--teal); } .wp6 .s-dot { background: var(--teal); }
+
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  /* ── GANTT CHART ── */
+  .gantt-wrap {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 0.8rem;
+    box-shadow: 0 1px 8px rgba(20,18,16,0.06);
+  }
+
+  /* ── CONFERENCES TABLE ── */
+  .conf-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0.8rem;
+    font-size: 12px;
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(20,18,16,0.06);
+    border: 1px solid var(--border);
+  }
+  .conf-table th {
+    background: var(--cover-bg);
+    color: rgba(255,255,255,0.6);
+    padding: 10px 16px;
+    text-align: left;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .conf-table td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--ink);
+    line-height: 1.5;
+    font-size: 11px;
+  }
+  .conf-table tr:last-child td { border-bottom: none; }
+  .conf-table tr:hover td { background: var(--paper2); }
+  .conf-table tr.diwa-row td { background: var(--slate-pale); font-style: italic; color: var(--slate); }
+  .conf-table tr.diwa-row:hover td { background: var(--slate-pale); filter: brightness(0.97); }
+
+  .conf-name { font-weight: 600; font-size: 12px; display: block; margin-bottom: 2px; }
+  .conf-loc { font-size: 9px; color: var(--ink-light); font-family: "DM Mono", monospace; }
+
+  .cbadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    font-weight: 500;
+    padding: 2px 9px;
+    border-radius: 20px;
+    border: 0.5px solid;
+    white-space: nowrap;
+  }
+  .cb-done { background: var(--sage-pale); border-color: var(--sage); color: var(--sage); }
+  .cb-submitted { background: var(--slate-pale); border-color: var(--slate); color: var(--slate); }
+  .cb-apply { background: var(--gold-pale); border-color: var(--gold); color: var(--gold); }
+  .cb-deadline { background: var(--rust-pale); border-color: var(--rust); color: var(--rust); }
+  .cb-planned { background: var(--paper3); border-color: var(--border); color: var(--ink-mid); }
+  .cb-diwa { background: var(--slate-pale); border-color: var(--slate); color: var(--slate); }
+
+  /* ── COURSES ── */
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 0.8rem;
+  }
+
+  .course-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(20,18,16,0.06);
+  }
+
+  .course-top {
+    padding: 1.2rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .course-icon { font-size: 1.6rem; display: block; margin-bottom: 0.5rem; }
+  .course-num { font-family: "DM Mono", monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+  .course-title { font-family: "Poppins", sans-serif; font-size: 12px; font-weight: 700; color: var(--ink); line-height: 1.3; margin-bottom: 3px; }
+  .course-format { font-size: 10px; color: var(--ink-light); }
+
+  .course-body { padding: 1rem 1.4rem; }
+  .course-goal { background: var(--paper2); border-radius: 6px; padding: 8px 12px; font-size: 11px; color: var(--ink-mid); font-weight: 300; line-height: 1.6; margin-bottom: 0.8rem; }
+  .course-topics { font-size: 9.5px; color: var(--ink-mid); line-height: 1.7; font-weight: 300; }
+  .course-topics span { color: var(--accent); font-weight: 600; margin-right: 4px; }
+
+  .c1 .course-top { background: var(--slate-pale); } .c1 .course-num { color: var(--slate); }
+  .c2 .course-top { background: var(--violet-pale); } .c2 .course-num { color: var(--violet); }
+  .c3 .course-top { background: var(--gold-pale); } .c3 .course-num { color: var(--gold); }
+
+  /* ── FUTURE CAREER ── */
+  .career-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(20,18,16,0.06);
+    margin-bottom: 0.8rem;
+  }
+  .career-top {
+    background: linear-gradient(135deg, var(--cover-bg) 0%, var(--accent) 100%);
+    padding: 1.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .career-top::before { content: ""; position: absolute; bottom: -40px; right: -40px; width: 150px; height: 150px; border-radius: 50%; background: rgba(76,169,255,0.1); }
+  .career-label { font-family: "DM Mono", monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.5rem; }
+  .career-title { font-family: "Poppins", sans-serif; font-size: 1.2rem; font-weight: 700; color: white; line-height: 1.3; }
+  .career-body { padding: 1.5rem 2rem; }
+  .career-desc { font-size: 12px; color: var(--ink-mid); line-height: 1.8; font-weight: 300; margin-bottom: 1.5rem; }
+
+  .career-tl { display: flex; flex-direction: column; gap: 0; }
+  .ctl-item { display: grid; grid-template-columns: 110px 1px 1fr; gap: 0 16px; }
+  .ctl-year { text-align: right; padding: 0 0 1.2rem 0; padding-top: 3px; font-family: "Poppins", sans-serif; font-size: 12px; font-weight: 700; }
+  .ctl-line { display: flex; flex-direction: column; align-items: center; }
+  .ctl-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; border: 2px solid; margin-top: 3px; }
+  .ctl-vline { width: 1px; flex: 1; min-height: 16px; margin: 4px 0; }
+  .ctl-content { padding: 0 0 1.2rem 0; }
+  .ctl-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+  .ctl-desc { font-size: 11px; color: var(--ink-mid); line-height: 1.6; font-weight: 300; }
+
+  .ct1 .ctl-dot { background: var(--accent2); border-color: var(--accent); } .ct1 .ctl-vline { background: linear-gradient(to bottom, var(--accent), transparent); } .ct1 .ctl-year { color: var(--accent); }
+  .ct2 .ctl-dot { background: var(--gold-pale); border-color: var(--gold); } .ct2 .ctl-vline { background: linear-gradient(to bottom, var(--gold), transparent); } .ct2 .ctl-year { color: var(--gold); }
+  .ct3 .ctl-dot { background: var(--sage-pale); border-color: var(--sage); } .ct3 .ctl-vline { background: linear-gradient(to bottom, var(--sage), transparent); } .ct3 .ctl-year { color: var(--sage); }
+  .ct4 .ctl-dot { background: var(--violet-pale); border-color: var(--violet); } .ct4 .ctl-vline { background: linear-gradient(to bottom, var(--violet), transparent); } .ct4 .ctl-year { color: var(--violet); }
+  .ct5 .ctl-dot { background: var(--cover-bg); border-color: var(--accent2); } .ct5 .ctl-year { color: var(--cover-bg); }
+
+  /* ── IMPACT BOX ── */
+  .impact-box {
+    background: var(--cover-bg);
+    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 0.8rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .impact-box::before { content: ""; position: absolute; bottom: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: var(--accent2); opacity: 0.06; }
+  .impact-label { font-family: "DM Mono", monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.8rem; }
+  .impact-title { font-family: "Poppins", sans-serif; font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 1rem; }
+  .impact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+  .impact-item { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 12px 14px; border: 0.5px solid rgba(255,255,255,0.08); }
+  .impact-icon { font-size: 1.2rem; display: block; margin-bottom: 6px; }
+  .impact-iname { font-size: 12px; font-weight: 600; color: white; margin-bottom: 3px; }
+  .impact-idesc { font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 300; line-height: 1.5; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--cover-bg);
+    padding: 1.5rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-left { font-family: "DM Mono", monospace; font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 0.5px; }
+  .footer-right { font-family: "DM Mono", monospace; font-size: 9px; color: rgba(255,255,255,0.2); }
+
+  @media (max-width: 768px) {
+    .cover { padding: 2rem 1.5rem; }
+    .main { padding: 2rem 1.5rem; }
+    .cover h1 { font-size: 1.8rem; }
+    .gantt-wrap { overflow-x: auto; }
+    .footer { padding: 1.2rem 1.5rem; }
+    .progress-bar-wrap { padding: 1rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-top">
+    <div>
+      <div class="cover-label">Research Work Plan — DIWA Flagship Program</div>
+      <h1>SIAMAK BAZZAZ<br><span style="font-size:1.2rem;font-weight:500;letter-spacing:0px;">Research Roadmap 2025–2027</span></h1>
+      <div class="cover-sub">XR Research &nbsp;·&nbsp; Spatially Intelligent Digital Twins &nbsp;·&nbsp; 3D UIs &nbsp;·&nbsp; Educational Content &nbsp;·&nbsp; Dissemination<br>University of Oulu &nbsp;·&nbsp; IDT Lab &nbsp;·&nbsp; Digital Waters (DIWA) Flagship Program</div>
+    </div>
+    <div class="cover-logo">
+      <img src="data:image/png;base64,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" alt="University of Oulu" style="height:80px;width:auto;display:block;mix-blend-mode:screen;">
+    </div>
+  </div>
+  <div class="cover-meta">
+    <div class="meta-item"><span class="meta-val">Oct 2025</span><span class="meta-label">Contract start</span></div>
+    <div class="meta-item"><span class="meta-val">Oct 2027</span><span class="meta-label">Contract end</span></div>
+    <div class="meta-item"><span class="meta-val">2 years</span><span class="meta-label">Duration</span></div>
+    <div class="meta-item"><span class="meta-val">Apr 2026</span><span class="meta-label">Current position</span></div>
+    <div class="meta-item"><span class="meta-val">~18 mo</span><span class="meta-label">Remaining</span></div>
+    <div class="meta-item"><span class="meta-val">9+</span><span class="meta-label">Conferences planned</span></div>
+    <div class="meta-item"><span class="meta-val">3</span><span class="meta-label">Courses to develop</span></div>
+  </div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar-wrap">
+  <div class="progress-bar-label">
+    <span>Oct 12, 2025 — Contract start</span>
+    <span>29% of contract elapsed &nbsp;·&nbsp; April 2026</span>
+    <span>Oct 12, 2027 — Contract end</span>
+  </div>
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill"></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- WORK PACKAGES -->
+  <div class="sec-title">Work Packages</div>
+  <div class="sec-desc">The research activities are organized into six work packages covering the full two-year contract period. Each package represents a distinct but interconnected strand of work — from core XR development to dissemination, education, cloud infrastructure, smart glasses and international collaboration with XR labs.</div>
+  <div class="wp-grid">
+
+    <div class="wp-card wp1">
+      <div class="wp-top">
+        <div class="wp-num">01</div>
+        <div class="wp-title-group">
+          <div class="wp-label">WP1 — Core Research</div>
+          <div class="wp-title">XR Development — Spatially Intelligent Digital Twins</div>
+          <div class="wp-period">Oct 2025 → Oct 2027 (full contract)</div>
+        </div>
+      </div>
+      <div class="wp-body">
+        <div class="wp-desc">The primary research strand — designing, building, testing and iterating immersive VR/MR/AR applications for all 9 DIWA supersites. UX research principles including persona development, journey mapping and user needs analysis guide the design process. The Oulankajoki Supersite is the first completed prototype and proof of concept for the full platform.</div>
+        <ul class="wp-items">
+          <li><span class="wp-bullet">→</span>Oulankajoki Supersite VR — complete, demo-ready for EGU Vienna May 2026</li>
+          <li><span class="wp-bullet">→</span>All 9 DIWA supersites — point cloud upload and georeferencing via Cesium ion</li>
+          <li><span class="wp-bullet">→</span>DIWA Virtual Hub — circular MR lobby with 9 rounded tabletop supersite displays</li>
+          <li><span class="wp-bullet">→</span>Multiplayer shared XR — two Quest 3 headsets in same scene via Photon PUN 2</li>
+          <li><span class="wp-bullet">→</span>Passthrough Mixed Reality portal anchored to physical table marker</li>
+          <li><span class="wp-bullet">→</span>AI integration — voice commands, chatbot, terrain recognition, field guide</li>
+          <li><span class="wp-bullet">→</span>UX research — personas, journey maps, user needs studies with DIWA researchers</li>
+          <li><span class="wp-bullet">→</span>3D UI design principles applied to environmental digital twin interfaces</li>
+        </ul>
+        <div class="wp-status"><span class="s-dot"></span>Active — ongoing throughout contract</div>
+      </div>
+    </div>
+
+    <div class="wp-card wp2">
+      <div class="wp-top">
+        <div class="wp-num">02</div>
+        <div class="wp-title-group">
+          <div class="wp-label">WP2 — Dissemination</div>
+          <div class="wp-title">Conferences, Publications & Stakeholder Engagement</div>
+          <div class="wp-period">Oct 2025 → Oct 2027 (ongoing)</div>
+        </div>
+      </div>
+      <div class="wp-body">
+        <div class="wp-desc">Presenting DIWA XR research at international conferences, publishing findings and actively building connections with industry partners, companies and external stakeholders. The focus is on maximum impact — promoting DIWA in both environmental science and XR communities while finding meaningful collaboration opportunities.</div>
+        <ul class="wp-items">
+          <li><span class="wp-bullet">→</span>EGU Vienna — Poster + Live VR Demo — May 2026</li>
+          <li><span class="wp-bullet">→</span>NHC Mariehamn — Abstract submitted April 30 — August 2026</li>
+          <li><span class="wp-bullet">→</span>Immersive Tech Week Rotterdam — Apply to speak — June 2026</li>
+          <li><span class="wp-bullet">→</span>ISMAR Bari — Poster submission deadline June 1 — October 2026</li>
+          <li><span class="wp-bullet">→</span>VR Summit Bochum — Apply to speak — October 2026</li>
+          <li><span class="wp-bullet">→</span>EuroXR Valencia — Paper submission — November 2026</li>
+          <li><span class="wp-bullet">→</span>UnitedXR Brussels — Talk application Sept 1 — December 2026</li>
+          <li><span class="wp-bullet">→</span>Slush Helsinki — Startup and founder meetings — November 2026</li>
+          <li><span class="wp-bullet">→</span>Academic publications and journal articles on Spatially Intelligent Digital Twins</li>
+        </ul>
+        <div class="wp-status"><span class="s-dot"></span>Active — 9 events across 2026</div>
+      </div>
+    </div>
+
+    <div class="wp-card wp3">
+      <div class="wp-top">
+        <div class="wp-num">03</div>
+        <div class="wp-title-group">
+          <div class="wp-label">WP3 — Education</div>
+          <div class="wp-title">Pre-recorded Video Courses for Researchers & Students</div>
+          <div class="wp-period">Summer 2026 → Spring 2027</div>
+        </div>
+      </div>
+      <div class="wp-body">
+        <div class="wp-desc">Developing and producing three short video course series as pre-recorded content. Designed to be offered as PhD courses at the University of Oulu and as open educational resources. Targeting researchers, PhD students and XR practitioners within and beyond the DIWA programme.</div>
+        <ul class="wp-items">
+          <li><span class="wp-bullet">→</span>Course 1: Immersive UI/UX Design for Digital Twins — 3 × 15 min videos</li>
+          <li><span class="wp-bullet">→</span>Course 2: XR Core Values for DIWA — 1 × 15 min video</li>
+          <li><span class="wp-bullet">→</span>Course 3: Tech Solopreneurship for Researchers — 1 × 15 min video</li>
+          <li><span class="wp-bullet">→</span>Script writing, recording, post-production and online hosting</li>
+          <li><span class="wp-bullet">→</span>Integration with University of Oulu PhD course catalogue</li>
+        </ul>
+        <div class="wp-status"><span class="s-dot" style="background:var(--gold);animation:none;"></span>Planned — starting summer 2026</div>
+      </div>
+    </div>
+
+    <div class="wp-card wp4">
+      <div class="wp-top">
+        <div class="wp-num">04</div>
+        <div class="wp-title-group">
+          <div class="wp-label">WP4 — Cloud & AI</div>
+          <div class="wp-title">CSC, Azure, AWS and AI Integration for XR</div>
+          <div class="wp-period">Autumn 2026 → 2027</div>
+        </div>
+      </div>
+      <div class="wp-body">
+        <div class="wp-desc">Leveraging the available cloud and HPC infrastructure — CSC Finland national supercomputers, Microsoft Azure (licensed practitioner) and Amazon AWS (licensed practitioner) — for advanced XR capabilities including AI model training on DIWA LiDAR datasets, shared MR anchors and cloud AI inference for the intelligent field guide system.</div>
+        <ul class="wp-items">
+          <li><span class="wp-bullet">→</span>CSC Puhti GPU cluster — ML model training on all 9 supersite LiDAR datasets</li>
+          <li><span class="wp-bullet">→</span>Azure Spatial Anchors — shared MR portal synchronization between headsets</li>
+          <li><span class="wp-bullet">→</span>Claude API / GPT-4 — AI chatbot and voice navigation embedded in Unity VR</li>
+          <li><span class="wp-bullet">→</span>AWS SageMaker — environmental AI models from real DIWA sensor data</li>
+          <li><span class="wp-bullet">→</span>5G edge computing experiments for low-latency XR streaming</li>
+        </ul>
+        <div class="wp-status"><span class="s-dot" style="background:var(--violet);animation:none;"></span>Planned — starting autumn 2026</div>
+      </div>
+    </div>
+
+    <div class="wp-card wp5">
+      <div class="wp-top">
+        <div class="wp-num">05</div>
+        <div class="wp-title-group">
+          <div class="wp-label">WP5 — Next Platform</div>
+          <div class="wp-title">Smart AR Glasses Field Research Platform for DIWA</div>
+          <div class="wp-period">2027 — forward-looking research</div>
+        </div>
+      </div>
+      <div class="wp-body">
+        <div class="wp-desc">Investigating and prototyping the transition of DIWA Digital Twins from VR headsets to smart AR glasses — enabling field researchers to access georeferenced data overlays while physically present at DIWA supersites. Aligned with the 2027 consumer AR glasses release wave from Meta, Google, Samsung and Apple.</div>
+        <ul class="wp-items">
+          <li><span class="wp-bullet">→</span>Rokid / Xreal Unity SDK experiments — near-term prototyping</li>
+          <li><span class="wp-bullet">→</span>Android XR glasses — Google / Samsung platform evaluation</li>
+          <li><span class="wp-bullet">→</span>Cesium ion geospatial data overlay on AR glasses display</li>
+          <li><span class="wp-bullet">→</span>Remote field collaboration via AR glasses and shared spatial anchors</li>
+          <li><span class="wp-bullet">→</span>Meta Artemis consumer glasses — 2027 research opportunity assessment</li>
+        </ul>
+        <div class="wp-status"><span class="s-dot" style="background:var(--rust);animation:none;"></span>Planned — 2027 research phase</div>
+      </div>
+    </div>
+
+    <div class="wp-card wp6">
+      <div class="wp-top">
+        <div class="wp-num">06</div>
+        <div class="wp-title-group">
+          <div class="wp-label">WP6 — International Collaboration</div>
+          <div class="wp-title">XR Lab Partnerships & External Research Networks</div>
+          <div class="wp-period">2026 → Oct 2027 (ongoing)</div>
+        </div>
+      </div>
+      <div class="wp-body">
+        <div class="wp-desc">Actively establishing communication and collaboration channels with XR research laboratories at other universities and research institutions internationally. The goal is to position DIWA XR research within the broader European and global XR research community, share methodologies and explore joint projects and publications.</div>
+        <ul class="wp-items">
+          <li><span class="wp-bullet">→</span>Identify and contact XR labs at European universities working on similar themes</li>
+          <li><span class="wp-bullet">→</span>Participate in EuroXR, ISMAR and UnitedXR networks as entry points</li>
+          <li><span class="wp-bullet">→</span>Explore joint publications with external XR research groups</li>
+          <li><span class="wp-bullet">→</span>Establish bilateral research exchanges where possible</li>
+          <li><span class="wp-bullet">→</span>Connect DIWA with the broader spatial computing research ecosystem</li>
+          <li><span class="wp-bullet">→</span>Industry partner connections via Slush and Immersive Tech Week events</li>
+        </ul>
+        <div class="wp-status"><span class="s-dot" style="background:var(--teal);animation:none;"></span>Planned — starting 2026</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sec-desc" style="margin-bottom:2.5rem;">The six work packages are designed to be mutually reinforcing — research outputs from WP1 feed directly into WP2 dissemination, WP3 educational content draws on WP1 methodology, and WP6 collaboration creates opportunities to expand WP1 scope and WP4 infrastructure partnerships.</div>
+
+  <!-- GANTT CHART -->
+  <div class="sec-title">Timeline — Gantt Chart</div>
+  <div class="sec-desc">The Gantt chart below shows all work packages and key activities across the full 24-month contract period from October 2025 to October 2027. The vertical blue line marks today (April 2026). Tasks shown in solid color are active or completed. Tasks in the future are planned. The chart is organized by work package — scroll horizontally if needed on smaller screens.</div>
+  <div class="gantt-wrap">
+    <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;min-width:960px;">
+      <thead>
+        <tr style="background:#1770B8;">
+          <th style="padding:10px 14px;text-align:left;font-family:DM Mono,monospace;font-size:9px;letter-spacing:1px;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:400;min-width:190px;border-right:1px solid rgba(255,255,255,0.08);">Task / Activity</th>
+          <th colspan="3" style="padding:6px;font-family:DM Mono,monospace;font-size:8px;color:rgba(255,255,255,0.3);text-align:center;border-right:2px solid rgba(255,255,255,0.1);letter-spacing:1px;">2025</th>
+          <th colspan="12" style="padding:6px;font-family:DM Mono,monospace;font-size:8px;color:rgba(255,255,255,0.3);text-align:center;border-right:2px solid rgba(76,169,255,0.4);letter-spacing:1px;">2026</th>
+          <th colspan="9" style="padding:6px;font-family:DM Mono,monospace;font-size:8px;color:rgba(255,255,255,0.3);text-align:center;letter-spacing:1px;">2027</th>
+        </tr>
+        <tr style="background:#1A3F6B;">
+          <th style="padding:8px 14px;text-align:left;font-family:DM Mono,monospace;font-size:8px;color:rgba(255,255,255,0.6);border-right:1px solid rgba(255,255,255,0.15);min-width:190px;"></th>
+<th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Oct</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Nov</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Dec</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Jan</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Feb</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Mar</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;background:rgba(76,169,255,0.1);border-right:2px solid rgba(76,169,255,0.4);color:rgba(76,169,255,0.8);font-weight:600;">Apr★</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">May</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Jun</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Jul</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Aug</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Sep</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Oct</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Nov</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Dec</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Jan</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Feb</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Mar</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Apr</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">May</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Jun</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Jul</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Aug</th><th style="padding:6px 2px;font-family:DM Mono,monospace;font-size:7px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);">Sep-Oct</th></tr></thead><tbody>
+<tr style="background:#F2EDE4;"><td style="padding:7px 14px;font-size:11px;font-weight:600;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">WP1 — XR Research & Development</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">WP1 Core XR Research (full contract)</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  Oulankajoki VR Phase 1</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#2D6A4F;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">Phase 1 ✓ (Jan–May 2026)</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#2D6A4F;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#2D6A4F;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#2D6A4F;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  Oulankajoki VR Phase 2 — HUDs+AI</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#2D6A4F;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">Phase 2 (Feb–May 2026)</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#2D6A4F;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#2D6A4F;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#2D6A4F;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  All 9 Supersites — Cesium upload</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">9 Supersites</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  DIWA Virtual Hub</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">Virtual Hub</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  Multiplayer + Shared MR</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">Multiplayer MR</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  AI Integration</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">AI Features</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  UX Research — Personas + Journey Maps</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">UX Research</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F2EDE4;"><td style="padding:7px 14px;font-size:11px;font-weight:600;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">WP2 — Dissemination & Conferences</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">WP2 Dissemination</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#3A6B4A;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  EGU Vienna — Poster + VR Demo</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">EGU ★</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  NHC Mariehamn</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">NHC</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  Immersive Tech Week Rotterdam</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">ITW</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  ISMAR Bari + VR Summit Bochum</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">ISMAR+VRS</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  EuroXR Valencia + UnitedXR Brussels</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">EuroXR+UXR</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  Slush Helsinki</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#1770B8;border-radius:3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">Slush</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F2EDE4;"><td style="padding:7px 14px;font-size:11px;font-weight:600;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">WP3 — Educational Video Courses</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">WP3 Courses (3 videos)</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#C4860A;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  Course 1: Immersive UI/UX Design</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#D4820A;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">Course 1</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#D4820A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#D4820A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#D4820A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#D4820A;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  Course 2: XR Core Values for DIWA</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#D4820A;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">Course 2</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#D4820A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#D4820A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#D4820A;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  Course 3: Tech Solopreneurship</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#D4820A;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">Course 3</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#D4820A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#D4820A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#D4820A;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F2EDE4;"><td style="padding:7px 14px;font-size:11px;font-weight:600;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">WP4 — Cloud & AI Infrastructure</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">WP4 Cloud/HPC/AI</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#5B3A8C;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  CSC Puhti — LiDAR ML Training</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">CSC ML</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  Azure Spatial Anchors + AWS AI</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">Azure+AWS</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#6C4BAB;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F2EDE4;"><td style="padding:7px 14px;font-size:11px;font-weight:600;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">WP5 — Smart AR Glasses Platform</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">WP5 AR Glasses</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  Rokid/Xreal Unity SDK experiments</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">Rokid/Xreal</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  Meta Artemis / Android XR glasses</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">Next-gen glasses</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#B54A1A;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td></tr><tr style="background:#F2EDE4;"><td style="padding:7px 14px;font-size:11px;font-weight:600;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">WP6 — International XR Lab Collaboration</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">WP6 Int'l Collaboration</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  EuroXR / ISMAR network engagement</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">Network</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td></tr><tr style="background:#F9F5EF;"><td style="padding:7px 14px;font-size:11px;font-weight:400;color:#1C1A18;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;min-width:190px;line-height:1.3;">  Bilateral university XR partnerships</td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;background:rgba(76,169,255,0.04);border-right:2px solid rgba(76,169,255,0.3);border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;"></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:3px 0 0 3px;height:14px;display:flex;align-items:center;"><span style="font-family:DM Mono,monospace;font-size:7px;color:white;white-space:nowrap;overflow:hidden;padding:0 3px;">Partnerships</span></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0;height:14px;display:flex;align-items:center;"></div></td><td style="padding:4px 2px;border-right:1px solid #D0C8BC;border-bottom:1px solid #D0C8BC;vertical-align:middle;"><div style="background:#0E7C86;border-radius:0 3px 3px 0;height:14px;display:flex;align-items:center;"></div></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="sec-desc" style="margin-bottom:2.5rem;">★ April 2026 column is highlighted as the current position. Tasks to the left are completed or ongoing. Tasks to the right are planned. Work packages (bold rows) run as continuous threads throughout the contract. Conference events appear as short milestone bars in WP2. Courses are developed sequentially in WP3 during summer and autumn 2026.</div>
+
+  <!-- CONFERENCES TABLE -->
+  <div class="sec-title">Conference & Event Plan</div>
+  <div class="sec-desc">The table below covers all planned conference and event participations for 2026. The strategy focuses on three complementary communities — environmental science (EGU, NHC), XR research academia (ISMAR, EuroXR, UnitedXR) and XR industry and entrepreneurship (Immersive Tech Week, VR Summit, Slush). Two additional rows indicate events that may be offered or suggested by DIWA for participation. The primary goal across all events is building connections with external companies, research collaborators and stakeholders while promoting DIWA's XR research internationally.</div>
+  <table class="conf-table">
+    <tr>
+      <th>Event</th>
+      <th>Dates</th>
+      <th>Location</th>
+      <th>Type</th>
+      <th>Status</th>
+      <th>Community Focus</th>
+    </tr>
+    <tr>
+      <td><span class="conf-name">EGU General Assembly 2026</span><span class="conf-loc">European Geosciences Union</span></td>
+      <td><span style="font-family:DM Mono,monospace;font-size:10px;">May 2026</span></td>
+      <td>Vienna &amp; Online</td>
+      <td>Poster + VR Demo</td>
+      <td><span class="cbadge cb-done">&#10003; Ready</span></td>
+      <td>Environmental science</td>
+    </tr>
+    <tr>
+      <td><span class="conf-name">NHC — Nordic Hydrological Conference</span><span class="conf-loc">Nordic water research</span></td>
+      <td><span style="font-family:DM Mono,monospace;font-size:10px;">Aug 2026</span></td>
+      <td>Mariehamn, Finland</td>
+      <td>Presentation</td>
+      <td><span class="cbadge cb-submitted">Abstract Apr 30</span></td>
+      <td>Nordic hydrology</td>
+    </tr>
+    <tr>
+      <td><span class="conf-name">Immersive Tech Week 2026</span><span class="conf-loc">XR industry event</span></td>
+      <td><span style="font-family:DM Mono,monospace;font-size:10px;">Jun 23–25, 2026</span></td>
+      <td>Rotterdam, Netherlands</td>
+      <td>Speaker application</td>
+      <td><span class="cbadge cb-apply">Apply to speak</span></td>
+      <td>XR industry + companies</td>
+    </tr>
+    <tr>
+      <td><span class="conf-name">ISMAR 2026</span><span class="conf-loc">Intl Symposium Mixed &amp; Augmented Reality</span></td>
+      <td><span style="font-family:DM Mono,monospace;font-size:10px;">Oct 5–9, 2026</span></td>
+      <td>Bari, Italy</td>
+      <td>Poster</td>
+      <td><span class="cbadge cb-deadline">Deadline June 1</span></td>
+      <td>Academic XR research</td>
+    </tr>
+    <tr>
+      <td><span class="conf-name">VR Summit 2026</span><span class="conf-loc">Professional VR community</span></td>
+      <td><span style="font-family:DM Mono,monospace;font-size:10px;">Oct 12–13, 2026</span></td>
+      <td>Bochum, Germany</td>
+      <td>Speaker application</td>
+      <td><span class="cbadge cb-apply">Apply to speak</span></td>
+      <td>VR industry + practitioners</td>
+    </tr>
+    <tr>
+      <td><span class="conf-name">EuroXR Conference 2026</span><span class="conf-loc">European XR research community</span></td>
+      <td><span style="font-family:DM Mono,monospace;font-size:10px;">Nov 3–6, 2026</span></td>
+      <td>Valencia, Spain</td>
+      <td>Paper</td>
+      <td><span class="cbadge cb-deadline">Paper deadline Apr 25</span></td>
+      <td>European XR academia</td>
+    </tr>
+    <tr>
+      <td><span class="conf-name">Slush 2026</span><span class="conf-loc">Global startup and innovation event</span></td>
+      <td><span style="font-family:DM Mono,monospace;font-size:10px;">Nov 18–19, 2026</span></td>
+      <td>Helsinki, Finland</td>
+      <td>Founder meetings</td>
+      <td><span class="cbadge cb-planned">Planned</span></td>
+      <td>Startups + industry partners</td>
+    </tr>
+    <tr>
+      <td><span class="conf-name">UnitedXR Europe 2026</span><span class="conf-loc">European XR industry and policy</span></td>
+      <td><span style="font-family:DM Mono,monospace;font-size:10px;">Dec 7–9, 2026</span></td>
+      <td>Brussels, Belgium</td>
+      <td>Talk application</td>
+      <td><span class="cbadge cb-deadline">Apply by Sep 1</span></td>
+      <td>XR policy + ecosystem</td>
+    </tr>
+    <tr class="diwa-row">
+      <td><span class="conf-name">DIWA Flagship Annual Event</span><span class="conf-loc">Internal + external DIWA showcase — may be offered by DIWA</span></td>
+      <td><span style="font-family:DM Mono,monospace;font-size:10px;">TBD 2026</span></td>
+      <td>Finland</td>
+      <td>XR Demo + Presentation</td>
+      <td><span class="cbadge cb-diwa">DIWA offered</span></td>
+      <td>DIWA stakeholders + funders</td>
+    </tr>
+    <tr class="diwa-row">
+      <td><span class="conf-name">Other DIWA-Suggested Events</span><span class="conf-loc">Additional events may be proposed by DIWA programme management</span></td>
+      <td><span style="font-family:DM Mono,monospace;font-size:10px;">TBD</span></td>
+      <td>TBD</td>
+      <td>TBD</td>
+      <td><span class="cbadge cb-diwa">DIWA offered</span></td>
+      <td>DIWA research community</td>
+    </tr>
+  </table>
+
+  <div class="sec-desc" style="margin-bottom:2.5rem;">Shaded rows indicate events that may be offered or proposed by DIWA rather than self-initiated. The overall conference strategy is designed to build maximum external visibility for DIWA while creating opportunities for collaboration with companies, research groups and stakeholders across the environmental science, XR research and entrepreneurship communities.</div>
+
+  <!-- COURSES -->
+  <div class="sec-title">Educational Content — Video Course Plan</div>
+  <div class="sec-desc">Three short video courses are planned for production starting summer 2026. The courses are designed as pre-recorded content — each video is approximately 15 minutes long — making them suitable for self-paced online learning. They will be offered as University of Oulu PhD course credits for doctoral students and research staff, and made available as open educational resources for the wider XR and research community. The production approach keeps filming and editing manageable alongside the main research activities.</div>
+  <div class="courses-grid">
+
+    <div class="course-card c1">
+      <div class="course-top">
+        <span class="course-icon">🎨</span>
+        <div class="course-num">Course 01 — 3 × 15 min videos</div>
+        <div class="course-title">Immersive UI/UX Design for Digital Twins</div>
+        <div class="course-format">Pre-recorded &nbsp;·&nbsp; PhD course eligible &nbsp;·&nbsp; Open access</div>
+      </div>
+      <div class="course-body">
+        <div class="course-goal">Goal: Teach the principles of designing user interfaces and experiences for XR digital twin environments — covering spatial interaction design, 3D UI patterns and the unique challenges of immersive environments.</div>
+        <div class="course-topics">
+          <span>→</span>XR interaction design principles and patterns<br>
+          <span>→</span>Persona development and user needs in XR<br>
+          <span>→</span>Journey mapping for immersive environments<br>
+          <span>→</span>3D UI patterns for digital twin interfaces<br>
+          <span>→</span>Accessibility and presence in VR and MR<br>
+          <span>→</span>Case study: DIWA Oulankajoki Digital Twin
+        </div>
+      </div>
+    </div>
+
+    <div class="course-card c2">
+      <div class="course-top">
+        <span class="course-icon">🥽</span>
+        <div class="course-num">Course 02 — 1 × 15 min video</div>
+        <div class="course-title">XR Core Values for DIWA</div>
+        <div class="course-format">Pre-recorded &nbsp;·&nbsp; PhD course eligible &nbsp;·&nbsp; DIWA internal + open</div>
+      </div>
+      <div class="course-body">
+        <div class="course-goal">Goal: Introduce foundational principles of extended reality in the DIWA digital twin context — helping DIWA researchers understand spatial computing and its direct relevance to environmental science monitoring and communication.</div>
+        <div class="course-topics">
+          <span>→</span>What is XR and why it matters for DIWA<br>
+          <span>→</span>VR vs AR vs MR — which for which purpose<br>
+          <span>→</span>Spatially Intelligent Digital Twins explained<br>
+          <span>→</span>Cognitive XR and environmental education<br>
+          <span>→</span>The DIWA Virtual Hub vision<br>
+          <span>→</span>From field data to immersive experience
+        </div>
+      </div>
+    </div>
+
+    <div class="course-card c3">
+      <div class="course-top">
+        <span class="course-icon">🚀</span>
+        <div class="course-num">Course 03 — 1 × 15 min video</div>
+        <div class="course-title">Tech Solopreneurship</div>
+        <div class="course-format">Pre-recorded &nbsp;·&nbsp; Open access &nbsp;·&nbsp; Startup community</div>
+      </div>
+      <div class="course-body">
+        <div class="course-goal">Goal: Enable researchers and students to turn XR skills and research expertise into real-world opportunities — bridging academic research and entrepreneurship in the spatial computing space.</div>
+        <div class="course-topics">
+          <span>→</span>From research to product — the mindset shift<br>
+          <span>→</span>Building a personal XR portfolio and brand<br>
+          <span>→</span>Finding clients and partners as a researcher<br>
+          <span>→</span>MetaParametric.com as a live case study<br>
+          <span>→</span>Licensing, IP and academic spin-out options<br>
+          <span>→</span>Slush, XR events and startup ecosystem access
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sec-desc" style="margin-bottom:2.5rem;">All three courses will be filmed in a consistent visual style and hosted on a platform accessible to University of Oulu students and staff as well as external learners. They are timed to be produced during periods of lower conference activity — primarily summer and early autumn 2026 — so they do not compete with the main research and dissemination workload.</div>
+
+  <!-- IMPACT BOX -->
+  <div class="impact-box">
+    <div class="impact-label">Strategic Focus — Impact & Collaboration</div>
+    <div class="impact-title">Key Priorities for External Engagement and Research Impact</div>
+    <div class="impact-grid">
+      <div class="impact-item">
+        <span class="impact-icon">🤝</span>
+        <div class="impact-iname">Industry Partnerships</div>
+        <div class="impact-idesc">Connect with XR companies, environmental tech firms and spatial computing platforms to promote DIWA and find collaboration opportunities</div>
+      </div>
+      <div class="impact-item">
+        <span class="impact-icon">🌍</span>
+        <div class="impact-iname">International Visibility</div>
+        <div class="impact-idesc">Present at 8+ international events across environmental science, XR research and startup communities — building DIWA's global profile</div>
+      </div>
+      <div class="impact-item">
+        <span class="impact-icon">📚</span>
+        <div class="impact-iname">Academic Publications</div>
+        <div class="impact-idesc">EuroXR paper, ISMAR poster and journal article on Spatially Intelligent Digital Twins for environmental field science</div>
+      </div>
+      <div class="impact-item">
+        <span class="impact-icon">🎓</span>
+        <div class="impact-iname">Education & Training</div>
+        <div class="impact-idesc">3 video courses reaching PhD students, researchers and the broader XR community as University of Oulu course offerings</div>
+      </div>
+      <div class="impact-item">
+        <span class="impact-icon">🏛</span>
+        <div class="impact-iname">XR Lab Network</div>
+        <div class="impact-idesc">Building communication and collaboration with XR research laboratories at other European universities through conference networks and bilateral contact</div>
+      </div>
+      <div class="impact-item">
+        <span class="impact-icon">🔬</span>
+        <div class="impact-iname">Research Excellence</div>
+        <div class="impact-idesc">Pioneering spatial computing, Cognitive XR and Multimodal AI applied to environmental supersite monitoring in Northern Finland</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUTURE CAREER -->
+  <div class="career-box">
+    <div class="career-top">
+      <div class="career-label">Future Career Expectations — University of Oulu & DIWA</div>
+      <div class="career-title">Long-term Vision: Senior Researcher — DIWA XR Lab Director</div>
+    </div>
+    <div class="career-body">
+      <div class="career-desc">Beyond the current two-year contract, the aspiration is to establish a permanent and secure senior research position within the DIWA Flagship Program and the IDT Lab at the University of Oulu. The long-term vision is to grow the XR research strand into a formally recognized, independently funded laboratory — the DIWA XR Lab — officially registered within the IDT Lab structure. This trajectory is built on the foundation of the current contract work, with each activity contributing to the track record, visibility and network required to secure long-term positions and funding.</div>
+
+      <div class="career-tl">
+
+        <div class="ctl-item ct1">
+          <div class="ctl-year">2025–2027</div>
+          <div class="ctl-line"><div class="ctl-dot"></div><div class="ctl-vline"></div></div>
+          <div class="ctl-content">
+            <div class="ctl-title">Current Contract — Research Specialist / Postdoctoral Researcher</div>
+            <div class="ctl-desc">Establishing the XR research strand within DIWA. Building the technical foundation (Oulankajoki Digital Twin, all 9 supersites, DIWA Virtual Hub), disseminating at international conferences, developing educational content and building the external network. This period lays the groundwork for all future career development.</div>
+          </div>
+        </div>
+
+        <div class="ctl-item ct2">
+          <div class="ctl-year">2027–2028</div>
+          <div class="ctl-line"><div class="ctl-dot"></div><div class="ctl-vline"></div></div>
+          <div class="ctl-content">
+            <div class="ctl-title">Promotion to Senior Researcher — DIWA XR Research Lead</div>
+            <div class="ctl-desc">Securing a senior researcher position within DIWA or IDT Lab — either through contract renewal and promotion, external grant funding, or a tenure-track position. At this stage the XR research strand is sufficiently established to justify a dedicated senior role. Publications, conference presence, industry connections and the educational courses all support this promotion case.</div>
+          </div>
+        </div>
+
+        <div class="ctl-item ct3">
+          <div class="ctl-year">2028–2029</div>
+          <div class="ctl-line"><div class="ctl-dot"></div><div class="ctl-vline"></div></div>
+          <div class="ctl-content">
+            <div class="ctl-title">Establishing the DIWA XR Lab — Officially within IDT Lab</div>
+            <div class="ctl-desc">Formally establishing the DIWA XR Lab as a recognized research unit within the IDT Lab at the University of Oulu. This includes securing dedicated infrastructure (hardware, space, staff), an official name and registration, and a sustainable funding model combining DIWA programme funding, external grants and industry partnerships. The lab would serve as a hub for XR research in environmental science across Finland and the Nordic region.</div>
+          </div>
+        </div>
+
+        <div class="ctl-item ct4">
+          <div class="ctl-year">2029–2030</div>
+          <div class="ctl-line"><div class="ctl-dot"></div><div class="ctl-vline"></div></div>
+          <div class="ctl-content">
+            <div class="ctl-title">Running DIWA XR Lab — Principal Investigator / Lab Director</div>
+            <div class="ctl-desc">Operating as Principal Investigator and director of the DIWA XR Lab — leading a small team of researchers, PhD students and collaborators. Securing competitive external grants (Academy of Finland, Horizon Europe, Business Finland). Expanding the lab's scope to all 9 DIWA supersites and potentially other Finnish and Nordic environmental monitoring sites. Establishing the lab as the leading center for environmental XR research in the Nordic region.</div>
+          </div>
+        </div>
+
+        <div class="ctl-item ct5">
+          <div class="ctl-year">2030+</div>
+          <div class="ctl-line"><div class="ctl-dot"></div></div>
+          <div class="ctl-content">
+            <div class="ctl-title">Secured Senior Position — Established Research Leader at University of Oulu</div>
+            <div class="ctl-desc">A permanent, tenured or long-term secured position at the University of Oulu — either as Associate Professor in XR/Spatial Computing or as a permanently funded Senior Research Fellow within IDT Lab and DIWA. The DIWA XR Lab is independently funded, internationally recognized, and serves as a model for how spatial computing can transform environmental science research communication and public engagement.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-desc" style="margin-bottom:2.5rem;">The career trajectory described above is aspirational and reflects long-term ambition rather than confirmed plans. Each stage depends on successful delivery of the current contract, publication output, external funding acquisition and the continued growth and relevance of XR research within the DIWA programme and the University of Oulu strategic priorities.</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-left">SIAMAK BAZZAZ &nbsp;·&nbsp; IDT Lab &nbsp;·&nbsp; University of Oulu &nbsp;·&nbsp; DIWA Flagship Program &nbsp;·&nbsp; 2025–2027 &nbsp;·&nbsp; Designed by MetaParametric.com</div>
+  <div class="footer-right">Research Work Plan &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; April 2026</div>
+</div>
+
+</body>
+</html>
