@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oulankajoki Supersite — 3D Point Cloud Viewer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body, #cesiumContainer { width: 100%; height: 100%; overflow: hidden; background: #0A1628; }
+  #toolbar {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(13,39,68,0.85);
+    border: 1px solid rgba(76,169,255,0.3);
+    border-radius: 20px;
+    padding: 6px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 999;
+    backdrop-filter: blur(8px);
+  }
+  #toolbar span {
+    font-family: Poppins, sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 0.5px;
+  }
+  #toolbar .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #4CA9FF;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+  #credits {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(13,39,68,0.75);
+    border-radius: 12px;
+    padding: 4px 14px;
+    font-family: Poppins, sans-serif;
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    z-index: 999;
+    white-space: nowrap;
+  }
+  #loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(76,169,255,0.8);
+    font-family: Poppins, sans-serif;
+    font-size: 14px;
+    z-index: 998;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div id="cesiumContainer"></div>
+<div id="loading">Loading Oulankajoki Point Cloud...</div>
+
+<div id="toolbar">
+  <div class="dot"></div>
+  <span>DIWA · Oulankajoki Supersite · 3D Point Cloud · Navigate with mouse</span>
+</div>
+
+<div id="credits">
+  University of Oulu · Digital Waters Flagship · IDT Lab · Siamak Bazzaz
+</div>
+
+<!-- Load Cesium CSS -->
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+<!-- Load Cesium JS — defer to ensure DOM is ready -->
+<script>
+window.addEventListener('load', function() {
+  var script = document.createElement('script');
+  script.src = 'https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Cesium.js';
+  script.onload = function() {
+    initCesium();
+  };
+  script.onerror = function() {
+    document.getElementById('loading').innerHTML = 'Failed to load Cesium. Please check your internet connection.';
+  };
+  document.head.appendChild(script);
+});
+
+function initCesium() {
+  document.getElementById('loading').style.display = 'none';
+
+  Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5Njc2ZDliMy1kMzFiLTQwMmYtODVmMS0yNzhhMGZlOTZlNDEiLCJpZCI6NDIxMDkzLCJpYXQiOjE3NzY4NjUwNzZ9.ayWlp7xxCdVnAlT9KDDTnWimWUfeCq3CO91b9jJHVTI';
+
+  const viewer = new Cesium.Viewer('cesiumContainer', {
+    timeline: false,
+    animation: false,
+    baseLayerPicker: false,
+    geocoder: false,
+    homeButton: false,
+    sceneModePicker: false,
+    navigationHelpButton: false,
+    fullscreenButton: false,
+    infoBox: false,
+    selectionIndicator: false,
+    shadows: false,
+    terrainShadows: Cesium.ShadowMode.DISABLED,
+    baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+      Cesium.IonImageryProvider.fromAssetId(2)
+    ),
+  });
+
+  // Hide Cesium credits
+  viewer.cesiumWidget.creditContainer.style.display = 'none';
+
+  // Dark background
+  viewer.scene.backgroundColor = Cesium.Color.fromCssColorString('#0A1628');
+  viewer.scene.skyBox.show = false;
+  viewer.scene.skyAtmosphere.show = false;
+
+  // Load point cloud
+  Cesium.Cesium3DTileset.fromIonAssetId(4649290).then(function(tileset) {
+    viewer.scene.primitives.add(tileset);
+
+    // Point size
+    tileset.style = new Cesium.Cesium3DTileStyle({
+      pointSize: 2.5
+    });
+
+    // Fly to point cloud
+    viewer.zoomTo(tileset).then(function() {
+      var boundingSphere = tileset.boundingSphere;
+      viewer.camera.viewBoundingSphere(
+        boundingSphere,
+        new Cesium.HeadingPitchRange(
+          Cesium.Math.toRadians(45),
+          Cesium.Math.toRadians(-35),
+          boundingSphere.radius * 2.5
+        )
+      );
+    });
+
+  }).catch(function(error) {
+    console.error('Error loading point cloud:', error);
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('loading').innerHTML = 'Error loading point cloud: ' + error.message;
+  });
+
+  // Enable navigation
+  viewer.scene.screenSpaceCameraController.enableRotate = true;
+  viewer.scene.screenSpaceCameraController.enableZoom = true;
+  viewer.scene.screenSpaceCameraController.enableTilt = true;
+  viewer.scene.screenSpaceCameraController.enableLook = true;
+}
+</script>
+
+</body>
+</html>
