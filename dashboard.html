@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oulankajoki Supersite — VR Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark: #0D2744;
+    --green: #1770B8;
+    --green-light: #4CA9FF;
+    --green-pale: #EAF3FF;
+    --blue: #1770B8;
+    --blue-pale: #EAF3FF;
+    --gray: #2C2828;
+    --gray-mid: #7A736E;
+    --gray-light: #E8E2DC;
+    --gray-pale: #F5F0EB;
+    --white: #FFFDF9;
+    --border: #E3DDD6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #F5F0EB;
+    color: var(--gray);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #0D2744 0%, #1770B8 100%);
+    padding: 1.2rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: #4CA9FF;
+    opacity: 0.15;
+    pointer-events: none;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .header-logo {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .header-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    letter-spacing: 1px;
+  }
+
+  .header-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    margin-top: 3px;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .header-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.10);
+    border: 0.5px solid rgba(255,255,255,0.20);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 300;
+  }
+
+  .live-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #FF4444;
+    animation: blink 1.5s infinite;
+    flex-shrink: 0;
+  }
+
+  .live-dot.green { background: #4CA9FF; }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  /* ── PANELS ROW ── */
+  .panels-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 16px;
+    flex: 1;
+  }
+
+  /* ── SINGLE PANEL ── */
+  .panel {
+    background: #FFFDF9;
+    border: 1px solid #E3DDD6;
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 12px rgba(23,112,184,0.08);
+  }
+
+  /* Panel top bar */
+  .panel-topbar {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .panel-title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .panel-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .panel-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray);
+    line-height: 1.2;
+  }
+
+  .panel-subtitle {
+    font-size: 10px;
+    color: var(--gray-mid);
+    font-weight: 300;
+  }
+
+  .panel-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Panel content area — the iframe or placeholder */
+  .panel-content {
+    flex: 1;
+    min-height: 320px;
+    position: relative;
+    background: #F5F0EB;
+    padding: 12px;
+  }
+
+  .panel-inner-frame {
+    position: absolute;
+    inset: 12px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: #FFFDF9;
+    box-shadow: inset 0 2px 8px rgba(23,112,184,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .panel-inner-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    border-radius: 12px;
+  }
+
+  .panel-content iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Placeholder when iframe not yet set */
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 2rem;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .placeholder-icon { font-size: 3rem; opacity: 0.35; }
+
+  .placeholder-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray);
+  }
+
+  .placeholder-desc {
+    font-size: 11px;
+    color: var(--gray-mid);
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 300px;
+  }
+
+  .placeholder-code {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: monospace;
+    font-size: 10px;
+    color: var(--gray);
+    text-align: left;
+    width: 100%;
+    max-width: 340px;
+    line-height: 1.8;
+  }
+
+  .placeholder-note {
+    font-size: 10px;
+    color: var(--gray-mid);
+    font-style: italic;
+  }
+
+  /* ── USER GUIDE STRIP ── */
+  .user-guide {
+    border-top: 1px solid var(--border);
+    padding: 14px 18px;
+    flex-shrink: 0;
+  }
+
+  .user-guide-title {
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .user-guide-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .guide-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--gray-mid);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  .guide-key {
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* WebGL panel colors */
+  .panel-webgl .panel-topbar { background: #EAF3FF; }
+  .panel-webgl .panel-icon { background: rgba(23,112,184,0.10); }
+  .panel-webgl .panel-status { background: #EAF3FF; border-color: #1770B8; color: #0D2744; }
+  .panel-webgl .user-guide { background: #F0F6FF; }
+  .panel-webgl .user-guide-title { color: #0D2744; }
+  .panel-webgl .guide-key { background: #D6EAFF; color: #0D2744; }
+  .panel-webgl .placeholder { background: linear-gradient(160deg, #EAF3FF 0%, #F5F0EB 100%); }
+
+  /* Facebook panel colors */
+  .panel-facebook .panel-topbar { background: #F5EFE8; }
+  .panel-facebook .panel-icon { background: rgba(76,169,255,0.10); }
+  .panel-facebook .panel-status { background: #FFEAEA; border-color: #FF4444; color: #C0392B; }
+  .panel-facebook .user-guide { background: #F5EDE4; }
+  .panel-facebook .user-guide-title { color: #2C2828; }
+  .panel-facebook .guide-key { background: #EDE0D4; color: #2C2828; }
+  .panel-facebook .placeholder { background: linear-gradient(160deg, #F5EFE8 0%, #F5F0EB 100%); }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: #FFFDF9;
+    border-top: 1px solid #E3DDD6;
+    padding: 16px 2.5rem;
+    flex-shrink: 0;
+  }
+
+  .footer-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .footer-brand {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray);
+    margin-bottom: 3px;
+  }
+
+  .footer-copy {
+    font-size: 10px;
+    color: var(--gray-mid);
+    margin-bottom: 3px;
+  }
+
+  .footer-legal {
+    font-size: 9px;
+    color: #aaa;
+    line-height: 1.6;
+    max-width: 600px;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 16px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding-top: 2px;
+  }
+
+  .footer-link {
+    font-size: 10px;
+    color: #1770B8;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .footer-link:hover { text-decoration: underline; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .panels-row { grid-template-columns: 1fr; }
+    .header { padding: 1rem 1.2rem; }
+    .footer { padding: 14px 1.2rem; }
+    .user-guide-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── POPUP OVERLAY ── */
+  .popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(13,39,68,0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+    backdrop-filter: blur(6px);
+  }
+
+  .popup-box {
+    background: #FFFDF9;
+    border-radius: 16px;
+    max-width: 580px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+    animation: popIn 0.4s ease both;
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.92) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .popup-header {
+    background: linear-gradient(135deg, #0D2744 0%, #1770B8 100%);
+    padding: 1.4rem 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .popup-header::before {
+    content: "";
+    position: absolute; top: -40px; right: -40px;
+    width: 130px; height: 130px; border-radius: 50%;
+    background: #4CA9FF; opacity: 0.15;
+  }
+
+  .popup-header-logo {
+    height: 32px; width: auto;
+    display: block;
+    mix-blend-mode: screen;
+    flex-shrink: 0;
+  }
+
+  .popup-header-text { }
+
+  .popup-tag {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #4CA9FF;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .popup-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+  }
+
+  .popup-subtitle {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+    margin-top: 3px;
+  }
+
+  .popup-body {
+    padding: 1.6rem 1.8rem;
+  }
+
+  .popup-intro {
+    font-size: 12px;
+    color: #3A3535;
+    line-height: 1.75;
+    font-weight: 300;
+    margin-bottom: 1.4rem;
+    border-left: 3px solid #1770B8;
+    padding-left: 12px;
+    background: #EAF3FF;
+    border-radius: 0 6px 6px 0;
+    padding: 10px 12px 10px 14px;
+  }
+
+  .popup-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 1.4rem;
+  }
+
+  .popup-panel {
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    border: 1px solid;
+  }
+
+  .popup-panel-icon {
+    font-size: 1.4rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .popup-panel-title {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .popup-panel-desc {
+    font-size: 10.5px;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .popup-panel-left {
+    background: #EAF3FF;
+    border-color: rgba(23,112,184,0.25);
+  }
+  .popup-panel-left .popup-panel-title { color: #0D2744; }
+  .popup-panel-left .popup-panel-desc { color: #3A5A8A; }
+
+  .popup-panel-right {
+    background: #FFF0D6;
+    border-color: rgba(212,130,10,0.25);
+  }
+  .popup-panel-right .popup-panel-title { color: #7A4A05; }
+  .popup-panel-right .popup-panel-desc { color: #7A5A30; }
+
+  .popup-event {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #F5F0EB;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 1.4rem;
+    border: 0.5px solid #E3DDD6;
+  }
+
+  .popup-event-icon { font-size: 1.2rem; flex-shrink: 0; }
+
+  .popup-event-text { font-size: 11px; color: #3A3535; line-height: 1.5; font-weight: 300; }
+  .popup-event-text strong { color: #0D2744; font-weight: 600; }
+
+  .popup-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #0D2744 0%, #1770B8 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    font-family: Poppins, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: opacity 0.2s ease;
+  }
+
+  .popup-btn:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- WELCOME POPUP -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="popup-overlay" id="welcomePopup">
+  <div class="popup-box">
+
+    <div class="popup-header">
+      <img src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDIwMDIgNjk3IiB3aWR0aD0iMjAwMiIgaGVpZ2h0PSI2OTciPjxzdHlsZT4uYXtmaWxsOiNmZmZ9PC9zdHlsZT48cGF0aCBjbGFzcz0iYSIgZD0ibTEwMTMuMiAxODQuNWMwIDIxLjQtMy4zIDQwLTEwIDU1LjgtNi43IDE1LjgtMTYuMSAyOS0yOC4zIDM5LjYtMTIuMiAxMC42LTI3IDE4LjQtNDQuMiAyMy41LTE3LjIgNS4xLTM2LjMgNy43LTU3LjIgNy43cS0xNSAwLTMzLjktMS4yYy0xMi42LTAuOC0yNC42LTIuNi0zNi01LjJ2LTI0MGMxMS40LTIuNiAyMy41LTQuMyAzNi4zLTUgMTIuOC0wLjcgMjQuMi0xLjEgMzQuMi0xLjEgMjAuNyAwIDM5LjYgMi40IDU2LjcgNy4zIDE3LjEgNC45IDMxLjggMTIuNSA0NCAyMi44IDEyLjIgMTAuMyAyMS43IDIzLjQgMjguMyAzOS4yIDYuNyAxNS45IDEwLjEgMzQuNyAxMC4xIDU2LjZ6bS0xNjQuNyA4Ni41YzIuNiAwLjIgNi4xIDAuNCAxMC4zIDAuNSA0LjMgMC4xIDEwLjEgMC4yIDE3LjUgMC4yIDMwLjIgMCA1Mi43LTcuNyA2Ny41LTIzIDE0LjgtMTUuMyAyMi4zLTM2LjggMjIuMy02NC4zIDAtMjgtNy4yLTQ5LjUtMjEuNy02NC41LTE0LjUtMTUtMzYuOS0yMi41LTY3LjMtMjIuNS0xMy4zIDAtMjIuOCAwLjQtMjguNSAxLjF6Ii8+PHBhdGggY2xhc3M9ImEiIGQ9Im0xMTEzLjYgNjcuMnEwIDEyLjItNy44IDE5LjJjLTUuMiA0LjgtMTEuNCA3LjEtMTguNSA3LjEtNy40IDAtMTMuNy0yLjQtMTguOS03LjFxLTcuOC03LjItNy44LTE5LjJjMC04LjMgMi42LTE0LjggNy44LTE5LjYgNS4yLTQuNyAxMS41LTcuMSAxOC45LTcuMSA3LjEgMCAxMy4zIDIuNCAxOC41IDcuMSA1LjIgNC44IDcuOCAxMS4zIDcuOCAxOS42em0tNC42IDI0MC45aC00My4xdi0xODYuM2g0My4xeiIvPjxwYXRoIGNsYXNzPSJhIiBkPSJtMTMyMy4xIDI4OS4yYzAgMjkuNy03LjUgNTEuNC0yMi42IDY1LjJxLTIyLjYgMjAuNy02OS4zIDIwLjdjLTExLjQgMC0yMi41LTEtMzMuMy0yLjhxLTE2LjItMi44LTI5LjQtNy41bDcuOC0zNi43YzcuNCAzLjEgMTUuNyA1LjYgMjUuMSA3LjUgOS40IDEuOSAxOS41IDIuOSAzMC41IDIuOSAxNy4zIDAgMjkuNy0zLjYgMzcuMS0xMC43IDcuNC03LjEgMTEtMTcuNyAxMS0zMS43di03LjFjLTQuMyAyLjEtOS45IDQuMy0xNi45IDYuNC03IDIuMS0xNSAzLjItMjQuMSAzLjItMTEuOSAwLTIyLjctMS45LTMyLjYtNS43LTkuOS0zLjgtMTguMy05LjQtMjUuMy0xNi43LTctNy40LTEyLjUtMTYuNi0xNi40LTI3LjYtMy45LTExLTUuOS0yMy44LTUuOS0zOC4zIDAtMTMuNSAyLjEtMjYgNi4yLTM3LjQgNC4yLTExLjQgMTAuMi0yMS4xIDE4LjItMjkuMiA4LTguMSAxNy42LTE0LjQgMjktMTguOSAxMS40LTQuNSAyNC4zLTYuOCAzOC44LTYuOCAxNCAwIDI3LjMgMS4xIDM5LjkgMy4yIDEyLjYgMi4xIDIzLjMgNC40IDMyLjEgNi44djE2MS4yem0tMTIwLTc5LjFjMCAxOC4zIDQgMzEuNyAxMS45IDQwLjEgOCA4LjQgMTguMiAxMi42IDMwLjggMTIuNiA2LjkgMCAxMy40LTAuOSAxOS40LTIuOSA2LjEtMS45IDExLTQuMiAxNC44LTYuOHYtOTYuNmMtMy4xLTAuNy02LjktMS40LTExLjQtMnEtNi44LTAuOS0xNy4xLTAuOWMtMTUuNyAwLTI3LjcgNS4yLTM2IDE1LjUtOC4zIDEwLjYtMTIuNCAyNC4yLTEyLjQgNDF6Ii8+PHBhdGggY2xhc3M9ImEiIGQ9Im0xNDMxLjUgNjcuMnEwIDEyLjItNy44IDE5LjJjLTUuMiA0LjgtMTEuNCA3LjEtMTguNSA3LjEtNy40IDAtMTMuNy0yLjQtMTguOS03LjFxLTcuOC03LjItNy44LTE5LjJjMC04LjMgMi42LTE0LjggNy44LTE5LjYgNS4yLTQuNyAxMS41LTcuMSAxOC45LTcuMSA3LjEgMCAxMy4zIDIuNCAxOC41IDcuMSA1LjEgNC44IDcuOCAxMS4zIDcuOCAxOS42em0tNC43IDI0MC45aC00My4xdi0xODYuM2g0My4xeiIvPjxwYXRoIGNsYXNzPSJhIiBkPSJtMTQ4NC45IDcyLjZsNDMuMS03LjF2NTYuM2g2Ni4zdjM2aC02Ni4zdjc1LjljMCAxNSAyLjQgMjUuNyA3LjEgMzIuMSA0LjcgNi40IDEyLjggOS42IDI0LjIgOS42IDcuOCAwIDE0LjgtMC44IDIwLjgtMi41IDYuMS0xLjcgMTAuOS0zLjIgMTQuNC00LjZsNy4xIDM0LjJjLTUgMi4xLTExLjUgNC4zLTE5LjYgNi42LTguMSAyLjMtMTcuNiAzLjQtMjguNSAzLjQtMTMuMyAwLTI0LjQtMS44LTMzLjMtNS4zLTguOS0zLjYtMTYtOC43LTIxLjItMTUuNS01LjItNi44LTguOS0xNS0xMS0yNC42LTIuMS05LjYtMy4yLTIwLjYtMy4yLTMzeiIvPjxwYXRoIGNsYXNzPSJhIiBkPSJtMTcwMy4zIDExNy4xYzE0LjMgMCAyNi4yIDEuOCAzNiA1LjMgOS43IDMuNiAxNy41IDguNiAyMy4zIDE1IDUuOCA2LjQgMTAgMTQuMiAxMi41IDIzLjMgMi41IDkuMSAzLjcgMTkuMiAzLjcgMzAuMXYxMTIuOWMtNi43IDEuNC0xNi43IDMuMi0zMC4xIDUuMi0xMy40IDItMjguNiAzLTQ1LjQgMy0xMS4yIDAtMjEuNC0xLjEtMzAuNi0zLjItOS4zLTIuMS0xNy4yLTUuNi0yMy43LTEwLjMtNi41LTQuOC0xMS42LTEwLjktMTUuMy0xOC41LTMuNy03LjYtNS41LTE3LTUuNS0yOC4xIDAtMTAuNyAyLjEtMTkuNyA2LjItMjcuMSA0LjItNy40IDkuOC0xMy40IDE2LjktMTggNy4xLTQuNiAxNS40LTggMjQuOC0xMHExNC4xLTMgMjkuNC0zIDcuMSAwIDE1IDAuOWM1LjIgMC42IDEwLjggMS42IDE2LjcgM3YtNy4xYzAtNS0wLjYtOS43LTEuOC0xNC4zLTEuMi00LjUtMy4zLTguNS02LjItMTEuOS0zLTMuNC02LjktNi4xLTExLjgtOC00LjktMS45LTExLTIuOS0xOC40LTIuOS0xMCAwLTE5LjEgMC43LTI3LjQgMi4xLTguMyAxLjQtMTUuMSAzLjEtMjAuMyA1bC01LjMtMzQuOWM1LjUtMS45IDEzLjQtMy44IDIzLjktNS43IDEwLjQtMS44IDIxLjUtMi44IDMzLjQtMi44em0zLjYgMTYwLjdxMjAgMCAzMC4zLTIuMXYtNDcuN2MtMi40LTAuNy01LjgtMS40LTEwLjMtMi4xLTQuNS0wLjctOS41LTEuMS0xNS0xLjEtNC44IDAtOS42IDAuNC0xNC40IDEuMS00LjggMC43LTkuMyAyLTEzLjIgMy45LTMuOSAxLjktNy4xIDQuNi05LjQgOC0yLjQgMy40LTMuNiA3LjgtMy42IDEzIDAgMTAuMiAzLjIgMTcuMyA5LjYgMjEuMiA2LjQgMy45IDE1LjEgNS44IDI2IDUuOHoiLz48cGF0aCBjbGFzcz0iYSIgZD0ibTE5MDEuOCAzMTEuN2MtMTIuOC0wLjItMjMuNS0xLjctMzEuOS00LjMtOC40LTIuNi0xNS4xLTYuNC0yMC4xLTExLjItNS00LjktOC41LTEwLjktMTAuNS0xOC4yLTItNy4yLTMtMTUuNS0zLTI0Ljh2LTIxNC41bDQzLjEtNy4xdjIxMy40cTAgNy44IDEuMiAxMy4yYzAuOCAzLjYgMi4zIDYuNiA0LjUgOS4xcTMuMSAzLjcgOC43IDUuNyA1LjUgMS45IDE0LjEgM3oiLz48cGF0aCBjbGFzcz0iYSIgZD0ibTk3MS40IDQ1MS40YzMuNiAxMi44IDcuNSAyNi4yIDExLjYgNDAuMSA0LjEgMTMuOSA4LjQgMjcuOCAxMi44IDQxLjcgNC40IDEzLjkgOC45IDI3LjYgMTMuMyA0MSA0LjQgMTMuNCA4LjcgMjYuMSAxMi44IDM3LjkgMy40LTEyLjggNi43LTI2LjggOS45LTQxLjkgMy4yLTE1LjEgNi40LTMwLjggOS42LTQ3IDMuMi0xNi4zIDYuMy0zMi44IDkuNC00OS43IDMuMS0xNi45IDYtMzMuNSA4LjctNDkuOWg0NC41Yy04IDQ0LjctMTYuOSA4Ny42LTI2LjYgMTI4LjgtOS44IDQxLjItMjAuNyA4MC42LTMyLjggMTE4LjFoLTQxLjVjLTE3LjctNDgtMzQuOC0xMDAuNC01MS4zLTE1Ny4xLTguNCAyOC43LTE3IDU2LjEtMjUuNyA4Mi04LjcgMjUuOS0xNy40IDUxLTI2IDc1LjJoLTQxLjFjLTEyLjMtMzcuNS0yMy4zLTc2LjktMzIuOS0xMTguMS05LjctNDEuMi0xOC41LTg0LjEtMjYuNC0xMjguOGg0Ni4ycTQuMSAyNC4zIDguNyA0OS41YzMuMSAxNi45IDYuMyAzMy40IDkuNiA0OS43IDMuMyAxNi4zIDYuNyAzMiAxMC4xIDQ3LjIgMy40IDE1LjIgNi44IDI5LjIgMTAuMyA0MiA0LjMtMTIuMSA4LjctMjQuOSAxMy4yLTM4LjMgNC40LTEzLjQgOC44LTI3LjEgMTMuMi00MSA0LjMtMTMuOSA4LjUtMjcuNyAxMi41LTQxLjVxNi0yMC43IDExLjEtMzkuOXoiLz48cGF0aCBjbGFzcz0iYSIgZD0ibTEyMDYuNiA0NzkuNmMxNC4zIDAgMjYuMiAxLjggMzYgNS4zIDkuNyAzLjYgMTcuNSA4LjYgMjMuMyAxNSA1LjggNi40IDEwIDE0LjIgMTIuNSAyMy4zIDIuNSA5LjIgMy43IDE5LjIgMy43IDMwLjF2MTEzYy02LjcgMS40LTE2LjcgMy4xLTMwLjEgNS4yLTEzLjQgMi0yOC42IDMtNDUuNCAzLTExLjIgMC0yMS40LTEuMS0zMC42LTMuMi05LjMtMi4xLTE3LjItNS42LTIzLjctMTAuMy02LjUtNC43LTExLjYtMTAuOS0xNS4zLTE4LjUtMy43LTcuNi01LjUtMTctNS41LTI4LjIgMC0xMC43IDIuMS0xOS43IDYuMi0yNy4xIDQuMi03LjQgOS44LTEzLjQgMTYuOS0xOCA3LjEtNC42IDE1LjQtOCAyNC44LTEwcTE0LjEtMyAyOS40LTMgNy4xIDAgMTUgMC45YzUuMiAwLjYgMTAuOCAxLjYgMTYuNyAzdi03LjFjMC01LTAuNi05LjctMS44LTE0LjMtMS4yLTQuNS0zLjMtOC41LTYuMi0xMS45LTMtMy40LTYuOS02LjEtMTEuOC04LTQuOS0xLjktMTEtMi44LTE4LjMtMi44LTEwIDAtMTkuMSAwLjctMjcuNCAyLjEtOC4zIDEuNC0xNS4xIDMuMS0yMC4zIDVsLTUuMy0zNC45YzUuNS0xLjkgMTMuNC0zLjggMjMuOS01LjcgMTAuMy0yIDIxLjQtMi45IDMzLjMtMi45em0zLjYgMTYwLjdxMjAgMCAzMC4zLTIuMXYtNDcuN2MtMi40LTAuNy01LjgtMS40LTEwLjMtMi4xLTQuNS0wLjctOS41LTEuMS0xNS0xLjEtNC44IDAtOS42IDAuNC0xNC40IDEuMXEtNy40IDEtMTMuMiAzLjljLTMuOSAxLjktNy4xIDQuNi05LjQgOC0yLjQgMy40LTMuNiA3LjgtMy42IDEzIDAgMTAuMiAzLjIgMTcuMyA5LjYgMjEuMiA2LjQgMy44IDE1IDUuOCAyNiA1Ljh6Ii8+PHBhdGggY2xhc3M9ImEiIGQ9Im0xMzM4LjEgNDM1bDQzLjEtNy4xdjU2LjNoNjYuM3YzNmgtNjYuM3Y3NS45YzAgMTUgMi40IDI1LjYgNy4xIDMyLjEgNC44IDYuNCAxMi44IDkuNiAyNC4yIDkuNiA3LjggMCAxNC44LTAuOCAyMC44LTIuNSA2LjEtMS43IDEwLjktMy4yIDE0LjQtNC42bDcuMSAzNC4yYy01IDIuMS0xMS41IDQuMy0xOS42IDYuNi04LjEgMi4zLTE3LjYgMy40LTI4LjUgMy40LTEzLjMgMC0yNC40LTEuOC0zMy4zLTUuMy04LjktMy42LTE2LTguNy0yMS4yLTE1LjUtNS4yLTYuOC04LjktMTUtMTEtMjQuNi0yLjEtOS42LTMuMi0yMC42LTMuMi0zM3oiLz48cGF0aCBjbGFzcz0iYSIgZD0ibTE0ODEgNTc4LjNjMC0xNi40IDIuNC0zMC44IDcuMy00My4xIDQuOS0xMi4zIDExLjMtMjIuNiAxOS40LTMwLjggOC4xLTguMiAxNy4zLTE0LjQgMjcuOC0xOC41IDEwLjUtNC4yIDIxLjEtNi4yIDMyLjEtNi4yIDI1LjcgMCA0NS43IDggNjAgMjMuOSAxNC40IDE1LjkgMjEuNiAzOS43IDIxLjYgNzEuMyAwIDIuNC0wLjEgNS0wLjIgOC0wLjEgMy0wLjMgNS42LTAuNSA4aC0xMjIuOWMxLjIgMTUgNi41IDI2LjUgMTUuOSAzNC43cTE0LjEgMTIuMyA0MC44IDEyLjNjMTAuNCAwIDIwLTAuOSAyOC43LTIuOCA4LjctMS45IDE1LjUtMy45IDIwLjUtNi4xbDUuNyAzNS4zYy0yLjQgMS4yLTUuNiAyLjQtOS44IDMuNy00LjIgMS4zLTguOSAyLjUtMTQuMyAzLjYtNS4zIDEuMS0xMS4xIDItMTcuMyAyLjctNi4yIDAuNy0xMi41IDEuMS0xOC45IDEuMS0xNi40IDAtMzAuNi0yLjQtNDIuOC03LjMtMTIuMS00LjktMjIuMS0xMS42LTI5LjktMjAuMy03LjgtOC43LTEzLjctMTguOS0xNy41LTMwLjYtMy44LTEyLTUuNy0yNC45LTUuNy0zOC45em0xMjUtMTkuM2MwLTUuOS0wLjgtMTEuNi0yLjUtMTYuOS0xLjctNS4zLTQuMS0xMC03LjMtMTMuOS0zLjItMy45LTcuMS03LTExLjgtOS4zLTQuNi0yLjMtMTAuMi0zLjQtMTYuNi0zLjQtNi43IDAtMTIuNSAxLjItMTcuNSAzLjctNSAyLjUtOS4yIDUuOC0xMi42IDkuOC0zLjQgNC02LjEgOC43LTggMTMuOS0xLjkgNS4yLTMuMiAxMC42LTMuOSAxNmg4MC4yeiIvPjxwYXRoIGNsYXNzPSJhIiBkPSJtMTgwNi4zIDUyM2MtMy42LTEuMi04LjUtMi40LTE0LjgtMy43LTYuMy0xLjMtMTMuNi0yLTIxLjktMi00LjggMC05LjggMC41LTE1LjEgMS40LTUuMyAxLTkuMSAxLjgtMTEuMiAyLjV2MTQ5LjNoLTQzLjF2LTE3Ny40cTEyLjUtNC42IDMxLjItOC43YzEyLjUtMi43IDI2LjMtNC4xIDQxLjUtNC4xIDIuOSAwIDYuMiAwLjIgMTAgMC41IDMuOCAwLjQgNy42IDAuOCAxMS40IDEuNHE1LjcgMC45IDExLjEgMi4xYzMuNiAwLjggNi40IDEuNiA4LjUgMi4zeiIvPjxwYXRoIGNsYXNzPSJhIiBkPSJtMTg5NS43IDYzOS42YzExLjQgMCAxOS43LTEuNCAyNC45LTQuMXE3LjgtNCA3LjgtMTQuMSAwLTkuMy04LjQtMTUuMy04LjQtNi0yNy42LTEzLjJjLTcuOC0yLjktMTUtNS45LTIxLjYtOS4xLTYuNS0zLjItMTIuMi02LjktMTYuOS0xMS4yLTQuNy00LjMtOC41LTkuNC0xMS4yLTE1LjUtMi43LTYuMS00LjEtMTMuNS00LjEtMjIuMyAwLTE3LjEgNi4zLTMwLjYgMTguOS00MC40IDEyLjYtOS45IDI5LjctMTQuOCA1MS4zLTE0LjggMTAuOSAwIDIxLjQgMSAzMS40IDMgMTAgMiAxNy41IDQgMjIuNCA1LjlsLTcuOCAzNC45Yy00LjgtMi4xLTEwLjgtNC4xLTE4LjItNS45LTcuNC0xLjgtMTUuOS0yLjctMjUuNy0yLjctOC44IDAtMTUuOSAxLjUtMjEuNCA0LjUtNS41IDMtOC4yIDcuNS04LjIgMTMuNyAwIDMuMSAwLjUgNS44IDEuNiA4LjIgMS4xIDIuNCAyLjkgNC42IDUuNSA2LjYgMi42IDIgNi4xIDQgMTAuMyA2LjEgNC4zIDIgOS41IDQuMSAxNS43IDYuMiAxMC4yIDMuOCAxOC45IDcuNSAyNiAxMS4yIDcuMSAzLjcgMTMgNy44IDE3LjYgMTIuNXE2LjkgNi45IDEwLjIgMTUuOWMyLjEgNS45IDMuMiAxMy4xIDMuMiAyMS40IDAgMTcuOC02LjYgMzEuMy0xOS44IDQwLjQtMTMuMiA5LjEtMzIgMTMuNy01Ni41IDEzLjctMTYuNCAwLTI5LjYtMS40LTM5LjYtNC4xcS0xNS00LTIxLTYuNmw3LjUtMzZjNi40IDIuNiAxNC4xIDUuMSAyMyA3LjUgOS4xIDIuNCAxOS4zIDMuNiAzMC43IDMuNnoiLz48cGF0aCBjbGFzcz0iYSIgZD0ibTIzMS41IDYyMS4xYy01Ni42LTYxLjktNTcuNi0xMzYtNTcuNS0xNDUgMC0zNi4xIDAtNjQuNyAzMS42LTEyOS45IDIyLjQtNDYuMiA2MS42LTExMi42IDEyNi4zLTIxMy4zLTE5LjktMzAuNy00Mi4xLTY0LjgtNjcuMS0xMDIuNi0yMzAuNCAzNDguNS0yMzAuNCAzNzgtMjMwLjQgNDQ1LjkgMCAwLjkgMCAxLjkgMCAyLjkgMC43IDQ2LjkgMTkuMyA4OS40IDUwLjEgMTIyLjkgOC42IDkuNCAxOC4yIDE4IDI4LjYgMjUuOSAyNC4zIDE4LjQgNTMuMSAzMC40IDgzLjQgMzYuOCAzOC4yIDguMSA3MC42IDguMiA5OC4xIDUuNy0zNy41LTIxLjMtNTkuNi00NS40LTYzLjEtNDkuM3oiLz48cGF0aCBjbGFzcz0iYSIgZD0ibTU3MS43IDI0OGMtMzIuNi01My40LTc2LjQtMTIxLjYtMTM1LjMtMjEwLjYtMzIuOSA0OS44LTYxLjIgOTMuMS04NS4zIDEzMS0xNDUgMjI2LjYtMTQ1IDI1Ni42LTE0NSAzMTQuOCAwIDEtMS43IDY5LjMgNTAuMSAxMjUuOCAwIDAgMzQuMSA0MCA5NC45IDYwLjkgMjU3LjYtMzguMyAxNDQuOS0yNDMuMiAyOTEuNS0yOTQuNS0xMy45LTMwLjQtMzYuMS03MC40LTcwLjktMTI3LjR6Ii8+PC9zdmc+" alt="Digital Waters" style="height:32px;width:auto;display:block;">
+      <div class="popup-header-text">
+        <div class="popup-tag">EGU General Assembly 2026 &nbsp;·&nbsp; Vienna &amp; Online</div>
+        <div class="popup-title">OULANKAJOKI SUPERSITE<br>VIRTUAL TOUR DASHBOARD</div>
+        <div class="popup-subtitle">Digital Waters Flagship &nbsp;·&nbsp; IDT Lab &nbsp;·&nbsp; University of Oulu &nbsp;·&nbsp; Finland</div>
+      </div>
+    </div>
+
+    <div class="popup-body">
+
+      <div class="popup-intro">
+        Welcome to the Oulankajoki Supersite Virtual Tour Dashboard — a dual-panel interactive platform combining a browser-based VR explorer and a live streaming window, developed within the Digital Waters (DIWA) Flagship Program at the University of Oulu, Finland.
+      </div>
+
+      <div class="popup-panels">
+        <div class="popup-panel popup-panel-left">
+          <span class="popup-panel-icon">🌐</span>
+          <div class="popup-panel-title">Left Panel — Interactive WebGL Explorer</div>
+          <div class="popup-panel-desc">Explore the Oulankajoki Supersite directly in your browser. Navigate freely using mouse and keyboard through the georeferenced point cloud and satellite basemap streamed from Cesium ion. Click on markers to open scientific data panels and site photography.</div>
+        </div>
+        <div class="popup-panel popup-panel-right">
+          <span class="popup-panel-icon">📺</span>
+          <div class="popup-panel-title">Right Panel — Live VR Stream</div>
+          <div class="popup-panel-desc">Watch a real-time live stream of the Meta Quest 3 VR session as it happens during the EGU 2026 event. The presenter navigates inside the immersive VR environment and the experience is broadcast live — accessible to anyone worldwide through this dashboard.</div>
+        </div>
+      </div>
+
+      <div class="popup-event">
+        <div class="popup-event-icon">📍</div>
+        <div class="popup-event-text">
+          <strong>EGU General Assembly 2026</strong> &nbsp;·&nbsp; Vienna, Austria &amp; Online &nbsp;·&nbsp; 3–8 May 2026<br>
+          This dashboard is part of the Oulankajoki Supersite presentation at EGU 2026. The live stream is active during the session — explore the WebGL version anytime independently.
+        </div>
+      </div>
+
+      <button class="popup-btn" onclick="document.getElementById('welcomePopup').style.display='none'">
+        Understood — Open the Dashboard
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- HEADER -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="header">
+  <div class="header-left">
+    <div style="display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <img src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDIwMDIgNjk3IiB3aWR0aD0iMjAwMiIgaGVpZ2h0PSI2OTciPjxzdHlsZT4uYXtmaWxsOiNmZmZ9PC9zdHlsZT48cGF0aCBjbGFzcz0iYSIgZD0ibTEwMTMuMiAxODQuNWMwIDIxLjQtMy4zIDQwLTEwIDU1LjgtNi43IDE1LjgtMTYuMSAyOS0yOC4zIDM5LjYtMTIuMiAxMC42LTI3IDE4LjQtNDQuMiAyMy41LTE3LjIgNS4xLTM2LjMgNy43LTU3LjIgNy43cS0xNSAwLTMzLjktMS4yYy0xMi42LTAuOC0yNC42LTIuNi0zNi01LjJ2LTI0MGMxMS40LTIuNiAyMy41LTQuMyAzNi4zLTUgMTIuOC0wLjcgMjQuMi0xLjEgMzQuMi0xLjEgMjAuNyAwIDM5LjYgMi40IDU2LjcgNy4zIDE3LjEgNC45IDMxLjggMTIuNSA0NCAyMi44IDEyLjIgMTAuMyAyMS43IDIzLjQgMjguMyAzOS4yIDYuNyAxNS45IDEwLjEgMzQuNyAxMC4xIDU2LjZ6bS0xNjQuNyA4Ni41YzIuNiAwLjIgNi4xIDAuNCAxMC4zIDAuNSA0LjMgMC4xIDEwLjEgMC4yIDE3LjUgMC4yIDMwLjIgMCA1Mi43LTcuNyA2Ny41LTIzIDE0LjgtMTUuMyAyMi4zLTM2LjggMjIuMy02NC4zIDAtMjgtNy4yLTQ5LjUtMjEuNy02NC41LTE0LjUtMTUtMzYuOS0yMi41LTY3LjMtMjIuNS0xMy4zIDAtMjIuOCAwLjQtMjguNSAxLjF6Ii8+PHBhdGggY2xhc3M9ImEiIGQ9Im0xMTEzLjYgNjcuMnEwIDEyLjItNy44IDE5LjJjLTUuMiA0LjgtMTEuNCA3LjEtMTguNSA3LjEtNy40IDAtMTMuNy0yLjQtMTguOS03LjFxLTcuOC03LjItNy44LTE5LjJjMC04LjMgMi42LTE0LjggNy44LTE5LjYgNS4yLTQuNyAxMS41LTcuMSAxOC45LTcuMSA3LjEgMCAxMy4zIDIuNCAxOC41IDcuMSA1LjIgNC44IDcuOCAxMS4zIDcuOCAxOS42em0tNC42IDI0MC45aC00My4xdi0xODYuM2g0My4xeiIvPjxwYXRoIGNsYXNzPSJhIiBkPSJtMTMyMy4xIDI4OS4yYzAgMjkuNy03LjUgNTEuNC0yMi42IDY1LjJxLTIyLjYgMjAuNy02OS4zIDIwLjdjLTExLjQgMC0yMi41LTEtMzMuMy0yLjhxLTE2LjItMi44LTI5LjQtNy41bDcuOC0zNi43YzcuNCAzLjEgMTUuNyA1LjYgMjUuMSA3LjUgOS40IDEuOSAxOS41IDIuOSAzMC41IDIuOSAxNy4zIDAgMjkuNy0zLjYgMzcuMS0xMC43IDcuNC03LjEgMTEtMTcuNyAxMS0zMS43di03LjFjLTQuMyAyLjEtOS45IDQuMy0xNi45IDYuNC03IDIuMS0xNSAzLjItMjQuMSAzLjItMTEuOSAwLTIyLjctMS45LTMyLjYtNS43LTkuOS0zLjgtMTguMy05LjQtMjUuMy0xNi43LTctNy40LTEyLjUtMTYuNi0xNi40LTI3LjYtMy45LTExLTUuOS0yMy44LTUuOS0zOC4zIDAtMTMuNSAyLjEtMjYgNi4yLTM3LjQgNC4yLTExLjQgMTAuMi0yMS4xIDE4LjItMjkuMiA4LTguMSAxNy42LTE0LjQgMjktMTguOSAxMS40LTQuNSAyNC4zLTYuOCAzOC44LTYuOCAxNCAwIDI3LjMgMS4xIDM5LjkgMy4yIDEyLjYgMi4xIDIzLjMgNC40IDMyLjEgNi44djE2MS4yem0tMTIwLTc5LjFjMCAxOC4zIDQgMzEuNyAxMS45IDQwLjEgOCA4LjQgMTguMiAxMi42IDMwLjggMTIuNiA2LjkgMCAxMy40LTAuOSAxOS40LTIuOSA2LjEtMS45IDExLTQuMiAxNC44LTYuOHYtOTYuNmMtMy4xLTAuNy02LjktMS40LTExLjQtMnEtNi44LTAuOS0xNy4xLTAuOWMtMTUuNyAwLTI3LjcgNS4yLTM2IDE1LjUtOC4zIDEwLjYtMTIuNCAyNC4yLTEyLjQgNDF6Ii8+PHBhdGggY2xhc3M9ImEiIGQ9Im0xNDMxLjUgNjcuMnEwIDEyLjItNy44IDE5LjJjLTUuMiA0LjgtMTEuNCA3LjEtMTguNSA3LjEtNy40IDAtMTMuNy0yLjQtMTguOS03LjFxLTcuOC03LjItNy44LTE5LjJjMC04LjMgMi42LTE0LjggNy44LTE5LjYgNS4yLTQuNyAxMS41LTcuMSAxOC45LTcuMSA3LjEgMCAxMy4zIDIuNCAxOC41IDcuMSA1LjEgNC44IDcuOCAxMS4zIDcuOCAxOS42em0tNC43IDI0MC45aC00My4xdi0xODYuM2g0My4xeiIvPjxwYXRoIGNsYXNzPSJhIiBkPSJtMTQ4NC45IDcyLjZsNDMuMS03LjF2NTYuM2g2Ni4zdjM2aC02Ni4zdjc1LjljMCAxNSAyLjQgMjUuNyA3LjEgMzIuMSA0LjcgNi40IDEyLjggOS42IDI0LjIgOS42IDcuOCAwIDE0LjgtMC44IDIwLjgtMi41IDYuMS0xLjcgMTAuOS0zLjIgMTQuNC00LjZsNy4xIDM0LjJjLTUgMi4xLTExLjUgNC4zLTE5LjYgNi42LTguMSAyLjMtMTcuNiAzLjQtMjguNSAzLjQtMTMuMyAwLTI0LjQtMS44LTMzLjMtNS4zLTguOS0zLjYtMTYtOC43LTIxLjItMTUuNS01LjItNi44LTguOS0xNS0xMS0yNC42LTIuMS05LjYtMy4yLTIwLjYtMy4yLTMzeiIvPjxwYXRoIGNsYXNzPSJhIiBkPSJtMTcwMy4zIDExNy4xYzE0LjMgMCAyNi4yIDEuOCAzNiA1LjMgOS43IDMuNiAxNy41IDguNiAyMy4zIDE1IDUuOCA2LjQgMTAgMTQuMiAxMi41IDIzLjMgMi41IDkuMSAzLjcgMTkuMiAzLjcgMzAuMXYxMTIuOWMtNi43IDEuNC0xNi43IDMuMi0zMC4xIDUuMi0xMy40IDItMjguNiAzLTQ1LjQgMy0xMS4yIDAtMjEuNC0xLjEtMzAuNi0zLjItOS4zLTIuMS0xNy4yLTUuNi0yMy43LTEwLjMtNi41LTQuOC0xMS42LTEwLjktMTUuMy0xOC41LTMuNy03LjYtNS41LTE3LTUuNS0yOC4xIDAtMTAuNyAyLjEtMTkuNyA2LjItMjcuMSA0LjItNy40IDkuOC0xMy40IDE2LjktMTggNy4xLTQuNiAxNS40LTggMjQuOC0xMHExNC4xLTMgMjkuNC0zIDcuMSAwIDE1IDAuOWM1LjIgMC42IDEwLjggMS42IDE2LjcgM3YtNy4xYzAtNS0wLjYtOS43LTEuOC0xNC4zLTEuMi00LjUtMy4zLTguNS02LjItMTEuOS0zLTMuNC02LjktNi4xLTExLjgtOC00LjktMS45LTExLTIuOS0xOC40LTIuOS0xMCAwLTE5LjEgMC43LTI3LjQgMi4xLTguMyAxLjQtMTUuMSAzLjEtMjAuMyA1bC01LjMtMzQuOWM1LjUtMS45IDEzLjQtMy44IDIzLjktNS43IDEwLjQtMS44IDIxLjUtMi44IDMzLjQtMi44em0zLjYgMTYwLjdxMjAgMCAzMC4zLTIuMXYtNDcuN2MtMi40LTAuNy01LjgtMS40LTEwLjMtMi4xLTQuNS0wLjctOS41LTEuMS0xNS0xLjEtNC44IDAtOS42IDAuNC0xNC40IDEuMS00LjggMC43LTkuMyAyLTEzLjIgMy45LTMuOSAxLjktNy4xIDQuNi05LjQgOC0yLjQgMy40LTMuNiA3LjgtMy42IDEzIDAgMTAuMiAzLjIgMTcuMyA5LjYgMjEuMiA2LjQgMy45IDE1LjEgNS44IDI2IDUuOHoiLz48cGF0aCBjbGFzcz0iYSIgZD0ibTE5MDEuOCAzMTEuN2MtMTIuOC0wLjItMjMuNS0xLjctMzEuOS00LjMtOC40LTIuNi0xNS4xLTYuNC0yMC4xLTExLjItNS00LjktOC41LTEwLjktMTAuNS0xOC4yLTItNy4yLTMtMTUuNS0zLTI0Ljh2LTIxNC41bDQzLjEtNy4xdjIxMy40cTAgNy44IDEuMiAxMy4yYzAuOCAzLjYgMi4zIDYuNiA0LjUgOS4xcTMuMSAzLjcgOC43IDUuNyA1LjUgMS45IDE0LjEgM3oiLz48cGF0aCBjbGFzcz0iYSIgZD0ibTk3MS40IDQ1MS40YzMuNiAxMi44IDcuNSAyNi4yIDExLjYgNDAuMSA0LjEgMTMuOSA4LjQgMjcuOCAxMi44IDQxLjcgNC40IDEzLjkgOC45IDI3LjYgMTMuMyA0MSA0LjQgMTMuNCA4LjcgMjYuMSAxMi44IDM3LjkgMy40LTEyLjggNi43LTI2LjggOS45LTQxLjkgMy4yLTE1LjEgNi40LTMwLjggOS42LTQ3IDMuMi0xNi4zIDYuMy0zMi44IDkuNC00OS43IDMuMS0xNi45IDYtMzMuNSA4LjctNDkuOWg0NC41Yy04IDQ0LjctMTYuOSA4Ny42LTI2LjYgMTI4LjgtOS44IDQxLjItMjAuNyA4MC42LTMyLjggMTE4LjFoLTQxLjVjLTE3LjctNDgtMzQuOC0xMDAuNC01MS4zLTE1Ny4xLTguNCAyOC43LTE3IDU2LjEtMjUuNyA4Mi04LjcgMjUuOS0xNy40IDUxLTI2IDc1LjJoLTQxLjFjLTEyLjMtMzcuNS0yMy4zLTc2LjktMzIuOS0xMTguMS05LjctNDEuMi0xOC41LTg0LjEtMjYuNC0xMjguOGg0Ni4ycTQuMSAyNC4zIDguNyA0OS41YzMuMSAxNi45IDYuMyAzMy40IDkuNiA0OS43IDMuMyAxNi4zIDYuNyAzMiAxMC4xIDQ3LjIgMy40IDE1LjIgNi44IDI5LjIgMTAuMyA0MiA0LjMtMTIuMSA4LjctMjQuOSAxMy4yLTM4LjMgNC40LTEzLjQgOC44LTI3LjEgMTMuMi00MSA0LjMtMTMuOSA4LjUtMjcuNyAxMi41LTQxLjVxNi0yMC43IDExLjEtMzkuOXoiLz48cGF0aCBjbGFzcz0iYSIgZD0ibTEyMDYuNiA0NzkuNmMxNC4zIDAgMjYuMiAxLjggMzYgNS4zIDkuNyAzLjYgMTcuNSA4LjYgMjMuMyAxNSA1LjggNi40IDEwIDE0LjIgMTIuNSAyMy4zIDIuNSA5LjIgMy43IDE5LjIgMy43IDMwLjF2MTEzYy02LjcgMS40LTE2LjcgMy4xLTMwLjEgNS4yLTEzLjQgMi0yOC42IDMtNDUuNCAzLTExLjIgMC0yMS40LTEuMS0zMC42LTMuMi05LjMtMi4xLTE3LjItNS42LTIzLjctMTAuMy02LjUtNC43LTExLjYtMTAuOS0xNS4zLTE4LjUtMy43LTcuNi01LjUtMTctNS41LTI4LjIgMC0xMC43IDIuMS0xOS43IDYuMi0yNy4xIDQuMi03LjQgOS44LTEzLjQgMTYuOS0xOCA3LjEtNC42IDE1LjQtOCAyNC44LTEwcTE0LjEtMyAyOS40LTMgNy4xIDAgMTUgMC45YzUuMiAwLjYgMTAuOCAxLjYgMTYuNyAzdi03LjFjMC01LTAuNi05LjctMS44LTE0LjMtMS4yLTQuNS0zLjMtOC41LTYuMi0xMS45LTMtMy40LTYuOS02LjEtMTEuOC04LTQuOS0xLjktMTEtMi44LTE4LjMtMi44LTEwIDAtMTkuMSAwLjctMjcuNCAyLjEtOC4zIDEuNC0xNS4xIDMuMS0yMC4zIDVsLTUuMy0zNC45YzUuNS0xLjkgMTMuNC0zLjggMjMuOS01LjcgMTAuMy0yIDIxLjQtMi45IDMzLjMtMi45em0zLjYgMTYwLjdxMjAgMCAzMC4zLTIuMXYtNDcuN2MtMi40LTAuNy01LjgtMS40LTEwLjMtMi4xLTQuNS0wLjctOS41LTEuMS0xNS0xLjEtNC44IDAtOS42IDAuNC0xNC40IDEuMXEtNy40IDEtMTMuMiAzLjljLTMuOSAxLjktNy4xIDQuNi05LjQgOC0yLjQgMy40LTMuNiA3LjgtMy42IDEzIDAgMTAuMiAzLjIgMTcuMyA5LjYgMjEuMiA2LjQgMy44IDE1IDUuOCAyNiA1Ljh6Ii8+PHBhdGggY2xhc3M9ImEiIGQ9Im0xMzM4LjEgNDM1bDQzLjEtNy4xdjU2LjNoNjYuM3YzNmgtNjYuM3Y3NS45YzAgMTUgMi40IDI1LjYgNy4xIDMyLjEgNC44IDYuNCAxMi44IDkuNiAyNC4yIDkuNiA3LjggMCAxNC44LTAuOCAyMC44LTIuNSA2LjEtMS43IDEwLjktMy4yIDE0LjQtNC42bDcuMSAzNC4yYy01IDIuMS0xMS41IDQuMy0xOS42IDYuNi04LjEgMi4zLTE3LjYgMy40LTI4LjUgMy40LTEzLjMgMC0yNC40LTEuOC0zMy4zLTUuMy04LjktMy42LTE2LTguNy0yMS4yLTE1LjUtNS4yLTYuOC04LjktMTUtMTEtMjQuNi0yLjEtOS42LTMuMi0yMC42LTMuMi0zM3oiLz48cGF0aCBjbGFzcz0iYSIgZD0ibTE0ODEgNTc4LjNjMC0xNi40IDIuNC0zMC44IDcuMy00My4xIDQuOS0xMi4zIDExLjMtMjIuNiAxOS40LTMwLjggOC4xLTguMiAxNy4zLTE0LjQgMjcuOC0xOC41IDEwLjUtNC4yIDIxLjEtNi4yIDMyLjEtNi4yIDI1LjcgMCA0NS43IDggNjAgMjMuOSAxNC40IDE1LjkgMjEuNiAzOS43IDIxLjYgNzEuMyAwIDIuNC0wLjEgNS0wLjIgOC0wLjEgMy0wLjMgNS42LTAuNSA4aC0xMjIuOWMxLjIgMTUgNi41IDI2LjUgMTUuOSAzNC43cTE0LjEgMTIuMyA0MC44IDEyLjNjMTAuNCAwIDIwLTAuOSAyOC43LTIuOCA4LjctMS45IDE1LjUtMy45IDIwLjUtNi4xbDUuNyAzNS4zYy0yLjQgMS4yLTUuNiAyLjQtOS44IDMuNy00LjIgMS4zLTguOSAyLjUtMTQuMyAzLjYtNS4zIDEuMS0xMS4xIDItMTcuMyAyLjctNi4yIDAuNy0xMi41IDEuMS0xOC45IDEuMS0xNi40IDAtMzAuNi0yLjQtNDIuOC03LjMtMTIuMS00LjktMjIuMS0xMS42LTI5LjktMjAuMy03LjgtOC43LTEzLjctMTguOS0xNy41LTMwLjYtMy44LTEyLTUuNy0yNC45LTUuNy0zOC45em0xMjUtMTkuM2MwLTUuOS0wLjgtMTEuNi0yLjUtMTYuOS0xLjctNS4zLTQuMS0xMC03LjMtMTMuOS0zLjItMy45LTcuMS03LTExLjgtOS4zLTQuNi0yLjMtMTAuMi0zLjQtMTYuNi0zLjQtNi43IDAtMTIuNSAxLjItMTcuNSAzLjctNSAyLjUtOS4yIDUuOC0xMi42IDkuOC0zLjQgNC02LjEgOC43LTggMTMuOS0xLjkgNS4yLTMuMiAxMC42LTMuOSAxNmg4MC4yeiIvPjxwYXRoIGNsYXNzPSJhIiBkPSJtMTgwNi4zIDUyM2MtMy42LTEuMi04LjUtMi40LTE0LjgtMy43LTYuMy0xLjMtMTMuNi0yLTIxLjktMi00LjggMC05LjggMC41LTE1LjEgMS40LTUuMyAxLTkuMSAxLjgtMTEuMiAyLjV2MTQ5LjNoLTQzLjF2LTE3Ny40cTEyLjUtNC42IDMxLjItOC43YzEyLjUtMi43IDI2LjMtNC4xIDQxLjUtNC4xIDIuOSAwIDYuMiAwLjIgMTAgMC41IDMuOCAwLjQgNy42IDAuOCAxMS40IDEuNHE1LjcgMC45IDExLjEgMi4xYzMuNiAwLjggNi40IDEuNiA4LjUgMi4zeiIvPjxwYXRoIGNsYXNzPSJhIiBkPSJtMTg5NS43IDYzOS42YzExLjQgMCAxOS43LTEuNCAyNC45LTQuMXE3LjgtNCA3LjgtMTQuMSAwLTkuMy04LjQtMTUuMy04LjQtNi0yNy42LTEzLjJjLTcuOC0yLjktMTUtNS45LTIxLjYtOS4xLTYuNS0zLjItMTIuMi02LjktMTYuOS0xMS4yLTQuNy00LjMtOC41LTkuNC0xMS4yLTE1LjUtMi43LTYuMS00LjEtMTMuNS00LjEtMjIuMyAwLTE3LjEgNi4zLTMwLjYgMTguOS00MC40IDEyLjYtOS45IDI5LjctMTQuOCA1MS4zLTE0LjggMTAuOSAwIDIxLjQgMSAzMS40IDMgMTAgMiAxNy41IDQgMjIuNCA1LjlsLTcuOCAzNC45Yy00LjgtMi4xLTEwLjgtNC4xLTE4LjItNS45LTcuNC0xLjgtMTUuOS0yLjctMjUuNy0yLjctOC44IDAtMTUuOSAxLjUtMjEuNCA0LjUtNS41IDMtOC4yIDcuNS04LjIgMTMuNyAwIDMuMSAwLjUgNS44IDEuNiA4LjIgMS4xIDIuNCAyLjkgNC42IDUuNSA2LjYgMi42IDIgNi4xIDQgMTAuMyA2LjEgNC4zIDIgOS41IDQuMSAxNS43IDYuMiAxMC4yIDMuOCAxOC45IDcuNSAyNiAxMS4yIDcuMSAzLjcgMTMgNy44IDE3LjYgMTIuNXE2LjkgNi45IDEwLjIgMTUuOWMyLjEgNS45IDMuMiAxMy4xIDMuMiAyMS40IDAgMTcuOC02LjYgMzEuMy0xOS44IDQwLjQtMTMuMiA5LjEtMzIgMTMuNy01Ni41IDEzLjctMTYuNCAwLTI5LjYtMS40LTM5LjYtNC4xcS0xNS00LTIxLTYuNmw3LjUtMzZjNi40IDIuNiAxNC4xIDUuMSAyMyA3LjUgOS4xIDIuNCAxOS4zIDMuNiAzMC43IDMuNnoiLz48cGF0aCBjbGFzcz0iYSIgZD0ibTIzMS41IDYyMS4xYy01Ni42LTYxLjktNTcuNi0xMzYtNTcuNS0xNDUgMC0zNi4xIDAtNjQuNyAzMS42LTEyOS45IDIyLjQtNDYuMiA2MS42LTExMi42IDEyNi4zLTIxMy4zLTE5LjktMzAuNy00Mi4xLTY0LjgtNjcuMS0xMDIuNi0yMzAuNCAzNDguNS0yMzAuNCAzNzgtMjMwLjQgNDQ1LjkgMCAwLjkgMCAxLjkgMCAyLjkgMC43IDQ2LjkgMTkuMyA4OS40IDUwLjEgMTIyLjkgOC42IDkuNCAxOC4yIDE4IDI4LjYgMjUuOSAyNC4zIDE4LjQgNTMuMSAzMC40IDgzLjQgMzYuOCAzOC4yIDguMSA3MC42IDguMiA5OC4xIDUuNy0zNy41LTIxLjMtNTkuNi00NS40LTYzLjEtNDkuM3oiLz48cGF0aCBjbGFzcz0iYSIgZD0ibTU3MS43IDI0OGMtMzIuNi01My40LTc2LjQtMTIxLjYtMTM1LjMtMjEwLjYtMzIuOSA0OS44LTYxLjIgOTMuMS04NS4zIDEzMS0xNDUgMjI2LjYtMTQ1IDI1Ni42LTE0NSAzMTQuOCAwIDEtMS43IDY5LjMgNTAuMSAxMjUuOCAwIDAgMzQuMSA0MCA5NC45IDYwLjkgMjU3LjYtMzguMyAxNDQuOS0yNDMuMiAyOTEuNS0yOTQuNS0xMy45LTMwLjQtMzYuMS03MC40LTcwLjktMTI3LjR6Ii8+PC9zdmc+" alt="Digital Waters" style="height:32px;width:auto;display:block;">
+    </div>
+    <div style="width:1px;height:36px;background:rgba(255,255,255,0.15);margin:0 4px;"></div>
+    <div>
+      <div class="header-title">OULANKAJOKI SUPERSITE VR</div>
+      <div class="header-sub">Digital Waters Flagship &nbsp;·&nbsp; University of Oulu &nbsp;·&nbsp; Finland</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="header-badge">
+      <div class="live-dot green"></div>
+      WebGL Interactive
+    </div>
+    <div class="header-badge">
+      <div class="live-dot"></div>
+      Facebook Live
+    </div>
+    <div class="header-badge">
+      🌍 66.290°N &nbsp;29.628°E
+    </div>
+    
+    
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PANELS ROW -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="panels-row">
+
+  <!-- ─── LEFT PANEL — WebGL ─── -->
+  <div class="panel panel-webgl">
+
+    <!-- Top bar -->
+    <div class="panel-topbar">
+      <div class="panel-title-group">
+        <div class="panel-icon">🌐</div>
+        <div>
+          <div class="panel-title">Interactive VR Explorer</div>
+          <div class="panel-subtitle">Navigate Oulankajoki Supersite in your browser</div>
+        </div>
+      </div>
+      <div class="panel-status">
+        <div class="live-dot green"></div>
+        WebGL
+      </div>
+    </div>
+
+    <!-- Content area — replace placeholder with iframe after WebGL build -->
+    <div class="panel-content">
+      <!--
+        ════════════════════════════════════════
+        HOW TO ACTIVATE THIS PANEL:
+        1. Build the WebGL version in Unity
+        2. Upload the Build/ folder and game.html
+           to the same GitHub repository as this file
+        3. Delete the placeholder div below
+        4. Uncomment the iframe line below
+
+        <iframe src="game.html" allowfullscreen></iframe>
+        ════════════════════════════════════════
+      -->
+      <div class="panel-inner-frame">
+        <div class="placeholder">
+          <div class="placeholder-icon">🌐</div>
+          <div class="placeholder-title">Oulankajoki Supersite Navigation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Guide Strip -->
+    <div class="user-guide">
+      <div class="user-guide-title">🕹 How to navigate the WebGL Explorer</div>
+      <div class="user-guide-grid">
+        <div class="guide-item">
+          <span class="guide-key">W A S D</span>
+          Move forward, left, backward, right
+        </div>
+        <div class="guide-item">
+          <span class="guide-key">Mouse drag</span>
+          Look around freely in 360°
+        </div>
+        <div class="guide-item">
+          <span class="guide-key">Click marker</span>
+          Open data panel or site photo
+        </div>
+        <div class="guide-item">
+          <span class="guide-key">Next / Prev</span>
+          Navigate the 7 data table slides
+        </div>
+        <div class="guide-item">
+          <span class="guide-key">Close ✕</span>
+          Dismiss any open panel
+        </div>
+        <div class="guide-item">
+          <span class="guide-key">No install</span>
+          Runs entirely in your browser
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── RIGHT PANEL — Facebook Live ─── -->
+  <div class="panel panel-facebook">
+
+    <!-- Top bar -->
+    <div class="panel-topbar">
+      <div class="panel-title-group">
+        <div class="panel-icon">📱</div>
+        <div>
+          <div class="panel-title">Live VR Stream</div>
+          <div class="panel-subtitle">Watch the Meta Quest 3 session live from anywhere</div>
+        </div>
+      </div>
+      <div class="panel-status">
+        <div class="live-dot"></div>
+        Facebook Live
+      </div>
+    </div>
+
+    <!-- Content area — replace placeholder with iframe when going live -->
+    <div class="panel-content">
+      <!--
+        ════════════════════════════════════════
+        HOW TO ACTIVATE THIS PANEL:
+        1. Put on Quest 3 → Meta button → Sharing → Go Live → Facebook
+        2. On your PC go to facebook.com → find your live video
+        3. Copy the video URL (e.g. facebook.com/yourname/videos/1234567890)
+        4. Delete the placeholder div below
+        5. Uncomment and update the iframe below with your URL
+
+        <iframe
+          src="https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/CMC.BZ/videos/1498650258648444/&show_text=false&autoplay=true"
+          allowfullscreen
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture">
+        </iframe>
+        ════════════════════════════════════════
+      -->
+      <div class="panel-inner-frame" style="padding:0;overflow:hidden;">
+        <iframe
+          src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FCMC.BZ%2Fvideos%2F1498650258648444%2F&show_text=false&autoplay=1&mute=0"
+          style="width:100%;height:100%;border:none;"
+          scrolling="no"
+          frameborder="0"
+          allowfullscreen="true"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- User Guide Strip -->
+    <div class="user-guide">
+      <div class="user-guide-title">📺 How to watch the Live Stream</div>
+      <div class="user-guide-grid">
+        <div class="guide-item">
+          <span class="guide-key">No account</span>
+          Watch directly in your browser
+        </div>
+        <div class="guide-item">
+          <span class="guide-key">Red dot</span>
+          Indicates the stream is currently live
+        </div>
+        <div class="guide-item">
+          <span class="guide-key">Full screen</span>
+          Click expand icon for larger view
+        </div>
+        <div class="guide-item">
+          <span class="guide-key">Mobile</span>
+          Works on phone and tablet too
+        </div>
+        <div class="guide-item">
+          <span class="guide-key">Replay</span>
+          Recorded video stays after session ends
+        </div>
+        <div class="guide-item">
+          <span class="guide-key">Live when</span>
+          Presenter is wearing the Quest 3 headset
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand">Oulankajoki Supersite | Virtual Tour Demo</div>
+      <div class="footer-copy">© 2026 DIWA Flagship Program &nbsp;|&nbsp; IDT Lab, University of Oulu &nbsp;|&nbsp; Siamak Ahmadzadeh Bazzaz. All rights reserved.</div>
+      <div style="font-size:9px;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">This document and the associated application were developed within the framework of the Digital Waters (DIWA) Flagship Program at the University of Oulu, Finland. Reproduction, distribution, or modification of any part of this work without prior written permission from the authors is not permitted.</div>
+    </div>
+    <div style="text-align:right;display:flex;align-items:center;gap:5px;">
+      <span style="font-size:10px;color:#aaa;">Designed by:</span>
+      <a href="https://metaparametric.com" class="footer-link" target="_blank" style="font-size:10px;">MetaParametric.com</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
