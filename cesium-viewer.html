@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oulankajoki Supersite — 3D Point Cloud Viewer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body, #cesiumContainer { width: 100%; height: 100%; overflow: hidden; background: #0A1628; }
+
+  /* ── TOOLBAR ── */
+  #toolbar {
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    background: rgba(13,39,68,0.90); border: 1px solid rgba(76,169,255,0.35);
+    border-radius: 24px; padding: 7px 20px; display: flex; align-items: center;
+    gap: 12px; z-index: 999; backdrop-filter: blur(10px);
+    font-family: Poppins, sans-serif; font-size: 12px; color: rgba(255,255,255,0.85);
+    white-space: nowrap;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #4CA9FF; animation: pulse 2s infinite; flex-shrink:0; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  /* ── SUPERSITE DROPDOWN ── */
+  #supersiteMenu {
+    position: absolute; top: 12px; left: 16px;
+    z-index: 999; font-family: Poppins, sans-serif;
+  }
+  #supersiteBtn {
+    background: rgba(13,39,68,0.92); border: 1px solid rgba(76,169,255,0.4);
+    border-radius: 20px; padding: 7px 16px; color: white; font-size: 12px;
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
+    font-family: Poppins, sans-serif; backdrop-filter: blur(10px);
+    transition: background 0.2s;
+  }
+  #supersiteBtn:hover { background: rgba(23,112,184,0.8); }
+  #supersiteDropdown {
+    display: none; position: absolute; top: 42px; left: 0;
+    background: rgba(10,25,50,0.97); border: 1px solid rgba(76,169,255,0.3);
+    border-radius: 12px; overflow: hidden; min-width: 220px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  #supersiteDropdown.open { display: block; }
+  .site-item {
+    padding: 10px 16px; color: rgba(255,255,255,0.85); font-size: 12px;
+    cursor: pointer; transition: background 0.15s; border-bottom: 1px solid rgba(76,169,255,0.1);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .site-item:last-child { border-bottom: none; }
+  .site-item:hover { background: rgba(23,112,184,0.5); color: white; }
+  .site-item.active { background: rgba(23,112,184,0.3); color: #4CA9FF; }
+  .site-dot { width: 6px; height: 6px; border-radius: 50%; background: #4CA9FF; flex-shrink:0; }
+
+  /* ── INFO PANEL POPUP ── */
+  #infoPanel {
+    display: none;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    z-index: 1000; max-width: 600px; width: 90%;
+    animation: fadeIn 0.25s ease;
+  }
+  @keyframes fadeIn { from{opacity:0;transform:translate(-50%,-48%);} to{opacity:1;transform:translate(-50%,-50%);} }
+
+  .panel-frame {
+    background: rgba(10,22,45,0.97);
+    border: 2px solid rgba(23,112,184,0.8);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(76,169,255,0.2), 0 0 0 4px rgba(76,169,255,0.08);
+    position: relative;
+  }
+
+  /* glow ring */
+  .panel-frame::before {
+    content: "";
+    position: absolute; inset: -1px;
+    border-radius: 21px;
+    background: linear-gradient(135deg, rgba(76,169,255,0.3), transparent 50%, rgba(23,112,184,0.2));
+    pointer-events: none;
+  }
+
+  .panel-topbar {
+    background: rgba(13,39,68,0.95);
+    padding: 10px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(76,169,255,0.2);
+  }
+  .panel-topbar-left { display: flex; align-items: center; gap: 8px; }
+  .tb-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .tb-red { background: #C0392B; }
+  .tb-amber { background: #D4820A; }
+  .tb-green { background: #1D9E75; }
+  .panel-title {
+    font-family: Poppins, sans-serif; font-size: 12px; font-weight: 600;
+    color: #4CA9FF; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .panel-close {
+    width: 26px; height: 26px; border-radius: 50%; background: rgba(192,57,43,0.8);
+    border: none; color: white; cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s; line-height: 1;
+  }
+  .panel-close:hover { background: #C0392B; }
+
+  .panel-body { padding: 16px; }
+
+  /* Photo popup */
+  .photo-img {
+    width: 100%; border-radius: 10px;
+    display: block; max-height: 340px; object-fit: cover;
+  }
+  .photo-caption {
+    font-family: Poppins, sans-serif; font-size: 11px; color: rgba(255,255,255,0.5);
+    text-align: center; margin-top: 8px;
+  }
+
+  /* Table popup */
+  .info-table {
+    width: 100%; border-collapse: collapse; font-family: Poppins, sans-serif; font-size: 11px;
+  }
+  .info-table th {
+    background: rgba(23,112,184,0.6); color: #4CA9FF; padding: 7px 10px;
+    text-align: left; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .info-table td {
+    padding: 6px 10px; border-bottom: 1px solid rgba(76,169,255,0.1);
+    color: rgba(255,255,255,0.85); vertical-align: top; line-height: 1.5;
+  }
+  .info-table td:first-child { color: #4CA9FF; font-weight: 600; width: 38%; }
+  .info-table tr:nth-child(even) td { background: rgba(23,112,184,0.08); }
+  .info-table tr:last-child td { border-bottom: none; }
+
+  /* ── CREDITS ── */
+  #credits {
+    position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+    background: rgba(13,39,68,0.75); border-radius: 12px; padding: 4px 14px;
+    font-family: Poppins, sans-serif; font-size: 10px; color: rgba(255,255,255,0.4);
+    z-index: 999; white-space: nowrap; pointer-events: none;
+  }
+
+  #loading {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    color: rgba(76,169,255,0.8); font-family: Poppins, sans-serif; font-size: 14px;
+    z-index: 998; text-align: center;
+  }
+</style>
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="cesiumContainer"></div>
+<div id="loading">Loading Oulankajoki Point Cloud...</div>
+
+<!-- TOOLBAR -->
+<div id="toolbar">
+  <div class="dot"></div>
+  <span>DIWA · Oulankajoki Supersite · 3D Point Cloud · Click markers to explore</span>
+</div>
+
+<!-- SUPERSITE DROPDOWN -->
+<div id="supersiteMenu">
+  <button id="supersiteBtn" onclick="toggleDropdown()">🗺 DIWA Supersites ▾</button>
+  <div id="supersiteDropdown">
+    <div class="site-item active" onclick="flyTo(66.290111,29.628583,800,'Oulankajoki River')"><span class="site-dot"></span>✓ Oulankajoki River</div>
+    <div class="site-item" onclick="flyTo(70.196,28.214,800,'Tana River')"><span class="site-dot"></span>Tana River</div>
+    <div class="site-item" onclick="flyTo(68.001,24.116,800,'Pallas Research Station')"><span class="site-dot"></span>Pallas Research Station</div>
+    <div class="site-item" onclick="flyTo(67.368,26.630,800,'Sodankyla Research Station')"><span class="site-dot"></span>Sodankyla Research Station</div>
+    <div class="site-item" onclick="flyTo(66.503,25.714,800,'Kemijoki River')"><span class="site-dot"></span>Kemijoki River</div>
+    <div class="site-item" onclick="flyTo(65.012,25.471,800,'Oulu Region')"><span class="site-dot"></span>Oulu Region</div>
+    <div class="site-item" onclick="flyTo(63.837,23.130,800,'Kokkola Groundwater')"><span class="site-dot"></span>Kokkola Groundwater</div>
+    <div class="site-item" onclick="flyTo(60.402,25.103,800,'Vantaanjoki River')"><span class="site-dot"></span>Vantaanjoki River</div>
+    <div class="site-item" onclick="flyTo(60.050,21.500,800,'Archipelago Sea')"><span class="site-dot"></span>Archipelago Sea</div>
+  </div>
+</div>
+
+<!-- INFO PANEL -->
+<div id="infoPanel">
+  <div class="panel-frame">
+    <div class="panel-topbar">
+      <div class="panel-topbar-left">
+        <span class="tb-dot tb-red"></span>
+        <span class="tb-dot tb-amber"></span>
+        <span class="tb-dot tb-green"></span>
+        <span class="panel-title" id="panelTitle">Info</span>
+      </div>
+      <button class="panel-close" onclick="closePanel()">✕</button>
+    </div>
+    <div class="panel-body" id="panelBody"></div>
+  </div>
+</div>
+
+<div id="credits">University of Oulu · Digital Waters Flagship · IDT Lab · Siamak Bazzaz</div>
+
+<script>
+// ── DATA ──
+var SITES = [
+  { name:'Oulankajoki River', lat:66.290111, lon:29.628583 },
+  { name:'Tana River', lat:70.196, lon:28.214 },
+  { name:'Pallas Research Station', lat:68.001, lon:24.116 },
+  { name:'Sodankyla Research Station', lat:67.368, lon:26.630 },
+  { name:'Kemijoki River', lat:66.503, lon:25.714 },
+  { name:'Oulu Region', lat:65.012, lon:25.471 },
+  { name:'Kokkola Groundwater', lat:63.837, lon:23.130 },
+  { name:'Vantaanjoki River', lat:60.402, lon:25.103 },
+  { name:'Archipelago Sea', lat:60.050, lon:21.500 },
+];
+
+var TABLE1 = [
+  ['Site Name','Oulankajoki Supersite'],
+  ['Location','Northeastern Finland (subarctic/boreal)'],
+  ['Environment','Boreal forest, river system, wetlands, snow-dominated catchment'],
+  ['Research Focus','Integrated hydrology, carbon cycle, climate interactions, ecosystem processes'],
+  ['Observation Domains','Surface water, soil, groundwater, atmosphere, vegetation, remote sensing'],
+  ['Monitoring Approach','Multi-sensor, multi-scale, in-situ + UAV + remote sensing'],
+  ['Key Variables','Water level, discharge, soil moisture, CO₂/CH₄ fluxes, meteorology'],
+  ['Temporal Coverage','Multi-year (2020–ongoing), high-frequency measurements'],
+  ['Data Types','Time-series, imagery, thermal, LiDAR/point clouds, spectral data'],
+  ['Special Capabilities','Eddy covariance flux, UAV mapping, water quality spectroscopy'],
+  ['Digital Twin','High — multi-domain data enables immersive XR-based monitoring'],
+  ['VR/XR Role','Real-world testbed for interactive digital twin visualization'],
+];
+
+var PHOTOS = [
+  { lat:66.28802083333333, lon:29.6307225, alt:204.71, label:'DJI_0032', url:'https://siamakab.github.io/oulankajoki-vr/DJI_0032.JPG' },
+  { lat:66.28815972222222, lon:29.63125638888889, alt:213.11, label:'DJI_0047', url:'https://siamakab.github.io/oulankajoki-vr/DJI_0047.JPG' },
+  { lat:66.29116305555556, lon:29.63179361111111, alt:317.41, label:'DJI_0061', url:'https://siamakab.github.io/oulankajoki-vr/DJI_0061.JPG' },
+  { lat:66.29108138888888, lon:29.625534444444444, alt:149.158, label:'DJI_0070', url:'https://siamakab.github.io/oulankajoki-vr/DJI_0070.JPG' },
+  { lat:66.29104694444445, lon:29.625497777777777, alt:171.358, label:'DJI_0072', url:'https://siamakab.github.io/oulankajoki-vr/DJI_0072.JPG' },
+];
+
+var globalViewer = null;
+
+// ── DROPDOWN ──
+function toggleDropdown() {
+  document.getElementById('supersiteDropdown').classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  if (!document.getElementById('supersiteMenu').contains(e.target))
+    document.getElementById('supersiteDropdown').classList.remove('open');
+});
+
+// ── FLY TO SUPERSITE ──
+function flyTo(lat, lon, height, name) {
+  document.getElementById('supersiteDropdown').classList.remove('open');
+  if (!globalViewer) return;
+  globalViewer.camera.flyTo({
+    destination: Cesium.Cartesian3.fromDegrees(lon, lat, height),
+    orientation: { heading: Cesium.Math.toRadians(0), pitch: Cesium.Math.toRadians(-45), roll: 0 },
+    duration: 3
+  });
+  // Update active state
+  document.querySelectorAll('.site-item').forEach(function(el) {
+    el.classList.remove('active');
+    if (el.textContent.includes(name)) el.classList.add('active');
+  });
+}
+
+// ── PANEL ──
+function showTablePanel() {
+  document.getElementById('panelTitle').textContent = 'Oulankajoki Supersite Overview';
+  var html = '<table class="info-table"><thead><tr><th>Feature</th><th>Description</th></tr></thead><tbody>';
+  TABLE1.forEach(function(row) {
+    html += '<tr><td>' + row[0] + '</td><td>' + row[1] + '</td></tr>';
+  });
+  html += '</tbody></table>';
+  document.getElementById('panelBody').innerHTML = html;
+  document.getElementById('infoPanel').style.display = 'block';
+}
+
+function showPhotoPanel(photo) {
+  document.getElementById('panelTitle').textContent = photo.label + ' · ' + photo.lat.toFixed(4) + '°N ' + photo.lon.toFixed(4) + '°E';
+  document.getElementById('panelBody').innerHTML =
+    '<img class="photo-img" src="' + photo.url + '" alt="' + photo.label + '" onerror="this.src=\'\'"/>' +
+    '<div class="photo-caption">📍 Altitude: ' + photo.alt.toFixed(1) + 'm · DIWA Oulankajoki Supersite</div>';
+  document.getElementById('infoPanel').style.display = 'block';
+}
+
+function closePanel() {
+  document.getElementById('infoPanel').style.display = 'none';
+}
+
+// ── CESIUM INIT ──
+window.addEventListener('load', function() {
+  var script = document.createElement('script');
+  script.src = 'https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Cesium.js';
+  script.onload = initCesium;
+  script.onerror = function() {
+    document.getElementById('loading').innerHTML = 'Failed to load Cesium. Check internet connection.';
+  };
+  document.head.appendChild(script);
+});
+
+async function initCesium() {
+  document.getElementById('loading').style.display = 'none';
+
+  Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5Njc2ZDliMy1kMzFiLTQwMmYtODVmMS0yNzhhMGZlOTZlNDEiLCJpZCI6NDIxMDkzLCJpYXQiOjE3NzY4NjUwNzZ9.ayWlp7xxCdVnAlT9KDDTnWimWUfeCq3CO91b9jJHVTI';
+
+  const terrain = await Cesium.CesiumTerrainProvider.fromIonAssetId(1);
+
+  const viewer = new Cesium.Viewer('cesiumContainer', {
+    timeline: false, animation: false, baseLayerPicker: false,
+    geocoder: false, homeButton: false, sceneModePicker: false,
+    navigationHelpButton: false, fullscreenButton: false,
+    infoBox: false, selectionIndicator: false,
+    terrainProvider: terrain,
+  });
+
+  globalViewer = viewer;
+  viewer.cesiumWidget.creditContainer.style.display = 'none';
+  viewer.scene.skyBox.show = false;
+  viewer.scene.skyAtmosphere.show = true;
+
+  // Bing Maps basemap
+  try {
+    const img = await Cesium.IonImageryProvider.fromAssetId(2);
+    viewer.imageryLayers.addImageryProvider(img);
+  } catch(e) { console.warn('Basemap:', e); }
+
+  // Load point cloud
+  try {
+    const tileset = await Cesium.Cesium3DTileset.fromIonAssetId(4649290);
+    viewer.scene.primitives.add(tileset);
+    tileset.style = new Cesium.Cesium3DTileStyle({ pointSize: 2.5 });
+    await viewer.zoomTo(tileset);
+    const bs = tileset.boundingSphere;
+    viewer.camera.viewBoundingSphere(bs,
+      new Cesium.HeadingPitchRange(Cesium.Math.toRadians(0), Cesium.Math.toRadians(-45), bs.radius * 2.0)
+    );
+  } catch(e) {
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('loading').innerHTML = 'Error: ' + e.message;
+  }
+
+  // ── DATA MARKER — blue sphere ──
+  viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees(29.629, 66.290, 180),
+    ellipsoid: {
+      radii: new Cesium.Cartesian3(12, 12, 12),
+      material: new Cesium.ColorMaterialProperty(Cesium.Color.fromCssColorString('#1770B8').withAlpha(0.92)),
+      outline: true,
+      outlineColor: Cesium.Color.fromCssColorString('#4CA9FF'),
+      outlineWidth: 2,
+    },
+    label: {
+      text: 'ℹ Data',
+      font: '11px Poppins',
+      fillColor: Cesium.Color.WHITE,
+      outlineColor: Cesium.Color.BLACK,
+      outlineWidth: 2,
+      style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+      verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+      pixelOffset: new Cesium.Cartesian2(0, -18),
+    },
+    properties: { type: 'data' }
+  });
+
+  // ── PHOTO MARKERS — white spheres ──
+  PHOTOS.forEach(function(photo) {
+    viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(photo.lon, photo.lat, photo.alt),
+      ellipsoid: {
+        radii: new Cesium.Cartesian3(10, 10, 10),
+        material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.9)),
+        outline: true,
+        outlineColor: Cesium.Color.fromCssColorString('#4CA9FF'),
+        outlineWidth: 2,
+      },
+      label: {
+        text: '📷 ' + photo.label,
+        font: '10px Poppins',
+        fillColor: Cesium.Color.WHITE,
+        outlineColor: Cesium.Color.BLACK,
+        outlineWidth: 2,
+        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+        pixelOffset: new Cesium.Cartesian2(0, -16),
+      },
+      properties: { type: 'photo', photo: photo }
+    });
+  });
+
+  // ── CLICK HANDLER ──
+  var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+  handler.setInputAction(function(click) {
+    var picked = viewer.scene.pick(click.position);
+    if (Cesium.defined(picked) && picked.id) {
+      var props = picked.id.properties;
+      if (props && props.type) {
+        var type = props.type.getValue();
+        if (type === 'data') {
+          showTablePanel();
+        } else if (type === 'photo') {
+          showPhotoPanel(props.photo.getValue());
+        }
+      }
+    }
+  }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+}
+</script>
+</body>
+</html>
