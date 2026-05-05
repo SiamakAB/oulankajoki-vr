@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oulankajoki Supersite — 3D Point Cloud Viewer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body, #cesiumContainer { width: 100%; height: 100%; overflow: hidden; background: #0A1628; }
+  #sceneFrame {
+    position: fixed; inset: 0; pointer-events: none; z-index: 998;
+    border-radius: 16px;
+    box-shadow:
+      inset 0 0 0 3px rgba(255,192,0,0.0);
+  }
+
+  /* ── TOOLBAR ── */
+  #toolbar {
+    position: absolute; top: 24px; left: 50%; transform: translateX(-50%);
+    background: rgba(13,39,68,0.90); border: 1px solid rgba(255,192,0,0.6);
+    border-radius: 24px; padding: 7px 20px; display: flex; align-items: center;
+    gap: 12px; z-index: 999; backdrop-filter: blur(10px);
+    font-family: Poppins, sans-serif; font-size: 12px; color: rgba(255,255,255,0.85);
+    white-space: nowrap;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #4CA9FF; animation: pulse 2s infinite; flex-shrink:0; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  /* ── SUPERSITE DROPDOWN ── */
+  #supersiteMenu { position: absolute; top: 24px; left: 28px; z-index: 999; font-family: Poppins, sans-serif; }
+  #supersiteBtn {
+    background: rgba(13,39,68,0.92); border: 1px solid rgba(255,192,0,0.6);
+    border-radius: 20px; padding: 7px 16px; color: white; font-size: 12px;
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
+    font-family: Poppins, sans-serif; backdrop-filter: blur(10px); transition: background 0.2s;
+  }
+  #supersiteBtn:hover { background: rgba(23,112,184,0.8); }
+  #supersiteDropdown {
+    display: none; position: absolute; top: 42px; left: 0;
+    background: rgba(10,25,50,0.97); border: 1px solid rgba(255,192,0,0.6);
+    border-radius: 12px; overflow: hidden; min-width: 220px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  #supersiteDropdown.open { display: block; }
+  .site-item {
+    padding: 9px 16px; color: rgba(255,255,255,0.85); font-size: 12px;
+    cursor: pointer; transition: background 0.15s; border-bottom: 1px solid rgba(76,169,255,0.1);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .site-item:last-child { border-bottom: none; }
+  .site-item:hover { background: rgba(23,112,184,0.5); color: white; }
+  .site-item.active { background: rgba(255,192,0,0.12); color: #FFC000; font-weight: 600; }
+  .site-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); flex-shrink:0; transition: background 0.2s; }
+  .site-item.active .site-dot { background: #FFC000; }
+
+  /* ── SEARCH BAR ── */
+  #searchBar {
+    position: absolute; top: 24px; right: 28px; z-index: 999;
+    display: flex; gap: 6px; align-items: center;
+  }
+  #searchInput {
+    background: rgba(13,39,68,0.92); border: 1px solid rgba(255,192,0,0.6);
+    border-radius: 20px; padding: 7px 14px; color: white; font-size: 12px;
+    font-family: Poppins, sans-serif; width: 200px; outline: none;
+    backdrop-filter: blur(10px);
+  }
+  #searchInput::placeholder { color: rgba(255,255,255,0.4); }
+  #searchBtn {
+    background: rgba(180,140,0,0.7); border: 1px solid rgba(255,192,0,0.6);
+    border-radius: 20px; padding: 7px 14px; color: white; font-size: 12px;
+    cursor: pointer; font-family: Poppins, sans-serif;
+  }
+  #searchBtn:hover { background: #1770B8; }
+
+  /* ── RIGHT PANEL CONTROLS ── */
+  #rightControls {
+    position: absolute; right: 28px; bottom: 58px; z-index: 999;
+    display: flex; flex-direction: column; gap: 8px; align-items: flex-end;
+  }
+  .ctrl-btn {
+    background: rgba(13,39,68,0.92); border: 1px solid rgba(255,192,0,0.6);
+    border-radius: 12px; padding: 8px 14px; color: white; font-size: 11px;
+    cursor: pointer; font-family: Poppins, sans-serif; backdrop-filter: blur(10px);
+    transition: background 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 6px;
+  }
+  .ctrl-btn:hover { background: rgba(23,112,184,0.7); }
+  .ctrl-btn.active { background: rgba(23,112,184,0.8); border-color: #4CA9FF; }
+
+  /* ── COMPASS ── */
+  #compass {
+    position: absolute; bottom: 72px; left: 28px; z-index: 999;
+    width: 70px; height: 70px;
+  }
+  #compassRing {
+    width: 70px; height: 70px; border-radius: 50%;
+    background: rgba(13,39,68,0.92); border: 1px solid rgba(255,192,0,0.6);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; backdrop-filter: blur(10px);
+  }
+  #compassNeedle {
+    width: 4px; height: 28px; position: absolute;
+    top: 50%; left: 50%; transform-origin: bottom center;
+    transform: translateX(-50%) translateY(-100%) rotate(0deg);
+    background: linear-gradient(to bottom, #C0392B 50%, rgba(255,255,255,0.4) 50%);
+    border-radius: 2px;
+  }
+  #compassN {
+    position: absolute; top: 4px; left: 50%; transform: translateX(-50%);
+    font-family: Poppins, sans-serif; font-size: 10px; font-weight: 700; color: #FFC000;
+  }
+  #compassDeg {
+    position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+    font-family: Poppins, sans-serif; font-size: 10px; color: rgba(255,255,255,0.6);
+    white-space: nowrap;
+  }
+  #compassTilt {
+    position: absolute; bottom: -36px; left: 50%; transform: translateX(-50%);
+    font-family: Poppins, sans-serif; font-size: 10px; color: rgba(255,200,0,0.9);
+    white-space: nowrap;
+  }
+
+  /* ── COORDINATE DISPLAY ── */
+
+
+  /* ── MEASURE DISPLAY ── */
+  /* Bottom row shared style */
+  .bottom-block {
+    position: absolute; bottom: 20px;
+    background: rgba(13,39,68,0.88); border: 1px solid rgba(255,192,0,0.3);
+    border-radius: 16px; padding: 5px 14px; z-index: 999;
+    font-family: Poppins, sans-serif; font-size: 11px; white-space: nowrap;
+    backdrop-filter: blur(8px); display: flex; align-items: center; gap: 8px;
+  }
+  #linksBlock { left: 28px; }
+  #linksBlock a { color: rgba(255,192,0,0.85); text-decoration: none; transition: color 0.2s; }
+  #linksBlock a:hover { color: #FFC000; }
+  .bb-sep { color: rgba(255,255,255,0.2); }
+  #coordBlock { left: 50%; transform: translateX(-50%); }
+  #coordDisplay2 { color: rgba(255,255,255,0.6); font-family: DM Mono, monospace; }
+  #creditsBlock { right: 28px; }
+  .bb-credit { color: rgba(255,255,255,0.25); font-size: 10px; }
+
+  #measureDisplay {
+    display: none;
+    position: absolute; top: 72px; left: 50%; transform: translateX(-50%);
+    background: rgba(13,39,68,0.95); border: 1px solid rgba(255,192,0,0.6);
+    border-radius: 12px; padding: 8px 16px; z-index: 999;
+    font-family: Poppins, sans-serif; font-size: 12px; color: #4CA9FF;
+    white-space: nowrap;
+  }
+
+  /* ── INFO PANEL ── */
+  #infoPanel {
+    display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    z-index: 1000; width: 90%; max-width: 620px;
+    animation: bounceIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes bounceIn {
+    0%   { opacity:0; transform:translate(-50%,-45%) scale(0.85); }
+    60%  { opacity:1; transform:translate(-50%,-51%) scale(1.03); }
+    80%  { transform:translate(-50%,-49%) scale(0.98); }
+    100% { transform:translate(-50%,-50%) scale(1); }
+  }
+  @keyframes bounceOut {
+    0%   { opacity:1; transform:translate(-50%,-50%) scale(1); }
+    30%  { transform:translate(-50%,-50%) scale(1.04); }
+    100% { opacity:0; transform:translate(-50%,-46%) scale(0.85); }
+  }
+
+  .panel-frame {
+    background: rgba(10,22,45,0.97);
+    border: 2px solid rgba(255,192,0,0.6);
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 0 40px rgba(76,169,255,0.2), 0 0 0 4px rgba(76,169,255,0.06);
+    position: relative;
+  }
+  .panel-frame::before {
+    content: ""; position: absolute; inset: -1px; border-radius: 21px;
+    background: linear-gradient(135deg, rgba(76,169,255,0.2), transparent 50%);
+    pointer-events: none;
+  }
+  .panel-topbar {
+    background: rgba(13,39,68,0.95); padding: 10px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(255,192,0,0.35);
+  }
+  .panel-topbar-left { display: flex; align-items: center; gap: 8px; }
+  .tb-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .tb-red { background: #C0392B; } .tb-amber { background: #D4820A; } .tb-green { background: #1D9E75; }
+  .panel-title { font-family: Poppins, sans-serif; font-size: 11px; font-weight: 600; color: #FFC000; letter-spacing: 1px; text-transform: uppercase; }
+  .panel-close {
+    width: 26px; height: 26px; border-radius: 50%; background: rgba(192,57,43,0.8);
+    border: none; color: white; cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center; transition: background 0.2s;
+  }
+  .panel-close:hover { background: #C0392B; }
+  .panel-body { padding: 14px; max-height: 70vh; overflow-y: auto; }
+
+  /* Slideshow nav */
+  .slide-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 14px; border-top: 1px solid rgba(76,169,255,0.15);
+    background: rgba(13,39,68,0.6);
+  }
+  .slide-nav button {
+    background: rgba(23,112,184,0.7); border: 1px solid rgba(76,169,255,0.3);
+    border-radius: 10px; color: white; padding: 5px 14px; cursor: pointer;
+    font-family: Poppins, sans-serif; font-size: 11px; transition: background 0.2s;
+  }
+  .slide-nav button:hover { background: #1770B8; }
+  .slide-nav button:disabled { opacity: 0.3; cursor: default; }
+  .slide-counter { font-family: DM Mono, monospace; font-size: 11px; color: rgba(255,255,255,0.5); }
+
+  /* Tables */
+  .info-table { width: 100%; border-collapse: collapse; font-family: Poppins, sans-serif; font-size: 11px; }
+  .info-table th { background: rgba(180,140,0,0.3); color: #FFC000; padding: 7px 10px; text-align: left; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+  .info-table td { padding: 6px 10px; border-bottom: 1px solid rgba(76,169,255,0.1); color: rgba(255,255,255,0.85); vertical-align: top; line-height: 1.5; }
+  .info-table td:first-child { color: #FFC000; font-weight: 600; width: 35%; }
+  .info-table tr:nth-child(even) td { background: rgba(255,192,0,0.05); }
+  .info-table tr:last-child td { border-bottom: none; }
+
+  /* Photo */
+  .photo-img { width: 100%; border-radius: 10px; display: block; max-height: 360px; object-fit: cover; }
+  .photo-caption { font-family: Poppins, sans-serif; font-size: 11px; color: rgba(255,255,255,0.45); text-align: center; margin-top: 8px; }
+
+  /* ── LOADING & CREDITS ── */
+  #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: rgba(76,169,255,0.8); font-family: Poppins, sans-serif; font-size: 14px; z-index: 998; text-align: center; }
+
+
+</style>
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="cesiumContainer"></div>
+<svg id="sceneFrame" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:998;" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFC000;stop-opacity:0.9"/>
+      <stop offset="25%" style="stop-color:#ffffff;stop-opacity:0.5"/>
+      <stop offset="50%" style="stop-color:#FFC000;stop-opacity:0.9"/>
+      <stop offset="75%" style="stop-color:#ffffff;stop-opacity:0.4"/>
+      <stop offset="100%" style="stop-color:#FFC000;stop-opacity:0.9"/>
+    </linearGradient>
+  </defs>
+  <rect x="12" y="12" width="calc(100% - 24px)" height="calc(100% - 24px)"
+    rx="16" ry="16"
+    fill="none"
+    stroke="url(#borderGrad)"
+    stroke-width="2"
+    stroke-dasharray="1 6"
+    stroke-linecap="round"
+    vector-effect="non-scaling-stroke"/>
+</svg>
+<div id="loading">Loading Oulankajoki Point Cloud...</div>
+<audio id="ambientAudio" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+<script>
+  // Auto-start audio on first user interaction
+  document.addEventListener('click', function startAudio() {
+    var audio = document.getElementById('ambientAudio');
+    if (audio && audio.paused && !audioMuted) {
+      audio.volume = 0.3;
+      audio.play().catch(function(){});
+    }
+    document.removeEventListener('click', startAudio);
+  }, { once: false });
+</script>
+
+<!-- TOOLBAR -->
+<div id="toolbar">
+  <div class="dot"></div>
+  <span>DIWA · </span><span id="currentSiteName" style="color:#FFC000;font-weight:600;">Oulankajoki River</span><span> · Click markers · Use dropdown to visit all 9 supersites</span>
+</div>
+
+<!-- SUPERSITE DROPDOWN -->
+<div id="supersiteMenu">
+  <button id="supersiteBtn" onclick="toggleDropdown()">🗺 DIWA Supersites ▾</button>
+  <div id="supersiteDropdown">
+    <div class="site-item active" onclick="flyTo(66.290111,29.628583,'Oulankajoki River')"><span class="site-dot"></span>✓ Oulankajoki River</div>
+    <div class="site-item" onclick="flyTo(70.196,28.214,'Tana River')"><span class="site-dot"></span>Tana River</div>
+    <div class="site-item" onclick="flyTo(68.001,24.116,'Pallas Research Station')"><span class="site-dot"></span>Pallas Research Station</div>
+    <div class="site-item" onclick="flyTo(67.368,26.630,'Sodankyla Research Station')"><span class="site-dot"></span>Sodankyla Research Station</div>
+    <div class="site-item" onclick="flyTo(66.503,25.714,'Kemijoki River')"><span class="site-dot"></span>Kemijoki River</div>
+    <div class="site-item" onclick="flyTo(65.012,25.471,'Oulu Region')"><span class="site-dot"></span>Oulu Region</div>
+    <div class="site-item" onclick="flyTo(63.837,23.130,'Kokkola Groundwater')"><span class="site-dot"></span>Kokkola Groundwater</div>
+    <div class="site-item" onclick="flyTo(60.402,25.103,'Vantaanjoki River')"><span class="site-dot"></span>Vantaanjoki River</div>
+    <div class="site-item" onclick="flyTo(60.050,21.500,'Archipelago Sea')"><span class="site-dot"></span>Archipelago Sea</div>
+  </div>
+</div>
+
+<!-- SEARCH BAR -->
+<div id="searchBar">
+  <input id="searchInput" type="text" placeholder="🔍 Search any location..." onkeydown="if(event.key==='Enter')searchLocation()">
+  <button id="searchBtn" onclick="searchLocation()">Go</button>
+</div>
+
+<!-- COMPASS -->
+<div id="compass">
+  <div id="compassRing">
+    <span id="compassN">N</span>
+    <div id="compassNeedle"></div>
+  </div>
+  <div id="compassDeg">0°</div>
+  <div id="compassTilt">Tilt: 0°</div>
+</div>
+
+<!-- RIGHT CONTROLS -->
+<div id="rightControls">
+  <button class="ctrl-btn" id="measureBtn" onclick="toggleMeasure()">📏 Measure Distance</button>
+  <button class="ctrl-btn" id="audioBtn" onclick="toggleAudio()">🔊 Mute Audio</button>
+  <button class="ctrl-btn" onclick="resetView()">🏠 Reset View</button>
+</div>
+
+<!-- MEASURE DISPLAY -->
+<div id="measureDisplay">📏 Click two points to measure distance</div>
+
+<!-- COORDINATE DISPLAY -->
+
+
+<!-- INFO PANEL -->
+<div id="infoPanel">
+  <div class="panel-frame">
+    <div class="panel-topbar">
+      <div class="panel-topbar-left">
+        <span class="tb-dot tb-red"></span>
+        <span class="tb-dot tb-amber"></span>
+        <span class="tb-dot tb-green"></span>
+        <span class="panel-title" id="panelTitle">Info</span>
+      </div>
+      <button class="panel-close" onclick="closePanel()">✕</button>
+    </div>
+    <div class="panel-body" id="panelBody"></div>
+    <div class="slide-nav" id="slideNav" style="display:none;">
+      <button id="prevBtn" onclick="changeSlide(-1)">◀ Prev</button>
+      <span class="slide-counter" id="slideCounter">1 / 7</span>
+      <button id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- Links block - bottom left -->
+<div class="bottom-block" id="linksBlock">
+  <a href="https://digitalwaters.fi/" target="_blank">🌊 Digital Waters</a>
+  <span class="bb-sep">·</span>
+  <a id="gmapsLink" href="https://www.google.com/maps/@66.2906778,29.6285833,500m/data=!3m1!1e3?entry=ttu" target="_blank">🗺 Google Maps</a>
+</div>
+
+<!-- Coord block - bottom center -->
+<div class="bottom-block" id="coordBlock">
+  <span id="coordDisplay2">Lat: — · Lon: — · Alt: —</span>
+</div>
+
+<!-- Credits block - bottom right -->
+<div class="bottom-block" id="creditsBlock">
+  <span class="bb-credit">University of Oulu · Digital Waters Flagship · IDT Lab · Siamak Bazzaz</span>
+</div>
+
+
+<script>
+// ══════════════════════════════════════════
+// ALL 7 TABLES DATA
+// ══════════════════════════════════════════
+var TABLES = [
+  {
+    title: 'Table 1 — Oulankajoki Supersite Overview',
+    headers: ['Feature', 'Description'],
+    rows: [
+      ['Site Name','Oulankajoki Supersite'],
+      ['Location','Northeastern Finland (subarctic/boreal region)'],
+      ['Environment Type','Boreal forest, river system, wetlands, snow-dominated catchment'],
+      ['Research Focus','Integrated hydrology, carbon cycle, climate interactions, ecosystem processes'],
+      ['Observation Domains','Surface water, soil, groundwater, atmosphere, vegetation, remote sensing'],
+      ['Monitoring Approach','Multi-sensor, multi-scale, in-situ + UAV + remote sensing integration'],
+      ['Key Variables','Water level, discharge, soil moisture, temperature, CO₂/CH₄ fluxes, meteorology'],
+      ['Temporal Coverage','Multi-year (2020–ongoing) with high-frequency measurements (minutes to continuous)'],
+      ['Spatial Scale','Point sensors → plot scale → catchment scale → UAV/remote sensing coverage'],
+      ['Data Types','Time-series data, imagery, thermal data, LiDAR/point clouds, spectral data'],
+      ['Data Infrastructure','Real-time APIs, manual uploads, cloud-based storage (planned integration)'],
+      ['Research Projects','Linked to EU and research initiatives: hydrology, digital basin, ecosystem monitoring'],
+      ['Key Challenges','Harsh climate, sensor calibration, data gaps, wildlife interference, maintenance'],
+      ['Special Capabilities','Eddy covariance flux, UAV mapping, water quality spectroscopy, isotope monitoring'],
+      ['Digital Twin Potential','High — multi-domain data enables immersive XR-based environmental monitoring'],
+      ['VR/XR Integration Role','Real-world testbed for interactive digital twin (hotspots, data panels, sensors)'],
+    ]
+  },
+  {
+    title: 'Table 3 — Temporal Information',
+    headers: ['Instrument','Resolution','Start Date','Timezone','Update Frequency'],
+    rows: [
+      ['FLIR A70','Hourly','2022-10-01','EET (UTC+2)','Weekly'],
+      ['SoilScout Hydra100','20 min','2022-11-08','UTC+2','Real-time'],
+      ['Solinst Levellogger','5–15 min','2020-05-24','UTC+2','On collection'],
+      ['LICOR LI7200','Continuous','2022-06-22','EET','Manual upload'],
+      ['Metek USA_Fast','Continuous','2022-06-22','EET','Manual upload'],
+      ['DecentLab sensors','15 min','2023–2024','UTC+2','Real-time'],
+      ['TOMST TMS4','10 min','2024–2025','—','Manual upload'],
+      ['UGT SFM','10 min','2025-06-01','—','Manual upload'],
+      ['WIP isotope','Daily','2025-06-01','UTC','Manual upload'],
+    ]
+  },
+  {
+    title: 'Table 4 — Projects',
+    headers: ['Instrument','Related Projects'],
+    rows: [
+      ['SoilScout / DecentLab','Green-Digi-Basin (RCF)'],
+      ['LICOR / Metek','ICOS, Aarhus University'],
+      ['UGT sensors','BFF-Water (RCF), BoTWU (EU)'],
+      ['IFM / TriOS','HYDRO-RDI, Green-Digi-Basin'],
+      ['Campbell / TOMST','BFF-Water, BoTWU'],
+      ['FLIR / UAV systems','Various UAV monitoring projects'],
+    ]
+  },
+  {
+    title: 'Table 6 — Metadata, Contacts & Issues',
+    headers: ['Instrument','Contact Person','Known Data Issues','Notes'],
+    rows: [
+      ['SoilScout','Josh Johnson','Data gaps, connectivity issues','Pre-DIWA access pending'],
+      ['DecentLab PR26','Petra Korhonen','Freezing, reindeer interference, gaps','Groundwater WTD conversion needed'],
+      ['LICOR / Metek','Jon Page','Heavy preprocessing required','Flux datasets'],
+      ['UGT sensors','Zuosinan Chen','Calibration required','Sap flow / isotopes'],
+      ['IFM / TriOS / McVan','Petra Korhonen','Sensor fouling, maintenance gaps','Surface water quality issues'],
+      ['Campbell / TOMST','Zuosinan Chen','New installations, calibration phase','Snowpack experiments'],
+      ['UAV systems','Linnea Blafield','Restricted data (defense constraints)','LiDAR usage restricted'],
+    ]
+  },
+  {
+    title: 'Table 7 — Surface Water',
+    headers: ['Data Stream','Description','Sources','Resolution','Unit'],
+    rows: [
+      ['Water level','River/stream stage height','Solinst, IFM UGT502','5–15 min / continuous','m / mm'],
+      ['Water temperature','Thermal state of surface water','Solinst','5–15 min','°C'],
+      ['Discharge (derived)','Flow estimation from stage','IFM UGT502','Continuous','L/s'],
+      ['Turbidity','Suspended particles / clarity','McVan Nep-9500','15 min','NTU'],
+      ['Water chemistry index','Optical absorption proxies (NO₃, DOC)','TriOS OPUS','15 min','AU, mg/L'],
+      ['pH / redox state','Chemical balance indicators','Ponsel sensor','15 min','pH, mV'],
+    ]
+  },
+  {
+    title: 'Table 8 — Soil',
+    headers: ['Data Stream','Description','Sources','Resolution','Unit'],
+    rows: [
+      ['Soil moisture','Volumetric water content','SoilScout, CS655, TMS4','10–20 min','%'],
+      ['Soil temperature','Thermal state of soil profile','Campbell, TOMST, DecentLab','10 min','°C'],
+      ['Soil salinity','Ionic concentration proxy','SoilScout','20 min','dS/m'],
+      ['Soil solution chemistry','Water-soil chemical interactions','DecentLab DL-SDD','Real-time','variable'],
+      ['Soil water dynamics','Infiltration / retention behavior','Combined sensors','Modeled','index'],
+    ]
+  },
+  {
+    title: 'Table 9 — Groundwater',
+    headers: ['Data Stream','Description','Sources','Resolution','Unit','Notes'],
+    rows: [
+      ['Groundwater level','Water table depth dynamics','DecentLab DL-PR26','15 min','m','Needs WTD conversion'],
+      ['Pore pressure','Subsurface hydraulic pressure','DecentLab DL-PR26','15 min','kPa','Environmental noise present'],
+      ['Groundwater temperature','Thermal subsurface signal','DecentLab DL-PR26','15 min','°C','Frozen condition distortions'],
+      ['Deep groundwater dynamics','Bedrock water response','DecentLab deep sensors','15 min','m','Reindeer + freeze interference'],
+    ]
+  }
+];
+
+var PHOTOS = [
+  { lat:66.28802083333333, lon:29.6307225,        alt:204.71,  label:'DJI_0032', url:'https://siamakab.github.io/oulankajoki-vr/DJI_0032.JPG' },
+  { lat:66.28815972222222, lon:29.63125638888889,  alt:213.11,  label:'DJI_0047', url:'https://siamakab.github.io/oulankajoki-vr/DJI_0047.JPG' },
+  { lat:66.29116305555556, lon:29.63179361111111,  alt:317.41,  label:'DJI_0061', url:'https://siamakab.github.io/oulankajoki-vr/DJI_0061.JPG' },
+  { lat:66.29108138888888, lon:29.625534444444444, alt:149.158, label:'DJI_0070', url:'https://siamakab.github.io/oulankajoki-vr/DJI_0070.JPG' },
+  { lat:66.29104694444445, lon:29.625497777777777, alt:171.358, label:'DJI_0072', url:'https://siamakab.github.io/oulankajoki-vr/DJI_0072.JPG' },
+];
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+var globalViewer = null;
+var currentSlide = 0;
+var panelMode = 'table'; // 'table' or 'photo'
+var isNightMode = false;
+var isMeasuring = false;
+var measurePoints = [];
+var measureEntities = [];
+var tilesetRef = null;
+var audioMuted = false;
+
+function openGoogleMaps() {
+  if (!globalViewer) return;
+  var carto = globalViewer.camera.positionCartographic;
+  var lat = Cesium.Math.toDegrees(carto.latitude).toFixed(7);
+  var lon = Cesium.Math.toDegrees(carto.longitude).toFixed(7);
+  var alt = Math.max(100, Math.round(carto.height));
+  // Satellite mode with data layer
+  var url = 'https://www.google.com/maps/@' + lat + ',' + lon + ',' + alt + 'm/data=!3m1!1e3?entry=ttu';
+  window.open(url, '_blank');
+}
+
+function toggleAudio() {
+  var audio = document.getElementById('ambientAudio');
+  var btn = document.getElementById('audioBtn');
+  if (audioMuted) {
+    audio.play();
+    btn.textContent = '🔊 Mute Audio';
+    audioMuted = false;
+  } else {
+    audio.pause();
+    btn.textContent = '🔇 Unmute Audio';
+    audioMuted = true;
+  }
+}
+
+function showVideoPanel() {
+  document.getElementById('panelTitle').textContent = 'Oulankajoki Supersite — Field Video';
+  document.getElementById('panelBody').innerHTML =
+    '<video style="width:100%;border-radius:10px;max-height:360px;" controls autoplay>' +
+    '<source src="https://siamakab.github.io/oulankajoki-vr/oulankajoki.mp4" type="video/mp4">' +
+    'Your browser does not support video.' +
+    '</video>' +
+    '<div class="photo-caption">📍 Oulankajoki Supersite · DIWA Flagship Program · University of Oulu</div>';
+  document.getElementById('slideNav').style.display = 'none';
+  document.getElementById('infoPanel').style.display = 'block';
+}
+
+// ══════════════════════════════════════════
+// DROPDOWN
+// ══════════════════════════════════════════
+function toggleDropdown() {
+  document.getElementById('supersiteDropdown').classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  if (!document.getElementById('supersiteMenu').contains(e.target))
+    document.getElementById('supersiteDropdown').classList.remove('open');
+});
+
+function flyTo(lat, lon, name) {
+  document.getElementById('supersiteDropdown').classList.remove('open');
+  if (!globalViewer) return;
+  globalViewer.camera.flyTo({
+    destination: Cesium.Cartesian3.fromDegrees(lon, lat, 800),
+    orientation: { heading: Cesium.Math.toRadians(0), pitch: Cesium.Math.toRadians(-45), roll: 0 },
+    duration: 3
+  });
+  document.querySelectorAll('.site-item').forEach(function(el) {
+    el.classList.remove('active');
+    if (el.textContent.includes(name)) el.classList.add('active');
+  });
+  var nameEl = document.getElementById('currentSiteName');
+  if (nameEl) nameEl.textContent = name;
+}
+
+// ══════════════════════════════════════════
+// SEARCH
+// ══════════════════════════════════════════
+async function searchLocation() {
+  var query = document.getElementById('searchInput').value.trim();
+  if (!query || !globalViewer) return;
+  try {
+    var url = 'https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(query) + '&format=json&limit=1';
+    var res = await fetch(url, { headers: { 'User-Agent': 'DIWAViewer/1.0' } });
+    var data = await res.json();
+    if (data.length > 0) {
+      var lat = parseFloat(data[0].lat);
+      var lon = parseFloat(data[0].lon);
+      globalViewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(lon, lat, 800),
+        orientation: { heading: 0, pitch: Cesium.Math.toRadians(-45), roll: 0 },
+        duration: 3
+      });
+    } else {
+      alert('Location not found: ' + query);
+    }
+  } catch(e) { alert('Search failed. Check internet connection.'); }
+}
+
+
+
+// ══════════════════════════════════════════
+// MEASURE
+// ══════════════════════════════════════════
+function toggleMeasure() {
+  isMeasuring = !isMeasuring;
+  var btn = document.getElementById('measureBtn');
+  var display = document.getElementById('measureDisplay');
+  if (isMeasuring) {
+    btn.classList.add('active');
+    btn.textContent = '📏 Stop Measuring';
+    display.style.display = 'block';
+    display.textContent = '📏 Click first point on the terrain';
+    measurePoints = [];
+    measureEntities.forEach(function(e) { globalViewer.entities.remove(e); });
+    measureEntities = [];
+  } else {
+    btn.classList.remove('active');
+    btn.textContent = '📏 Measure Distance';
+    display.style.display = 'none';
+    measurePoints = [];
+    measureEntities.forEach(function(e) { globalViewer.entities.remove(e); });
+    measureEntities = [];
+  }
+}
+
+function getDistance(p1, p2) {
+  var c1 = Cesium.Cartographic.fromCartesian(p1);
+  var c2 = Cesium.Cartographic.fromCartesian(p2);
+  var geo = new Cesium.EllipsoidGeodesic(c1, c2);
+  return (geo.surfaceDistance / 1000).toFixed(3);
+}
+
+// ══════════════════════════════════════════
+// RESET VIEW
+// ══════════════════════════════════════════
+function resetView() {
+  if (!globalViewer) return;
+  globalViewer.camera.setView({
+    destination: Cesium.Cartesian3.fromDegrees(29.6290, 66.2901, 400),
+    orientation: {
+      heading: Cesium.Math.toRadians(0),
+      pitch: Cesium.Math.toRadians(-75),
+      roll: 0
+    }
+  });
+}
+
+// ══════════════════════════════════════════
+// PANEL
+// ══════════════════════════════════════════
+function showTablePanel() {
+  panelMode = 'table';
+  currentSlide = 0;
+  renderSlide();
+  document.getElementById('slideNav').style.display = 'flex';
+  document.getElementById('infoPanel').style.display = 'block';
+}
+
+function showPhotoPanel(photo) {
+  panelMode = 'photo';
+  document.getElementById('panelTitle').textContent = photo.lat.toFixed(4) + '°N  ' + photo.lon.toFixed(4) + '°E  ·  Alt: ' + photo.alt.toFixed(1) + 'm';
+  document.getElementById('panelBody').innerHTML =
+    '<img class="photo-img" src="' + photo.url + '" alt="' + photo.label + '"/>' +
+    '<div class="photo-caption">📍 Alt: ' + photo.alt.toFixed(1) + 'm · DIWA Oulankajoki Supersite</div>';
+  document.getElementById('slideNav').style.display = 'none';
+  document.getElementById('infoPanel').style.display = 'block';
+}
+
+function renderSlide() {
+  var t = TABLES[currentSlide];
+  document.getElementById('panelTitle').textContent = t.title;
+  var html = '<table class="info-table"><thead><tr>';
+  t.headers.forEach(function(h) { html += '<th>' + h + '</th>'; });
+  html += '</tr></thead><tbody>';
+  t.rows.forEach(function(row) {
+    html += '<tr>';
+    row.forEach(function(cell) { html += '<td>' + cell + '</td>'; });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  document.getElementById('panelBody').innerHTML = html;
+  document.getElementById('slideCounter').textContent = (currentSlide + 1) + ' / ' + TABLES.length;
+  document.getElementById('prevBtn').disabled = currentSlide === 0;
+  document.getElementById('nextBtn').disabled = currentSlide === TABLES.length - 1;
+}
+
+function changeSlide(dir) {
+  currentSlide = Math.max(0, Math.min(TABLES.length - 1, currentSlide + dir));
+  renderSlide();
+}
+
+function closePanel() {
+  var panel = document.getElementById('infoPanel');
+  panel.style.animation = 'bounceOut 0.3s ease forwards';
+  setTimeout(function() {
+    panel.style.display = 'none';
+    panel.style.animation = 'bounceIn 0.4s cubic-bezier(0.34,1.56,0.64,1)';
+  }, 280);
+}
+
+// ══════════════════════════════════════════
+// CESIUM INIT
+// ══════════════════════════════════════════
+window.addEventListener('load', function() {
+  var s = document.createElement('script');
+  s.src = 'https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Cesium.js';
+  s.onload = initCesium;
+  s.onerror = function() { document.getElementById('loading').innerHTML = 'Failed to load Cesium. Check internet.'; };
+  document.head.appendChild(s);
+});
+
+async function initCesium() {
+  document.getElementById('loading').style.display = 'none';
+  Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5Njc2ZDliMy1kMzFiLTQwMmYtODVmMS0yNzhhMGZlOTZlNDEiLCJpZCI6NDIxMDkzLCJpYXQiOjE3NzY4NjUwNzZ9.ayWlp7xxCdVnAlT9KDDTnWimWUfeCq3CO91b9jJHVTI';
+
+  const terrain = await Cesium.CesiumTerrainProvider.fromIonAssetId(1);
+  const viewer = new Cesium.Viewer('cesiumContainer', {
+    timeline:false, animation:false, baseLayerPicker:false, geocoder:false,
+    homeButton:false, sceneModePicker:false, navigationHelpButton:false,
+    fullscreenButton:false, infoBox:false, selectionIndicator:false,
+    terrainProvider: terrain,
+  });
+  globalViewer = viewer;
+  // Enable all navigation
+  var ctrl = viewer.scene.screenSpaceCameraController;
+  ctrl.enableTranslate = true;
+  ctrl.enableTilt = true;
+  ctrl.enableLook = true;
+  ctrl.enableRotate = true;
+  ctrl.enableZoom = true;
+  viewer.cesiumWidget.creditContainer.style.display = 'none';
+  viewer.scene.skyBox.show = false;
+  viewer.scene.skyAtmosphere.show = true;
+
+  // Bing Maps
+  try {
+    const img = await Cesium.IonImageryProvider.fromAssetId(2);
+    viewer.imageryLayers.addImageryProvider(img);
+  } catch(e) { console.warn('Basemap:', e); }
+
+  // Point cloud
+  try {
+    const tileset = await Cesium.Cesium3DTileset.fromIonAssetId(4649290);
+    tilesetRef = tileset;
+    viewer.scene.primitives.add(tileset);
+    tileset.style = new Cesium.Cesium3DTileStyle({ pointSize: 2.5 });
+    await viewer.zoomTo(tileset);
+    var bs = tileset.boundingSphere;
+    viewer.camera.viewBoundingSphere(bs,
+      new Cesium.HeadingPitchRange(Cesium.Math.toRadians(0), Cesium.Math.toRadians(-45), bs.radius * 2.0)
+    );
+  } catch(e) {
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('loading').innerHTML = 'Error: ' + e.message;
+  }
+
+  // Data marker — blue sphere
+  viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees(29.629, 66.2901, 185),
+    ellipsoid: { radii: new Cesium.Cartesian3(8,8,8), material: Cesium.Color.fromCssColorString('#1770B8').withAlpha(0.92), outline:true, outlineColor: Cesium.Color.fromCssColorString('#4CA9FF'), outlineWidth:2 },
+    label: { text:'ℹ Data Tables', font:'11px Poppins', fillColor:Cesium.Color.WHITE, outlineColor:Cesium.Color.BLACK, outlineWidth:2, style:Cesium.LabelStyle.FILL_AND_OUTLINE, verticalOrigin:Cesium.VerticalOrigin.BOTTOM, pixelOffset:new Cesium.Cartesian2(0,-18) },
+    properties: { type:'data' }
+  });
+
+  // Photo markers
+  PHOTOS.forEach(function(photo) {
+    viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(photo.lon, photo.lat, photo.alt),
+      ellipsoid: { radii: new Cesium.Cartesian3(7,7,7), material: Cesium.Color.WHITE.withAlpha(0.9), outline:true, outlineColor:Cesium.Color.fromCssColorString('#4CA9FF'), outlineWidth:2 },
+      label: { text:'📷 '+photo.label, font:'10px Poppins', fillColor:Cesium.Color.WHITE, outlineColor:Cesium.Color.BLACK, outlineWidth:2, style:Cesium.LabelStyle.FILL_AND_OUTLINE, verticalOrigin:Cesium.VerticalOrigin.BOTTOM, pixelOffset:new Cesium.Cartesian2(0,-16) },
+      properties: { type:'photo', photoData: photo }
+    });
+  });
+
+  // Video marker near DJI_0070/0072
+  viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees(29.6256, 66.2911, 160),
+    ellipsoid: {
+      radii: new Cesium.Cartesian3(7,7,7),
+      material: Cesium.Color.fromCssColorString('#0E7C86').withAlpha(0.92),
+      outline: true,
+      outlineColor: Cesium.Color.fromCssColorString('#6DD8E8'),
+      outlineWidth: 2
+    },
+    label: {
+      text: '🎬 Video',
+      font: '10px Poppins',
+      fillColor: Cesium.Color.WHITE,
+      outlineColor: Cesium.Color.BLACK,
+      outlineWidth: 2,
+      style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+      verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+      pixelOffset: new Cesium.Cartesian2(0,-16)
+    },
+    properties: { type: 'video' }
+  });
+
+  // Click handler
+  var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+
+  handler.setInputAction(function(click) {
+    // Measure mode
+    if (isMeasuring) {
+      var ray = viewer.camera.getPickRay(click.position);
+      var pos = viewer.scene.globe.pick(ray, viewer.scene);
+      if (!pos) return;
+      measurePoints.push(pos);
+      measureEntities.push(viewer.entities.add({
+        position: pos,
+        point: { pixelSize: 10, color: Cesium.Color.fromCssColorString('#4CA9FF'), outlineColor: Cesium.Color.WHITE, outlineWidth: 2 }
+      }));
+      if (measurePoints.length === 2) {
+        var dist = getDistance(measurePoints[0], measurePoints[1]);
+        document.getElementById('measureDisplay').textContent = '📏 Distance: ' + dist + ' km';
+        measureEntities.push(viewer.entities.add({
+          polyline: {
+            positions: measurePoints,
+            width: 3,
+            material: new Cesium.PolylineGlowMaterialProperty({
+              glowPower: 0.2,
+              color: Cesium.Color.fromCssColorString('#4CA9FF').withAlpha(0.9)
+            })
+          }
+        }));
+        var dist = getDistance(measurePoints[0], measurePoints[1]);
+        // Add distance label at midpoint of line
+        var mid = Cesium.Cartesian3.midpoint(measurePoints[0], measurePoints[1], new Cesium.Cartesian3());
+        measureEntities.push(globalViewer.entities.add({
+          position: mid,
+          label: {
+            text: dist + ' km',
+            font: '13px Poppins',
+            fillColor: Cesium.Color.WHITE,
+            outlineColor: Cesium.Color.BLACK,
+            outlineWidth: 2,
+            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+            pixelOffset: new Cesium.Cartesian2(0, -10),
+            showBackground: false,
+          }
+        }));
+        // Auto clear after 4 seconds
+        setTimeout(function() {
+          measureEntities.forEach(function(e) { globalViewer.entities.remove(e); });
+          measureEntities = [];
+          document.getElementById('measureDisplay').textContent = '📏 Click first point on the terrain';
+        }, 4000);
+        measurePoints = [];
+      } else {
+        document.getElementById('measureDisplay').textContent = '📏 Click second point to complete measurement';
+      }
+      return;
+    }
+
+    // Info panels
+    var picked = viewer.scene.pick(click.position);
+    if (Cesium.defined(picked) && picked.id) {
+      var props = picked.id.properties;
+      if (props) {
+        var type = props.type ? props.type.getValue() : null;
+        if (type === 'data') { showTablePanel(); }
+        else if (type === 'photo') { showPhotoPanel(props.photoData.getValue()); }
+        else if (type === 'video') { showVideoPanel(); }
+      }
+    }
+  }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+  // Compass + coordinate update
+  viewer.scene.postRender.addEventListener(function() {
+    var heading = Cesium.Math.toDegrees(viewer.camera.heading);
+    var deg = Math.round(heading);
+    document.getElementById('compassNeedle').style.transform =
+      'translateX(-50%) translateY(-100%) rotate(' + heading + 'deg)';
+    document.getElementById('compassDeg').textContent = deg + '°';
+    var tilt = Math.round(Cesium.Math.toDegrees(viewer.camera.pitch) + 90);
+    document.getElementById('compassTilt').textContent = 'Tilt: ' + tilt + '°';
+
+    // Coordinates
+    var carto = viewer.camera.positionCartographic;
+    if (carto) {
+      var lat = Cesium.Math.toDegrees(carto.latitude).toFixed(5);
+      var lon = Cesium.Math.toDegrees(carto.longitude).toFixed(5);
+      var alt = (carto.height / 1000).toFixed(2);
+      // Update Google Maps footer link with current coordinates
+      var gmLink = document.getElementById('gmapsLink');
+      if (gmLink) {
+        var gmUrl = 'https://www.google.com/maps/@' + lat + ',' + lon + ',' + Math.max(100, Math.round(carto.height)) + 'm/data=!3m1!1e3?entry=ttu';
+        gmLink.href = gmUrl;
+      }
+      // Update compass tilt
+      var tilt2 = Math.round(Cesium.Math.toDegrees(viewer.camera.pitch) + 90);
+      var tiltEl = document.getElementById('compassTilt');
+      if (tiltEl) tiltEl.textContent = 'Tilt: ' + tilt2 + '°';
+      document.getElementById('coordDisplay2').textContent =
+        'Lat: ' + lat + '°  ·  Lon: ' + lon + '°  ·  Alt: ' + alt + ' km';
+    }
+  });
+}
+</script>
+</body>
+</html>
